@@ -1,0 +1,57 @@
+@startuml Diagrama de Clases - InmoJaen
+
+class Usuario {
+    - id: Long
+    - nombre: String
+    - email: String
+    - password: String
+    - telefono: String
+    - rol: String
+    - username: String
+    - activo: Boolean
+    - anuncios: Anuncio[]
+    + guardarAnuncio()
+    + eliminarAnuncio()
+    + modificarAnuncio()
+    + buscarAnuncio()
+}
+
+class Anuncio {
+    - id: Long
+    - titulo: String
+    - descripcion: String
+    - precio: Double
+    - superficie: Double
+    - habitaciones: Integer
+    - banos: Integer
+    - direccion: String
+    - fechaPublicacion: LocalDate
+    - fechaReserva: LocalDate
+    - fechaVenta: LocalDate
+    - visto: Boolean
+    - reservado: Boolean
+    - vendido: Boolean
+    - usuario: Usuario
+    - fotos: Foto[]
+    - mensajes: Mensaje[]
+    + guardarAnuncio()
+    + buscarAnuncio()
+    + modificarAnuncio()
+    + eliminarAnuncio()
+}
+
+enum Rol {
+    ADMIN
+    VENDEDOR
+    CLIENTE
+}
+
+class RolUsuario {
+    - id: Long
+    - rol: Rol
+    - usuario: Usuario
+}
+
+Usuario "1" --> "0..*" Anuncio : tiene
+
+@enduml

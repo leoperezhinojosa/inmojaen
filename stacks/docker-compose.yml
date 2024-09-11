@@ -1,0 +1,25 @@
+version: '3.1'
+services:
+  db:
+    image: mysql:8.0
+    restart: "no"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - janet
+    ports:
+      - 33066:3306
+    volumes:
+      - ./setup:/docker-entrypoint-initdb.d
+
+  adminer:
+    image: adminer
+    restart: "no"
+    networks:
+      - janet
+    ports:
+      - 8383:8080
+
+networks:
+  janet:
+    # driver: bridge
