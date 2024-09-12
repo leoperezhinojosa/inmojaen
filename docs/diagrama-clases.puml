@@ -11,9 +11,9 @@ class Usuario {
     - activo: Boolean
     - anuncios: Anuncio[]
     + guardarAnuncio()
-    + eliminarAnuncio()
-    + modificarAnuncio()
     + buscarAnuncio()
+    + modificarAnuncio()
+    + eliminarAnuncio()
 }
 
 class Anuncio {
@@ -32,8 +32,9 @@ class Anuncio {
     - reservado: Boolean
     - vendido: Boolean
     - usuario: Usuario
-    - fotos: Foto[]
-    - mensajes: Mensaje[]
+    - fotos: String[]
+    - mensajes: String[]
+    - activo: Boolean
     + guardarAnuncio()
     + buscarAnuncio()
     + modificarAnuncio()
@@ -50,8 +51,18 @@ class RolUsuario {
     - id: Long
     - rol: Rol
     - usuario: Usuario
+    + guardarRol()
+    + buscarRol()
+    + modificarRol()
 }
 
-Usuario "1" --> "0..*" Anuncio : tiene
+Usuario "1" --> "0..*" Anuncio : Tiene
+Anuncio "1" --> "1" Usuario : Pertenece
+Usuario "1" --> "1" RolUsuario : Tiene
+RolUsuario "1" --> "1" Usuario : Pertenece
+
+RolUsuario "1" --> "1" Rol : Tiene
+Rol "1" --> "0..*" RolUsuario : Pertenece
+
 
 @enduml
