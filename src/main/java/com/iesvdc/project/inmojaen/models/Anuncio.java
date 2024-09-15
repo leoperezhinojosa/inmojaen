@@ -33,4 +33,5 @@ public class Anuncio {
     private Usuario usuario;
     private List<String> fotos;
     private List<String> mensajes;
+    private Boolean activo;
 }

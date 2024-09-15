@@ -25,6 +25,8 @@ public class Usuario {
     private Rol rol;
     @Column(unique = true)
     private String username;
-    private Boolean activo;
-    private List<Anuncio> anuncios;
+    private List<Anuncio> anunciosEnVenta;
+    private List<Anuncio> anunciosFavoritos;
+    private Boolean inalterable;
+    private Boolean enabled;
 }
