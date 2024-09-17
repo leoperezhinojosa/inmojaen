@@ -6,25 +6,29 @@ Admin --> Proc01
 
 usecase (gestionar su perfil de venta) as Proc02
 usecase (gestionar anuncios publicados) as Proc03
+usecase (enviar mensajes) as Proc04
 actor : vendedor: as Vendedor
 Vendedor --> Proc02
 Vendedor --> Proc03
+Vendedor --> Proc04
 
-usecase (gestionar su informacion) as Proc04
-usecase (buscar anuncios) as Proc05
-usecase (gestionar anuncios favoritos) as Proc06
+usecase (gestionar su informacion) as Proc05
+usecase (buscar anuncios) as Proc06
+usecase (gestionar anuncios favoritos) as Proc07
 actor : cliente: as Cliente
 Cliente --> Proc04
 Cliente --> Proc05
 Cliente --> Proc06
+Cliente --> Proc07
 
-usecase ( registro / login ) as Proc07
+usecase ( registro / login ) as Proc08
 
-Proc01 .. Proc07
-Proc02 .. Proc07
-Proc03 .. Proc07
-Proc04 .. Proc07
-Proc05 .. Proc07
-Proc06 .. Proc07
+Proc01 .. Proc08
+Proc02 .. Proc08
+Proc03 .. Proc08
+Proc04 .. Proc08
+Proc05 .. Proc08
+Proc06 .. Proc08
+Proc07 .. Proc08
 
 @enduml

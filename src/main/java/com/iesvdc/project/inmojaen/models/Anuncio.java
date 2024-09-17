@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,8 +32,11 @@ public class Anuncio {
     private Boolean visto;
     private Boolean reservado;
     private Boolean vendido;
+    @ManyToOne
     private Usuario usuario;
-    private List<String> fotos;
-    private List<String> mensajes;
+    @OneToMany
+    private List<Foto> fotos;
+    @OneToMany
+    private List<Mensaje> mensajes;
     private Boolean activo;
 }
