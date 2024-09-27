@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Inmobiliaria JAÉN - Error</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+    <div>
+        <div th:replace="~{fragments/general.html :: navigation}"> </div>
+    
+        <div class="container">
+            <div class="container text-center">
+                <hr><h4> # Se ha producido un error # </h4>
+                <br><p th:text="${mensaje}?${mensaje}: 'No es posible realizar la petición'"></p>
+                <hr><p><i> Lamentamos las posibles molestias - Seleccione cualquier opción del menú para continuar </i></p>
+            </div>
+        </div>
+        
+        <div th:replace="~{fragments/general.html :: footer}"> </div>
+    </div>
+</body>
+
+</html>

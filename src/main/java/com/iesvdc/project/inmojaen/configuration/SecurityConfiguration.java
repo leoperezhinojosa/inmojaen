@@ -26,8 +26,9 @@ public class SecurityConfiguration {
             .usersByUsernameQuery("SELECT username, password, enabled " +
                 "FROM usuario WHERE username = ?")
             .authoritiesByUsernameQuery("SELECT u.username, r.rol as 'authority'" +
-                "FROM usuario u JOIN rol r " +
-                "WHERE u.id = r.usuario_id and username = ?");
+                "FROM usuario u " +
+                "JOIN rol r ON u.rol_id = r.id " +
+                "WHERE u.username = ?");
     }
 
     @Bean
@@ -44,11 +45,13 @@ public class SecurityConfiguration {
 
         return http
             .authorizeHttpRequests((requests) -> requests
+                // Permitir acceso sin autorización a recursos estáticos y páginas públicas:
                 .requestMatchers(
-                    "/webjars" , "/img", "/js", 
+                    "/webjars/**", "/img/**", "/js/**", "/css/**", "/static/**", 
                     "/register", "/register/**", "/login", 
                     "/help/**", "/about", "/error")
                 .permitAll()
+                // Configurar acceso según roles:
                 .requestMatchers(
                     "/admin/**", "/admin/*/**", "/admin/*/*/**", 
                     "/users/**", "/users/*/**", "/users/*/*/**")
@@ -62,6 +65,8 @@ public class SecurityConfiguration {
                     "/buyer/**", "/buyer/*/**", "/buyer/*/*/**")
                 // .authenticated()
                 .hasAuthority("BUYER")
+                // Escoger si cualquier otra solicitud debe estar autenticada o se permiten todas:
+                .anyRequest().authenticated() 
                 // .anyRequest().permitAll()
             // ).headers(headers -> headers
                 //         .frameOptions(frameOptions -> frameOptions

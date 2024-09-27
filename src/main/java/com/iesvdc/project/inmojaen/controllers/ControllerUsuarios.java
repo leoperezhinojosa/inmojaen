@@ -1,7 +1,6 @@
 package com.iesvdc.project.inmojaen.controllers;
 
 import java.util.List;
-import java.util.Set;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.iesvdc.project.inmojaen.models.Rol;
 import com.iesvdc.project.inmojaen.models.Usuario;
+import com.iesvdc.project.inmojaen.repositories.RepoRol;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 
 import lombok.NonNull;
@@ -36,6 +36,9 @@ public class ControllerUsuarios {
     
     @Autowired
     private RepoUsuario repoUsuario;
+
+    @Autowired
+    private RepoRol repoRol;
     
     /**
      * Endpoint: /usuarios/ (GET)
@@ -74,7 +77,7 @@ public class ControllerUsuarios {
     @GetMapping("/add")
     public String addUserForm(Model modelo) {
         modelo.addAttribute("usuario", new Usuario());
-        Set<Rol> roles = Set.of(Rol.values());
+        List<Rol> roles = repoRol.findAll();
         modelo.addAttribute("roles", roles);
         return "usuarios/add";
     }
@@ -119,7 +122,7 @@ public class ControllerUsuarios {
                     " - Atención: El usuario indicado no existe - ");
             return "error";
         } else {
-            Set<Rol> roles = Set.of(Rol.values());
+            List<Rol> roles = repoRol.findAll();
             modelo.addAttribute("usuario", usuarioAEditar.get());
             modelo.addAttribute("roles", roles);
         }

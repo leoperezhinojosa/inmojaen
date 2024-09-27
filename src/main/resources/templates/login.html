@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INMOJAEN - Login</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+<body>
+    <div th:replace="~{fragments/general.html :: navigation}"> </div>
+
+    <br><br>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">INMOJAEN - INICIAR SESIÓN <i class="fa-solid fa-user-shield"></i></h3>
+                    </div>
+                    <div class="card-body">
+                        <form action="/login" method="post">
+                            <!-- Recuadro de usuario -->
+                            <div class="form-group">
+                                <label for="username"><b>USUARIO</b></label>
+                                <input type="text" placeholder="Introducir usuario" name="username" id="username"
+                                    class="form-control" />
+                            </div>
+                            <br>
+                            <!-- Recuadro de contraseña -->
+                            <div class="form-group">
+                                <label for="password"><b>CONTRASEÑA</b></label>
+                                <input type="password" placeholder="Introducir contraseña" name="password" id="password"
+                                    class="form-control" />
+                            </div>
+
+                            <!-- Columnas para mantener el estilo -->
+                            <div class="row mb-3 mt-2">
+                                <div class="col d-flex justify-content-center">
+                                    <!-- Checkbox -->
+                                    <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input" id="formCheck" checked>
+                                        <label for="formCheck" class="form-check-label"> Recuérdame </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Botón de login -->
+                            <div class="text-center mt-3">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    LOGIN
+                                </button>
+                            </div>
+                            <hr>
+                            <!-- Enlace a Registro -->
+                            <div class="text-center mt-3">
+                                <p>¿Sin usuario?</p>
+                                <a href="/register" class="btn btn-success btn-block">
+                                    REGISTRARSE</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/general.html :: footer}"> </div>
+</body>
+</html>

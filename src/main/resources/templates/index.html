@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio INMOJAEN</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
 </head>
+
 <body>
-    <h1>Inicio INMOJAEN</h1>
+    <div th:replace="~{fragments/general.html :: navigation}"> </div>
+    <div class="container-fluid">
+
+        <div class="container d-flex justify-content-center align-items-center" style="height: auto;">
+            <div class="card m-4 text-center" style="width:inherit;">
+                <picture>
+                    <!-- <img src="/img/inmojaen.jpg" class="card-img-top" alt="logo"> -->
+                    <img th:src="@{/img/IJmax.jpg}" class="card-img-top img-fluid rounded" 
+                    alt="logo" style="max-width: 300px; border: 2px solid #ddd;">
+                </picture>
+                <div class="card-body">
+                    <h5 class="card-title"><i>¿Buscas tu hogar?</i></h5>
+                    <p class="card-text"></p>
+                    <a sec:authorize="isAnonymous()" href="/login" class="btn btn-success">ENTRAR</a>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="~{fragments/general.html :: footer}"></div>
+    </div>
 </body>
+
 </html>

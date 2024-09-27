@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>INMOJAEN: Ayuda</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+    <div>
+        <div th:replace="~{fragments/general.html :: navigation}"> </div>
+        <hr>
+        <h4 class="h4 text-center"><i class="fa-solid fa-circle-question"></i> - AYUDA DE LA APLICACIÓN</h4>
+        <hr>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center">
+                    <p>Estas son las funcionalidades de la APP:</p>
+                    <p>Selecciona la opción que desees de los menús.
+                        Según el tipo de usuario podrás acceder a unas u otras partes de esta APP.
+                        Si accedes como Usuario Normal(Comprador - Inquilino) dispondrás de las opciones de compra y búsqueda de anuncios.
+                        Si accedes como Usuario Premium(Vendedor - Propietario) dispondrás de las opciones de venta y creación de anuncios.
+                        Están diseñadas para atender tus necesidades.</p>
+                    <p>Si necesitas más información, consulta el manual de usuario.</p>
+                    <p>Si notas algún problema en esta App, por favor, contacta con el administrador.</p>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{fragments/general.html :: footer}"> </div>
+    </div>
+</body>
+
+</html>

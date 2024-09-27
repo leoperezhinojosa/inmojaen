@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Tu Zapatería: Registro Usuario</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+    <div>
+        <div th:replace="~{fragments/general.html :: navigation}"> </div>
+        <br><br>
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="text-center"> INMOJAEN - REGISTRO DE NUEVO USUARIO <i class="fa-solid fa-user-plus"></i></h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="/register" method="post" class="col g-4">
+                                <!-- Recuadro de nombre de usuario -->
+                                <div class="row">
+                                    <div class="form-outline mb-3 col-6">
+                                        <label for="username" class="form-label"><b>Nombre de Usuario</b></label>
+                                        <input type="text"
+                                            placeholder="Introducir nombre de usuario (No puede estar ya registrado)"
+                                            name="username" id="username" class="form-control" required />
+                                    </div>
+
+                                    <!-- Recuadro de contraseña -->
+                                    <div class="form-outline mb-3 col-6">
+                                        <label for="password" class="form-label"><b>Contraseña</b></label>
+                                        <input type="password" placeholder="Introducir contraseña" name="password"
+                                            id="password" class="form-control" required />
+                                    </div>
+
+                                    <!-- Recuadro de nombre -->
+                                    <div class="form-outline mb-3 col-4">
+                                        <label for="nombre" class="form-label"><b>Nombre</b></label>
+                                        <input type="text" placeholder="Introducir nombre" name="nombre" id="nombre"
+                                            class="form-control" required />
+                                    </div>
+
+                                    <!-- Recuadro de apellidos -->
+                                    <div class="form-outline mb-3 col-4">
+                                        <label for="apellidos" class="form-label"><b>Apellidos</b></label>
+                                        <input type="text" placeholder="Introducir apellidos" name="apellidos"
+                                            id="apellidos" class="form-control" required />
+                                    </div>
+
+                                    <!-- Recuadro de email -->
+                                    <div class="form-outline mb-3 col-4">
+                                        <label for="email" class="form-label"><b>Email</b></label>
+                                        <input type="email"
+                                            placeholder="Introducir email (No puede estar ya registrado)" name="email"
+                                            id="email" class="form-control" required />
+                                    </div>
+                                </div>
+
+                                <!-- Columnas para mantener el estilo -->
+                                <div class="row mb-3">
+                                    <div class="col d-flex justify-content-center">
+                                        <!-- Checkbox -->
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="acceptData" checked
+                                                required>
+                                            <label for="acceptData" class="form-check-label">
+                                                Acepto el Acuerdo de condiciones de uso de mis datos</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-1">
+                                    <!-- Botón de registro -->
+                                    <button type="submit" class="btn btn-primary btn-block"> REGISTRAR USUARIO
+                                    </button>
+                                </div>
+                                <hr>
+                                <!-- Enlace a Login -->
+                                <div class="text-center mt-3">
+                                    <p>¿Ya tienes usuario?</p>
+                                    <a href="/login" class="btn btn-success btn-block">
+                                        INICIAR SESIÓN</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- Footer -->
+        <div th:replace="~{fragments/general.html :: footer}"> </div>
+    </div>
+</body>
+
+</html>
