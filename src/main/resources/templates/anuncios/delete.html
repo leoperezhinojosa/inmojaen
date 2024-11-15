@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>INMOJAEN: Borrar Anuncio</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+    <div>
+        <div th:replace="~{fragments/general.html :: navigation}"> </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-center">INMOJAEN: Borrar Anuncio</h4>
+            </div>
+            <div class="card-body">
+                <form class="row" th:action="@{/usuarios/delete}+${usuario.id}" th:object="${usuario}" method="post">
+                    <!-- <input type="hidden" th:field="*{id}" /> -->
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="titulo"><b>Título:</b></label>
+                        <input class="form-control" th:field="*{titulo}" required
+                            placeholder="Escribir el Título del Anuncio" />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="descripcion"><b>Descripción:</b></label>
+                        <input class="form-control" th:field="*{descripcion}" required
+                            placeholder="Escribir una descripción detallada del inmueble" />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="precio"><b>Precio:</b></label>
+                        <input class="form-control" type="number" th:field="*{precio}" required
+                            placeholder="Precio de venta del inmueble" />
+                    </div>
+                    <!-- Todo: Para precios de alquiler -->
+                    <!-- <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="precio"><b>Precio mensual:</b></label>
+                        <input class="form-control" type="number" th:field="*{precio}" required
+                            placeholder="Precio de alquiler del inmueble" />
+                    </div> -->
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="superficie"><b>Superficie:</b></label>
+                        <input class="form-control" type="number" th:field="*{superficie}" required
+                            placeholder="Superficie total del inmueble (m2)" />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="banos"><b>Baños:</b></label>
+                        <input class="form-control" type="number" th:field="*{banos}" required
+                            placeholder="Baños disponibles en el inmueble" />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="direccion"><b>Dirección:</b></label>
+                        <input class="form-control" th:field="*{direccion}" required
+                            placeholder="Dirección del inmueble (Indicar zona o calle, no dirección exacta)" />
+                    </div>
+
+                    
+                    <div class="text-center mt-3">
+                        <button class="btn btn-lg btn-danger mt-3" type="submit">Borrar Usuario</button>
+                        &nbsp;&nbsp;
+                        <!-- Botón de cancelar -->
+                        <a class="btn btn-lg btn-primary mt-3" href="/usuarios">Cancelar y volver</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/general.html :: footer}"></div>
+    </div>
+</body>
+
+</html>

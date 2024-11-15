@@ -18,7 +18,7 @@ services:
     networks:
       - janet
     ports:
-      - 8181:8080
+      - 8989:8080
 
 networks:
   janet:

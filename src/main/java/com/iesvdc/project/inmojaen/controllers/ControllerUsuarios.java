@@ -77,8 +77,8 @@ public class ControllerUsuarios {
     @GetMapping("/add")
     public String addUserForm(Model modelo) {
         modelo.addAttribute("usuario", new Usuario());
-        List<Rol> roles = repoRol.findAll();
-        modelo.addAttribute("roles", roles);
+        // List<Rol> roles = repoRol.findAll();
+        // modelo.addAttribute("roles", roles);
         return "usuarios/add";
     }
     

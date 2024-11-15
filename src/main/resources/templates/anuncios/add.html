@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>INMOJAEN: Nuevo anuncio</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+    <div>
+        <div th:replace="~{fragments/general.html :: navigation}"> </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-center">Crear nuevo anuncio</h4>
+            </div>
+            <div class="card-body">
+                <form class="row" th:action="@{/anuncios/add}" th:object="${anuncio}" method="post">
+                    
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="titulo"><b>Título:</b></label>
+                        <input class="form-control" th:field="*{titulo}" required
+                            placeholder="Escribir el Título del Anuncio" />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="descripcion"><b>Descripción:</b></label>
+                        <input class="form-control" th:field="*{descripcion}" required
+                            placeholder="Escribir una descripción detallada del inmueble" />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="precio"><b>Precio:</b></label>
+                        <input class="form-control" type="number" th:field="*{precio}" required
+                            placeholder="Precio de venta del inmueble" />
+                    </div>
+                    <!-- Todo: Para precios de alquiler -->
+                    <!-- <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="precio"><b>Precio mensual:</b></label>
+                        <input class="form-control" type="number" th:field="*{precio}" required
+                            placeholder="Precio de alquiler del inmueble" />
+                    </div> -->
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="superficie"><b>Superficie:</b></label>
+                        <input class="form-control" type="number" th:field="*{superficie}" required
+                            placeholder="Superficie total del inmueble (m2)" />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="banos"><b>Baños:</b></label>
+                        <input class="form-control" type="number" th:field="*{banos}" required
+                            placeholder="Baños disponibles en el inmueble" />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="direccion"><b>Dirección:</b></label>
+                        <input class="form-control" th:field="*{direccion}" required
+                            placeholder="Dirección del inmueble (Indicar zona o calle, no dirección exacta)" />
+                    </div>
+
+                    <!-- Todo: Escoger tipo de anuncio (Venta, Alquiler) -->
+                    <!-- <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="user" required><b>Seleccionar Tipo de Anuncio:</b></label>
+                        <select th:field="*{tipo}" class="form-select" required>
+                            <option th:each="tipo: ${tipos}" th:value="${tipo.tipo}"
+                                th:text="${tipo.tipo}" th:selected="${tipo.tipo}">
+                            </option>
+                        </select>
+                    </div> -->
+                    
+                    <div class="text-center mt-3">
+                        <button class="btn btn-lg btn-success mt-3" type="submit">Crear nuevo anuncio</button>
+                        &nbsp;
+                        <button class="btn btn-lg btn-warning mt-3" type="reset">Reiniciar formulario</button>
+                        &nbsp;
+                        <!-- Botón de cancelar -->
+                        <a class="btn btn-lg btn-danger mt-3" href="/anuncios" type="submit">Cancelar y volver</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/general.html :: footer}"></div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <title>INMOJAEN: Edición de usuario</title>
+  <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+
+  <div>
+    <div th:replace="~{fragments/general.html :: navigation}"> </div>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="text-center">Editar usuario</h4>
+        </div>
+        <div class="card-body">
+            <form class="row" th:action="@{/usuarios/add}" th:object="${usuario}" method="post">
+                <input th:field="*{usuario.id}" type="hidden" />
+                <div class="mb-3 col-6 text-center">
+                    <label class="form-label" for="nombre"><b>Nombre:</b></label>
+                    <input class="form-control" th:field="*{nombre}" 
+                      placeholder="Nombre del usuario" />
+                </div>
+                <div class="mb-3 col-6 text-center">
+                  <label class="form-label" for="apellidos"><b>Apellidos:</b></label>
+                  <input class="form-control" th:field="*{apellidos}" required
+                      placeholder="Apellidos del usuario" />
+              </div>
+                <div class="mb-3 col-6 text-center">
+                    <label class="form-label" for="email"><b>Email (Único):</b></label>
+                    <input class="form-control" th:field="*{email}" disabled />
+                </div>
+                <div class="mb-3 col-6 text-center">
+                    <label class="form-label" for="password"><b>Contraseña (Oculta):</b></label>
+                    <input class="form-control" type="password" th:field="*{password}" required
+                        placeholder="Escribir nueva Contraseña para confirmar los cambios" />
+                </div>
+
+                <!-- ¿Modificar tipo de usuario (gestores, operarios y clientes) es aceptable? Habilitar si se desea -->
+                <!-- <div class="mb-3 col-6 text-center">
+                    <label class="form-label" for="user" required><b>Modificar Tipo de Usuario: (No disponible)</b></label>
+                    <select th:field="*{roles}" class="form-select" disabled>
+                        <option th:each="rol_user: ${roles}" th:value="${rol_user.id}"
+                            th:text="${rol_user.rol}" th:selected="${rol_user.rol == usuario.rol}">
+                        </option>
+                    </select>
+                </div> -->
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-lg btn-success mt-3" type="submit">Aceptar cambios</button>
+                    &nbsp;
+                    <button class="btn btn-lg btn-warning mt-3" type="reset">Resetear valores</button>
+                    &nbsp;
+                    <!-- Botón de cancelar -->
+                    <a class="btn btn-lg btn-primary mt-3" href="/usuarios" type="submit">Volver a Usuarios</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/general.html :: footer}"></div>
+</div>
+</body>
+
+</html>

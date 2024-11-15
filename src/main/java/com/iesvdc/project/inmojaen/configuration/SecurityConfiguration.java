@@ -49,12 +49,12 @@ public class SecurityConfiguration {
                 .requestMatchers(
                     "/webjars/**", "/img/**", "/js/**", "/css/**", "/static/**", 
                     "/register", "/register/**", "/login", 
-                    "/help/**", "/about", "/error")
+                    "/help", "/about", "/error")
                 .permitAll()
                 // Configurar acceso según roles:
                 .requestMatchers(
                     "/admin/**", "/admin/*/**", "/admin/*/*/**", 
-                    "/users/**", "/users/*/**", "/users/*/*/**")
+                    "/usuarios/**", "/usuarios/*/**", "/usuarios/*/*/**")
                 // .authenticated()
                 .hasAuthority("ADMIN")
                 .requestMatchers(

@@ -1,34 +1,54 @@
 @startuml Diagrama de Casos de Uso - InmoJaen
 
-usecase (gestion anuncios\n y usuarios) as Proc01
+usecase (gestion usuarios) as Proc01
+usecase (gestion anuncios) as Proc02
 actor : admin: as Admin
 Admin --> Proc01
+Admin --> Proc02
 
-usecase (gestionar su perfil de venta) as Proc02
-usecase (gestionar anuncios publicados) as Proc03
-usecase (enviar mensajes) as Proc04
+usecase (gestionar su perfil de venta) as Proc03
+usecase (publicar anuncios) as Proc04
+usecase (gestionar anuncios publicados) as Proc05
+usecase (enviar mensajes) as Proc06
+usecase (aceptar reserva) as Proc07
+usecase (rechazar reserva) as Proc08
+usecase (finalizar reserva) as Proc09
 actor : vendedor: as Vendedor
-Vendedor --> Proc02
 Vendedor --> Proc03
 Vendedor --> Proc04
+Vendedor --> Proc05
+Vendedor --> Proc06
+Vendedor --> Proc07
+Vendedor --> Proc08
+Vendedor --> Proc09
 
-usecase (gestionar su informacion) as Proc05
-usecase (buscar anuncios) as Proc06
-usecase (gestionar anuncios favoritos) as Proc07
-actor : cliente: as Cliente
-Cliente --> Proc04
-Cliente --> Proc05
-Cliente --> Proc06
-Cliente --> Proc07
+usecase (gestionar su informacion) as Proc10
+usecase (buscar anuncios) as Proc11
+usecase (gestionar anuncios favoritos) as Proc12
+usecase (enviar mensajes) as Proc13
+usecase (solicitar reserva) as Proc14
+actor : comprador: as Comprador
+Comprador --> Proc10
+Comprador --> Proc11
+Comprador --> Proc12
+Comprador --> Proc13
+Comprador --> Proc14
 
-usecase ( registro / login ) as Proc08
+usecase ( registro / login ) as Proc15
 
-Proc01 .. Proc08
-Proc02 .. Proc08
-Proc03 .. Proc08
-Proc04 .. Proc08
-Proc05 .. Proc08
-Proc06 .. Proc08
-Proc07 .. Proc08
+Proc01 .. Proc15
+Proc02 .. Proc15
+Proc03 .. Proc15
+Proc04 .. Proc15
+Proc05 .. Proc15
+Proc06 .. Proc15
+Proc07 .. Proc15
+Proc08 .. Proc15
+Proc09 .. Proc15
+Proc10 .. Proc15
+Proc11 .. Proc15
+Proc12 .. Proc15
+Proc13 .. Proc15
+Proc14 .. Proc15
 
 @enduml

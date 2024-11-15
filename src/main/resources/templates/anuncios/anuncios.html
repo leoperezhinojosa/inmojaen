@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <title>INMOJAEN: Anuncios</title>
+  <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+
+  <div th:replace="~{fragments/general.html :: navigation}"> </div>
+  <hr>
+  <h3 class="h3 text-center">Lista total de anuncios publicados</h3>
+  <hr>
+  <div class="container">
+    <table class="table table-striped"> <!-- table-hover> -->
+      <thead>
+        <div class="d-grid gap-1">
+          <a class="btn btn-success btn-lg" th:href="@{/anuncios/add}">Publicar nuevo anuncio</a>&nbsp;
+        </div>
+        <tr>
+          <!-- Todo: Sustituir ID por imagen principal del anuncio -->
+          <th>ID</th>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <!-- <th>Superficie</th>
+          <th>Habitaciones</th>
+          <th>Baños</th>
+          <th>Dirección</th>
+          <th>Fecha Publicacion</th>
+          <th>Fecha Reserva</th>
+          <th>Vecha Venta</th>
+          <th>Visto</th>
+          <th>Reservado</th>
+          <th>Vendido</th> -->
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="anuncio: ${anuncios}">
+          <td th:text="${anuncio.id}"></td>
+          <td th:text="${anuncio.titulo}"></td>
+          <td th:text="${anuncio.descripcion}"></td>
+          <td th:text="${#numbers.formatDecimal(anuncio.precio, 1, 2) + ' €'}"></td>
+          <!-- <td th:text="${anuncio.superficie}"></td>
+          <td th:text="${anuncio.habitaciones}"></td>
+          <td th:text="${anuncio.banos}"></td>
+          <td th:text="${anuncio.direccion}"></td>
+          <td th:text="${anuncio.fechaPublicacion}"></td>
+          <td th:text="${anuncio.fechaReserva}"></td>
+          <td th:text="${anuncio.fechaVenta}"></td>
+          <td th:text="${anuncio.visto}"></td>
+          <td th:text="${anuncio.reservado}"></td>
+          <td th:text="${anuncio.vendido}"></td> -->
+          <!-- Todo: Extra: Desarrollar anuncios de alquiler -->
+          <!-- <td th:text="${anuncio.tipo}"></td> -->
+          <!-- <td th:text="${anuncio.alquilado}"></td> -->
+          <td>
+            <a class="btn btn-warning" th:href="|/anuncios/edit/${anuncio.id}|">Modificar</a>&nbsp;
+            <!-- Todo: Poner 2 tipos de botón alternativos: Activar y Desactivar -->
+            <a class="btn btn-dark" th:href="|/anuncios/desactivate/+${anuncio.id}">Desactivar</a>&nbsp;
+            <a class="btn btn-danger" th:href="|/anuncios/delete/+${anuncio.id}">Borrar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div th:replace="~{fragments/general.html :: footer}">
+  </div>
+</body>
+
+</html>
