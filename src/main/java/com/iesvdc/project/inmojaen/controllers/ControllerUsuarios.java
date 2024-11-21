@@ -21,7 +21,6 @@ import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 
 import lombok.NonNull;
 
-
 // TODO: Revisar métodos faltantes.
 
 /**
@@ -33,13 +32,13 @@ import lombok.NonNull;
 @Controller
 @RequestMapping("/usuarios")
 public class ControllerUsuarios {
-    
+
     @Autowired
     private RepoUsuario repoUsuario;
 
     @Autowired
     private RepoRol repoRol;
-    
+
     /**
      * Endpoint: /usuarios/ (GET)
      * Muestra todos los usuarios registrados.
@@ -67,6 +66,26 @@ public class ControllerUsuarios {
     }
 
     /**
+     * Endpoint: /usuarios/info/{id} (GET)
+     * Muestra la información de un usuario.
+     * 
+     * @param modelo
+     * @return Vista de la información completa del usuario.
+     */
+    @GetMapping("/info/{id}")
+    public String getUserInfo(Model modelo, @PathVariable("id") @NonNull Long id) {
+        Optional<Usuario> usuario = repoUsuario.findById(id);
+        if (!usuario.isPresent()) {
+            modelo.addAttribute("titulo", "Error al mostrar usuario");
+            modelo.addAttribute("mensaje", "El usuario con el id " + id + " no existe");
+            return "error";
+        } else {
+            modelo.addAttribute("usuario", usuario.get());
+            return "usuarios/info";
+        }
+    }
+
+    /**
      * Endpoint: /usuarios/add (GET)
      * Muestra el formulario para añadir un usuario nuevo.
      * Escoge también el rol del usuario.
@@ -81,7 +100,7 @@ public class ControllerUsuarios {
         // modelo.addAttribute("roles", roles);
         return "usuarios/add";
     }
-    
+
     /**
      * Endpoint: /usuarios/add (POST)
      * Añade un usuario nuevo a la base de datos.
@@ -92,23 +111,23 @@ public class ControllerUsuarios {
      */
     @PostMapping("/add")
     public String addUser(
-        @ModelAttribute("usuario") @NonNull Usuario usuario) {
+            @ModelAttribute("usuario") @NonNull Usuario usuario) {
         // Actualizar la lista de usuarios con el nuevo usuario
         // Codificar la contraseña:
-        BCryptPasswordEncoder passwords  = new BCryptPasswordEncoder();
+        BCryptPasswordEncoder passwords = new BCryptPasswordEncoder();
         usuario.setPassword(passwords.encode(usuario.getPassword()));
         // Habilitar el usuario:
         usuario.setEnabled(true);
         repoUsuario.save(usuario);
         return "redirect:/usuarios";
     }
-    
+
     /**
      * Endpoint: /usuarios/edit/{id} (GET)
      * Formulario para editar usuario. Se hace POST a add.
      * 
      * @param modelo Modelo de la vista.
-     * @param id ID del usuario a editar.
+     * @param id     ID del usuario a editar.
      * @return Vista de edición del usuario.
      */
     @GetMapping("/edit/{id}")
@@ -116,7 +135,7 @@ public class ControllerUsuarios {
             Model modelo, @PathVariable("id") @NonNull Long id) {
         Optional<Usuario> usuarioAEditar = repoUsuario.findById(id);
         if (!usuarioAEditar.isPresent()) {
-            modelo.addAttribute("titulo", 
+            modelo.addAttribute("titulo",
                     " - Error al editar usuario - ");
             modelo.addAttribute("mensaje",
                     " - Atención: El usuario indicado no existe - ");
@@ -141,7 +160,7 @@ public class ControllerUsuarios {
             @ModelAttribute("usuario") @NonNull Usuario usuario) {
         // Actualizar la lista de usuarios con el usuario editado
         // Codificar la contraseña:
-        BCryptPasswordEncoder passwords  = new BCryptPasswordEncoder();
+        BCryptPasswordEncoder passwords = new BCryptPasswordEncoder();
         usuario.setPassword(passwords.encode(usuario.getPassword()));
         // Habilitar el usuario:
         usuario.setEnabled(true);
@@ -154,7 +173,7 @@ public class ControllerUsuarios {
      * Devuelve el formulario de eliminar un usuario de la base de datos.
      * 
      * @param modelo Modelo de la vista.
-     * @param id ID del usuario a eliminar.
+     * @param id     ID del usuario a eliminar.
      * @return Vista del formulario de eliminar un usuario.
      */
     @GetMapping("/delete/{id}")
@@ -162,49 +181,50 @@ public class ControllerUsuarios {
             Model modelo, @PathVariable("id") @NonNull Long id) {
         Optional<Usuario> usuarioABorrar = repoUsuario.findById(id);
         if (!usuarioABorrar.isPresent()) {
-            modelo.addAttribute("titulo", 
+            modelo.addAttribute("titulo",
                     " - Error al eliminar usuario - ");
             modelo.addAttribute("mensaje",
                     " - Atención: El usuario indicado no existe - ");
             return "error";
         } else {
             Integer anunciosPublicados = repoUsuario.findById(
-                usuarioABorrar.get().getId()).get().getAnunciosEnVenta().size();
+                    usuarioABorrar.get().getId()).get().getAnunciosEnVenta().size();
 
             modelo.addAttribute("usuario", usuarioABorrar.get());
-            
+
+            // Todo: ¿Es necesario esta comprobación? ¿Basta con que sean inalterables?
             // Los administradores no pueden ser eliminados.
-            if (usuarioABorrar.get().getRol().equals("ADMIN")) {
-                modelo.addAttribute("titulo",
-                " - Error al borrar usuario - ");
-                modelo.addAttribute("mensaje",
-                "El usuario 'Administrador' no puede ser eliminado ");
-                return "error";
-            }
-                
+            // if (usuarioABorrar.get().getRol().equals("ADMIN")) {
+            // modelo.addAttribute("titulo",
+            // " - Error al borrar usuario - ");
+            // modelo.addAttribute("mensaje",
+            // "El usuario 'Administrador' no puede ser eliminado ");
+            // return "error";
+            // }
+
             // Los vendedores con anuncios publicados no pueden ser eliminados.
             if (anunciosPublicados > 0) {
                 modelo.addAttribute("titulo",
                         " - Error al borrar usuario - ");
                 modelo.addAttribute("mensaje",
                         "El usuario tiene anuncios publicados. "
-                        + "Elimine los anuncios antes de borrar el usuario.");
+                                + "Elimine los anuncios antes de borrar el usuario.");
                 return "error";
             }
 
-            // Los usuarios inalterables (con compras, ventas, reservas, 
+            // Los usuarios inalterables (con compras, ventas, reservas,
             // alquileres y/o mensajes realizados) no pueden ser eliminados.
             if (usuarioABorrar.get().getInalterable()) {
                 modelo.addAttribute("titulo",
-                        " - Error al borrar usuario - ");
+                        " - Error al borrar usuario: Inalterable - ");
                 modelo.addAttribute("mensaje",
-                        "El usuario tiene compras, ventas, reservas, "
-                        + "alquileres y/o mensajes en su historial.\n "
-                        + "No puede ser eliminado.");
-                return "error"; 
+                        "El usuario es administrador, o tiene compras, ventas, reservas, "
+                                + "alquileres y/o mensajes en su historial.\n "
+                                + "No puede ser eliminado.");
+                return "error";
             }
         }
-        
+
         return "usuarios/delete";
     }
 
@@ -220,41 +240,42 @@ public class ControllerUsuarios {
             Model modelo, @RequestParam("id") @NonNull Long id) {
         Optional<Usuario> usuarioABorrar = repoUsuario.findById(id);
         if (!usuarioABorrar.isPresent()) {
-            modelo.addAttribute("titulo", 
+            modelo.addAttribute("titulo",
                     " - Error al eliminar usuario - ");
             modelo.addAttribute("mensaje",
                     " - Atención: El usuario indicado no existe - ");
             return "error";
         } else {
+            // Todo: ¿Es necesario esta comprobación? ¿Basta con que sean inalterables?
             // Los administradores no pueden ser eliminados.
-            if (usuarioABorrar.get().getRol().equals("ADMIN")) {
-                modelo.addAttribute("titulo",
-                " - Error al borrar usuario - ");
-                modelo.addAttribute("mensaje",
-                "El usuario 'Administrador' no puede ser eliminado ");
-                return "error";
-            }
-                
+            // if (usuarioABorrar.get().getRol().getRol().equals("ADMIN")) {
+            // modelo.addAttribute("titulo",
+            // " - Error al borrar usuario - ");
+            // modelo.addAttribute("mensaje",
+            // "El usuario de tipo 'Administrador' no puede ser eliminado ");
+            // return "error";
+            // }
+
             // Los vendedores con anuncios publicados no pueden ser eliminados.
             if (usuarioABorrar.get().getAnunciosEnVenta().size() > 0) {
                 modelo.addAttribute("titulo",
                         " - Error al borrar usuario - ");
                 modelo.addAttribute("mensaje",
                         "El usuario tiene anuncios publicados. "
-                        + "Elimine los anuncios antes de borrar el usuario.");
+                                + "Elimine los anuncios antes de borrar el usuario.");
                 return "error";
             }
 
-            // Los usuarios inalterables (con compras, ventas, reservas, 
-            // alquileres y/o mensajes realizados) no pueden ser eliminados.
+            // Los usuarios inalterables (administradores o usuarios con compras, ventas,
+            // reservas, alquileres y/o mensajes realizados) no pueden ser eliminados.
             if (usuarioABorrar.get().getInalterable()) {
                 modelo.addAttribute("titulo",
                         " - Error al borrar usuario - ");
                 modelo.addAttribute("mensaje",
-                        "El usuario tiene compras, ventas, reservas, "
-                        + "alquileres y/o mensajes en su historial.\n "
-                        + "No puede ser eliminado.");
-                return "error"; 
+                        "El usuario es administrador, o tiene compras, ventas, reservas, "
+                                + "alquileres y/o mensajes en su historial.\n "
+                                + "No puede ser eliminado.");
+                return "error";
             }
         }
 
@@ -263,6 +284,42 @@ public class ControllerUsuarios {
         repoUsuario.delete(usuarioABorrar.get());
         return "redirect:/usuarios";
     }
-    
-    
+
+    /**
+     * Endpoint: /activate (POST)
+     * Activa o desactiva un usuario.
+     * 
+     * @param id Identificador del usuario a activar o desactivar.
+     * @return Redirigir a la lista de usuarios.
+     */
+    @GetMapping("/activate")
+    public String activateUser(
+            Model modelo, @RequestParam("id") @NonNull Long id) {
+        Optional<Usuario> usuario = repoUsuario.findById(id);
+        if (!usuario.isPresent()) {
+            modelo.addAttribute("titulo",
+                    " - Error en el manejo de activación de usuario - ");
+            modelo.addAttribute("mensaje",
+                    " - Atención: El usuario indicado no existe - ");
+            return "error";
+        } else {
+            // Todo: ¿Es necesario esta comprobación? Puede ser contraproducente.
+            // if (usuario.get().getInalterable()) {
+            //     modelo.addAttribute("titulo",
+            //             " - Error en el manejo de activación de usuario - ");
+            //     modelo.addAttribute("mensaje", " - Atención: "
+            //             + "El usuario indicado es inalterable y no puede ser activado o desactivado - ");
+            //     return "error";
+            // } else {
+                if (usuario.get().getEnabled()) {
+                    usuario.get().setEnabled(false);
+                } else {
+                    usuario.get().setEnabled(true);
+                }
+                repoUsuario.save(usuario.get());
+            // }
+        }
+        return "redirect:/usuarios";
+    }
+
 }

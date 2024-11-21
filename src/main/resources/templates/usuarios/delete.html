@@ -12,7 +12,7 @@
         <div th:replace="~{fragments/general.html :: navigation}"> </div>
         <div class="card">
             <div class="card-header">
-                <h4 class="text-center">INMOJAEN: Borrar usuario</h4>
+                <h4 class="text-center">INMOJAEN: Borrar usuario <i class="fa-solid fa-user"></i> <i class="fa-solid fa-trash"></i> </h4>
             </div>
             <div class="card-body">
                 <form class="row" th:action="@{/usuarios/delete}+${usuario.id}" th:object="${usuario}" method="post">
@@ -23,7 +23,7 @@
                     </div>
                     <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="rol_user"><b>Rol Usuario:</b></label>
-                        <input class="form-control" th:field="*{roles}" disabled />
+                        <input class="form-control" th:field="*{rol}" disabled />
                     </div>
                     <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="email"><b>Email:</b></label>
@@ -38,16 +38,16 @@
                         <input class="form-control" th:field="*{nombre}" disabled />
                     </div>
                     <div class="mb-3 col-6 text-center">
-                        <label class="form-label" for="apellido"><b>Apellidos:</b></label>
-                        <input class="form-control" th:field="*{apellido}" disabled />
+                        <label class="form-label" for="apellidos"><b>Apellidos:</b></label>
+                        <input class="form-control" th:field="*{apellidos}" disabled />
                     </div>
 
                     
                     <div class="text-center mt-3">
-                        <button class="btn btn-lg btn-danger mt-3" type="submit">Borrar Usuario</button>
+                        <button class="btn btn-lg btn-danger mt-3" type="submit">Borrar Usuario <i class="fa-solid fa-trash"></i></button>
                         &nbsp;&nbsp;
                         <!-- Botón de cancelar -->
-                        <a class="btn btn-lg btn-primary mt-3" href="/usuarios">Cancelar y volver</a>
+                        <a class="btn btn-lg btn-primary mt-3" href="/usuarios">Cancelar y volver <i class="fa-solid fa-rotate-left"></i></a>
                     </div>
                 </form>
             </div>

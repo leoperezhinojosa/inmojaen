@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <title>INMOJAEN: Edición de usuario</title>
+  <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+
+  <div>
+    <div th:replace="~{fragments/general.html :: navigation}"> </div>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="text-center">Editar anuncio <i class="fa-solid fa-house-chimney"></i><i class="fa-solid fa-pen"></i> </h4>
+        </div>
+        <div class="card-body">
+            <form class="row" th:action="@{/anuncios/add}" th:object="${anuncio}" method="post">
+                <!-- <input th:field="*{anuncio.id}" type="hidden" /> --> <!-- Provoca un error, ¿es necesario? -->
+                <div class="mb-3 col-4 text-center">
+                    <label class="form-label" for="titulo"><b>Título:</b></label>
+                    <input class="form-control" th:field="*{titulo}" placeholder="Titulo del anuncio" />
+                </div>
+                <div class="mb-3 col-8 text-center">
+                    <label class="form-label" for="descripcion"><b>Descripcion:</b></label>
+                    <input class="form-control" th:field="*{descripcion}" placeholder="Descripcion del anuncio" />
+                </div>
+                <div class="mb-3 col-2 text-center">
+                    <label class="form-label" for="precio"><b>Precio de venta:</b></label>
+                    <input class="form-control" th:field="*{precio}" />
+                </div>
+                <div class="mb-3 col-1 text-center">
+                    <label class="form-label" for="habitaciones"><b>Habitaciones:</b></label>
+                    <input class="form-control" th:field="*{habitaciones}" />
+                </div>
+                <div class="mb-3 col-1 text-center">
+                    <label class="form-label" for="banos"><b>Baños:</b></label>
+                    <input class="form-control" th:field="*{banos}" />
+                </div>
+                <div class="mb-3 col-2 text-center">
+                    <label class="form-label" for="superficie"><b>Superficie:</b></label>
+                    <input class="form-control" th:field="*{superficie}" />
+                </div>
+                <div class="mb-3 col-6 text-center">
+                    <label class="form-label" for="direccion"><b>Dirección:</b></label>
+                    <input class="form-control" th:field="*{direccion}" />
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-lg btn-success mt-3" type="submit">Aceptar cambios <i class="fa-solid fa-check"></i> </button>
+                    &nbsp;
+                    <button class="btn btn-lg btn-warning mt-3" type="reset">Resetear valores <i class="fa-solid fa-arrow-left"></i> </button>
+                    &nbsp;
+                    <!-- Botón de cancelar -->
+                    <a class="btn btn-lg btn-primary mt-3" href="/anuncios" type="submit">Volver a Anuncios <i class="fa-solid fa-rotate-left"></i> </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/general.html :: footer}"></div>
+</div>
+</body>
+
+</html>

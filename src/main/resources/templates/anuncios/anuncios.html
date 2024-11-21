@@ -8,15 +8,16 @@
 
 <body>
 
-  <div th:replace="~{fragments/general.html :: navigation}"> </div>
+  <div th:replace="~{fragments/general.html :: navigation}"></div>
   <hr>
-  <h3 class="h3 text-center">Lista total de anuncios publicados</h3>
+  <h3 class="h3 text-center">Lista total de anuncios publicados <i class="fa-solid fa-house-chimney"></i></h3>
   <hr>
+  
   <div class="container">
     <table class="table table-striped"> <!-- table-hover> -->
       <thead>
         <div class="d-grid gap-1">
-          <a class="btn btn-success btn-lg" th:href="@{/anuncios/add}">Publicar nuevo anuncio</a>&nbsp;
+          <a class="btn btn-success btn-lg" th:href="@{/anuncios/add}">Publicar nuevo anuncio <i class="fa-solid fa-house"></i> <i class="fa-solid fa-plus"></i></a>&nbsp;
         </div>
         <tr>
           <!-- Todo: Sustituir ID por imagen principal del anuncio -->
@@ -57,10 +58,15 @@
           <!-- <td th:text="${anuncio.tipo}"></td> -->
           <!-- <td th:text="${anuncio.alquilado}"></td> -->
           <td>
-            <a class="btn btn-warning" th:href="|/anuncios/edit/${anuncio.id}|">Modificar</a>&nbsp;
-            <!-- Todo: Poner 2 tipos de botón alternativos: Activar y Desactivar -->
-            <a class="btn btn-dark" th:href="|/anuncios/desactivate/+${anuncio.id}">Desactivar</a>&nbsp;
-            <a class="btn btn-danger" th:href="|/anuncios/delete/+${anuncio.id}">Borrar</a>
+            <form th:action="@{/anuncios/activate}" method="post">
+              <a class="btn btn-info" th:href="|/anuncios/info/${anuncio.id}|"><i class="fa-solid fa-circle-info"></i> Información</a>&nbsp;
+              <a class="btn btn-warning" th:href="|/anuncios/edit/${anuncio.id}|"><i class="fa-solid fa-square-pen"></i> Editar</a>&nbsp;
+              <a class="btn btn-danger" th:href="|/anuncios/delete/+${anuncio.id}"><i class="fa-solid fa-trash"></i> Borrar</a>&nbsp;
+              <!-- Todo: Poner 2 tipos de botón alternativos: Activar y Desactivar -->
+              <input type="hidden" name="id" th:value="${anuncio.id}">
+              <button class="btn btn-dark" th:if="${anuncio.activo}"><i class="fa-solid fa-circle-xmark"></i> Desactivar </button>
+              <button class="btn btn-light" th:unless="${anuncio.activo}"><i class="fa-solid fa-circle-check"></i> Activar </button>
+            </form>
           </td>
         </tr>
       </tbody>

@@ -8,16 +8,16 @@
 
 <body>
 
-  <div th:replace="~{fragments/general.html :: navigation}"> </div>
+  <div th:replace="~{fragments/general.html :: navigation}"></div>
   <hr>
-  <h3 class="h3 text-center">Lista de usuarios registrados</h3>
+  <h3 class="h3 text-center"> Lista de usuarios registrados <i class="fa-solid fa-users"></i></h3>
   <hr>
-  
+
   <div class="container">
     <table class="table table-striped"> <!-- table-hover> -->
       <thead>
         <div class="d-grid gap-1">
-          <a class="btn btn-success btn-lg" th:href="@{/usuarios/add}">Crear nuevo usuario</a>&nbsp;
+          <a class="btn btn-success btn-lg" th:href="@{/usuarios/add}">Crear nuevo usuario <i class="fa-solid fa-user-plus"></i></a>&nbsp;
         </div>
         <tr>
           <th>ID</th>
@@ -38,12 +38,17 @@
           <td th:text="${usuario.nombre}"></td>
           <td th:text="${usuario.apellidos}"></td>
           <td th:text="${usuario.email}"></td>
-          <td th:text="${usuario.rol}"></td>
+          <td th:text="${usuario.rol.rol}"></td>
           <td>
-            <a class="btn btn-warning" th:href="|/usuarios/edit/${usuario.id}|">Modificar</a>&nbsp;
-            <!-- Todo: Poner 2 tipos de botón alternativos: Activar y Desactivar -->
-            <a class="btn btn-dark" th:href="|/usuarios/desactivate/+${usuario.id}">Desactivar</a>&nbsp;
-            <a class="btn btn-danger" th:href="|/usuarios/delete/+${usuario.id}">Borrar</a>
+            <form th:action="@{/usuarios/activate}" method="post">
+              <a class="btn btn-info" th:href="|/usuarios/info/${usuario.id}|"><i class="fa-solid fa-circle-info"></i> Información</a>&nbsp;
+              <a class="btn btn-warning" th:href="|/usuarios/edit/${usuario.id}|"><i class="fa-solid fa-user-pen"></i> Editar</a>&nbsp;
+              <a class="btn btn-danger" th:with="id=${usuario.id}" th:href="@{/usuarios/delete/{id}(id=${id})}"><i class="fa-solid fa-trash"></i> Borrar</a>&nbsp;
+              <!-- Todo: Poner 2 tipos de botón alternativos: Activar y Desactivar -->
+              <input type="hidden" name="id" th:value="${usuario.id}">
+              <button class="btn btn-dark" th:if="${usuario.enabled}" type="submit"><i class="fa-solid fa-user-xmark"></i> Desactivar</button>
+              <button class="btn btn-light" th:unless="${usuario.enabled}" type="submit"><i class="fa-solid fa-user-check"></i> Activar</button>
+            </form>
           </td>
         </tr>
       </tbody>

@@ -11,7 +11,7 @@
         <div th:replace="~{fragments/general.html :: navigation}"> </div>
         <div class="card">
             <div class="card-header">
-                <h4 class="text-center">Crear nuevo anuncio</h4>
+                <h4 class="text-center">Crear nuevo anuncio <i class="fa-solid fa-house"></i> <i class="fa-solid fa-circle-plus"></i> </h4>
             </div>
             <div class="card-body">
                 <form class="row" th:action="@{/anuncios/add}" th:object="${anuncio}" method="post">
@@ -64,12 +64,12 @@
                     </div> -->
                     
                     <div class="text-center mt-3">
-                        <button class="btn btn-lg btn-success mt-3" type="submit">Crear nuevo anuncio</button>
+                        <button class="btn btn-lg btn-success mt-3" type="submit">Crear nuevo anuncio  <i class="fa-solid fa-house"></i> <i class="fa-solid fa-check"></i> </button>
                         &nbsp;
-                        <button class="btn btn-lg btn-warning mt-3" type="reset">Reiniciar formulario</button>
+                        <button class="btn btn-lg btn-warning mt-3" type="reset">Reiniciar formulario <i class="fa-solid fa-arrow-left-long"></i> </button>
                         &nbsp;
                         <!-- Botón de cancelar -->
-                        <a class="btn btn-lg btn-danger mt-3" href="/anuncios" type="submit">Cancelar y volver</a>
+                        <a class="btn btn-lg btn-danger mt-3" href="/anuncios" type="submit">Cancelar y volver <i class="fa-solid fa-rotate-left"></i> </a>
                     </div>
                 </form>
             </div>

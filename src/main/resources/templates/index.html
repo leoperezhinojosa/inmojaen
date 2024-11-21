@@ -20,7 +20,9 @@
                 </picture>
                 <div class="card-body">
                     <h5 class="card-title"><i>¿Buscas tu hogar?</i></h5>
-                    <p class="card-text"></p>
+                    <p sec:authorize="hasAuthority('ADMIN')">
+                        <p class="card-text"><b><i> <i class="fa-solid fa-circle-user"></i> - ADMINISTRADOR </i></b></p>
+                    </p>
                     <a sec:authorize="isAnonymous()" href="/login" class="btn btn-success">ENTRAR</a>
                 </div>
             </div>

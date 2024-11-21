@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.iesvdc.project.inmojaen.models.Anuncio;
+import com.iesvdc.project.inmojaen.models.Usuario;
 import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
 
 import lombok.NonNull;
@@ -58,6 +59,26 @@ public class ControllerAnuncios {
     @GetMapping(path = "")
     public String findAllAdvertisements(Model modelo) {
         return findAll(modelo);
+    }
+
+    /**
+     * Endpoint: /anuncios/info/{id} (GET)
+     * Muestra la información de un anuncio.
+     * 
+     * @param modelo
+     * @return Vista de la información completa del anuncio.
+     */
+    @GetMapping("/info/{id}")
+    public String getUserInfo(Model modelo, @PathVariable("id") @NonNull Long id) {
+        Optional<Anuncio> anuncio = repoAnuncio.findById(id);
+        if (!anuncio.isPresent()) {
+            modelo.addAttribute("titulo", "Error al mostrar anuncio");
+            modelo.addAttribute("mensaje", "El anuncio con el id " + id + " no existe");
+            return "error";
+        } else {
+            modelo.addAttribute("anuncio", anuncio.get());
+            return "anuncios/info";
+        }
     }
 
     /**
@@ -182,6 +203,34 @@ public class ControllerAnuncios {
         // Eliminar el anuncio de la base de datos.
         modelo.addAttribute("anuncio", anuncioABorrar.get());
         repoAnuncio.deleteById(id);
+        return "redirect:/anuncios";
+    }
+
+    /**
+     * Endpoint: /activate (POST)
+     * Activa o desactiva un anuncio.
+     * 
+     * @param id Identificador del anuncio a activar o desactivar.
+     * @return Redirigir a la lista de anuncios.
+     */
+    @GetMapping("/activate")
+    public String activateAdvertisement(
+            Model modelo, @RequestParam("id") @NonNull Long id) {
+        Optional<Anuncio> anuncio = repoAnuncio.findById(id);
+        if (!anuncio.isPresent()) {
+            modelo.addAttribute("titulo", 
+                    " - Error en el manejo de activación de anuncio - ");
+            modelo.addAttribute("mensaje",
+                    " - Atención: El anuncio indicado no existe - ");
+            return "error";
+        } else {
+            if (anuncio.get().getActivo()) {
+                anuncio.get().setActivo(false);
+            } else {
+                anuncio.get().setActivo(true);
+            }
+            repoAnuncio.save(anuncio.get());
+        }
         return "redirect:/anuncios";
     }
 

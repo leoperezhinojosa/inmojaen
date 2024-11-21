@@ -3,6 +3,8 @@ package com.iesvdc.project.inmojaen.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +23,7 @@ public class Anuncio {
     private Long id;
     private String titulo;
     private String descripcion;
+    // @NumberFormat(pattern = "#,##0.00") // Formato de moneda
     private Double precio;
     private Double superficie;
     private Integer habitaciones;

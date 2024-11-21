@@ -12,11 +12,11 @@
     <div th:replace="~{fragments/general.html :: navigation}"> </div>
     <div class="card">
         <div class="card-header">
-            <h4 class="text-center">Editar usuario</h4>
+            <h4 class="text-center">Editar usuario <i class="fa-solid fa-user-pen"></i></h4>
         </div>
         <div class="card-body">
             <form class="row" th:action="@{/usuarios/add}" th:object="${usuario}" method="post">
-                <input th:field="*{usuario.id}" type="hidden" />
+                <!-- <input th:field="*{usuario.id}" type="hidden" /> --> <!-- Provoca un error, ¿es necesario? -->
                 <div class="mb-3 col-6 text-center">
                     <label class="form-label" for="nombre"><b>Nombre:</b></label>
                     <input class="form-control" th:field="*{nombre}" 
@@ -48,12 +48,12 @@
                 </div> -->
                 
                 <div class="text-center mt-3">
-                    <button class="btn btn-lg btn-success mt-3" type="submit">Aceptar cambios</button>
+                    <button class="btn btn-lg btn-success mt-3" type="submit">Aceptar cambios <i class="fa-solid fa-check"></i> </button>
                     &nbsp;
-                    <button class="btn btn-lg btn-warning mt-3" type="reset">Resetear valores</button>
+                    <button class="btn btn-lg btn-warning mt-3" type="reset">Resetear valores <i class="fa-solid fa-arrow-left"></i> </button>
                     &nbsp;
                     <!-- Botón de cancelar -->
-                    <a class="btn btn-lg btn-primary mt-3" href="/usuarios" type="submit">Volver a Usuarios</a>
+                    <a class="btn btn-lg btn-primary mt-3" href="/usuarios" type="submit">Volver a Usuarios <i class="fa-solid fa-rotate-left"></i> </a>
                 </div>
             </form>
         </div>
