@@ -19,7 +19,6 @@ import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
 
 import lombok.NonNull;
 
-
 // TODO: Revisar métodos faltantes.
 
 /**
@@ -122,7 +121,7 @@ public class ControllerAnuncios {
             Model modelo, @PathVariable("id") Long id) {
         Optional<Anuncio> anuncioAEditar = repoAnuncio.findById(id);
         if (!anuncioAEditar.isPresent()) {
-            modelo.addAttribute("titulo", 
+            modelo.addAttribute("titulo",
                     " - Error al editar anuncio - ");
             modelo.addAttribute("mensaje",
                     " - Atención: El anuncio con ID " + id + " no existe - ");
@@ -130,7 +129,7 @@ public class ControllerAnuncios {
         } else {
             modelo.addAttribute("anuncio", anuncioAEditar.get());
         }
-        
+
         return "anuncios/edit";
     }
 
@@ -151,25 +150,33 @@ public class ControllerAnuncios {
 
     /**
      * Endpoint: /anuncios/delete/{id} (GET)
-     * Elimina un anuncio de la base de datos.
+     * Muestra el formulario para eliminar un anuncio de la base de datos.
      * 
      * @param id ID del anuncio a eliminar.
-     * @return Redirección a la lista total de anuncios.
+     * @return Metodo POST para eliminar el anuncio.
      */
     @GetMapping("/delete/{id}")
     public String deleteAdvertisementForm(
             Model modelo, @PathVariable("id") @NonNull Long id) {
         Optional<Anuncio> anuncioAEliminar = repoAnuncio.findById(id);
         if (!anuncioAEliminar.isPresent()) {
-            modelo.addAttribute("titulo", 
+            modelo.addAttribute("titulo",
                     " - Error al eliminar anuncio - ");
             modelo.addAttribute("mensaje",
                     " - Atención: El anuncio con ID " + id + " no existe - ");
             return "error";
         } else {
-            modelo.addAttribute("anuncio", anuncioAEliminar.get());
+            // Los anuncios reservados o comprados no pueden eliminarse.
+            if (anuncioAEliminar.get().getReservado() || anuncioAEliminar.get().getVendido()) {
+                modelo.addAttribute("titulo",
+                        " - Error al eliminar anuncio - ");
+                modelo.addAttribute("mensaje",
+                        " - Atención: El anuncio con ID " + id + " no puede eliminarse - ");
+                return "error";
+            } else {
+                modelo.addAttribute("anuncio", anuncioAEliminar.get());
+            }
         }
-
         return "anuncios/delete";
     }
 
@@ -183,26 +190,27 @@ public class ControllerAnuncios {
     @PostMapping("/delete")
     public String deleteAdvertisement(
             Model modelo, @RequestParam("id") @NonNull Long id) {
-        Optional<Anuncio> anuncioABorrar = repoAnuncio.findById(id);
-        if (!anuncioABorrar.isPresent()) {
-            modelo.addAttribute("titulo", 
+        Optional<Anuncio> anuncioAEliminar = repoAnuncio.findById(id);
+        if (!anuncioAEliminar.isPresent()) {
+            modelo.addAttribute("titulo",
                     " - Error al eliminar anuncio - ");
             modelo.addAttribute("mensaje",
                     " - Atención: El anuncio con ID " + id + " no existe - ");
             return "error";
         } else {
             // Los anuncios reservados o comprados no pueden eliminarse.
-            if (anuncioABorrar.get().getReservado() || anuncioABorrar.get().getVendido()) {
-                modelo.addAttribute("titulo", 
+            if (anuncioAEliminar.get().getReservado() || anuncioAEliminar.get().getVendido()) {
+                modelo.addAttribute("titulo",
                         " - Error al eliminar anuncio - ");
                 modelo.addAttribute("mensaje",
                         " - Atención: El anuncio con ID " + id + " no puede eliminarse - ");
                 return "error";
+            } else {
+                // Eliminar el anuncio de la base de datos.
+                modelo.addAttribute("anuncio", anuncioAEliminar.get());
+                repoAnuncio.delete(anuncioAEliminar.get());
             }
         }
-        // Eliminar el anuncio de la base de datos.
-        modelo.addAttribute("anuncio", anuncioABorrar.get());
-        repoAnuncio.deleteById(id);
         return "redirect:/anuncios";
     }
 
@@ -213,12 +221,12 @@ public class ControllerAnuncios {
      * @param id Identificador del anuncio a activar o desactivar.
      * @return Redirigir a la lista de anuncios.
      */
-    @GetMapping("/activate")
+    @PostMapping("/activate")
     public String activateAdvertisement(
             Model modelo, @RequestParam("id") @NonNull Long id) {
         Optional<Anuncio> anuncio = repoAnuncio.findById(id);
         if (!anuncio.isPresent()) {
-            modelo.addAttribute("titulo", 
+            modelo.addAttribute("titulo",
                     " - Error en el manejo de activación de anuncio - ");
             modelo.addAttribute("mensaje",
                     " - Atención: El anuncio indicado no existe - ");

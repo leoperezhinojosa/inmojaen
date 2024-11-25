@@ -12,45 +12,39 @@
         <div th:replace="~{fragments/general.html :: navigation}"> </div>
         <div class="card">
             <div class="card-header">
-                <h4 class="text-center">Información completa: Usuario con ID [[${id}]]</h4>
+                <h4 class="text-center"><i class="fa-solid fa-user"></i> Información completa - Usuario con ID: [[${id}]] </h4>
             </div>
             <div class="card-body">
                 <div class="row" th:object="${usuario}">
                     <div class="mb-3 col-6 text-center">
-                        <label class="form-label" for="nombre"><b>Nombre:</b></label>
-                        <input class="form-control" th:field="*{nombre}" placeholder="Nombre del usuario" disabled />
-                    </div>
-                    <div class="mb-3 col-6 text-center">
-                        <label class="form-label" for="apellidos"><b>Apellidos:</b></label>
-                        <input class="form-control" th:field="*{apellidos}" disabled />
+                        <label class="form-label" for="username"><b>Nombre de Usuario (Único):</b></label>
+                        <input class="form-control" th:field="*{username}" disabled />
                     </div>
                     <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="email"><b>Email (Único):</b></label>
                         <input class="form-control" th:field="*{email}" disabled />
                     </div>
                     <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="nombre"><b>Nombre:</b></label>
+                        <input class="form-control" th:field="*{nombre}" placeholder="Nombre del usuario" disabled />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="apellidos"><b>Apellidos:</b></label>
+                        <input class="form-control" th:field="*{apellidos}" placeholder="No hay apellidos asociado" disabled />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="password"><b>Contraseña:</b></label>
                         <input class="form-control" placeholder="- Oculta por seguridad -" disabled />
                     </div>
-
-                    <!-- ¿Modificar tipo de usuario (vendedores y clientes) es aceptable? Habilitar si se desea -->
-                    <!-- <div class="mb-3 col-6 text-center">
-                    <label class="form-label" for="user" required><b>Modificar Tipo de Usuario: (No disponible)</b></label>
-                    <select th:field="*{roles}" class="form-select" disabled>
-                        <option th:each="rol_user: ${roles}" th:value="${rol_user.id}"
-                            th:text="${rol_user.rol}" th:selected="${rol_user.rol == usuario.rol}">
-                        </option>
-                    </select>
-                </div> -->
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="telefono"><b>Teléfono:</b></label>
+                        <input class="form-control" type="number" th:field="*{telefono}" disabled
+                            placeholder="No hay un teléfono asociado" />
+                    </div>
 
                     <div class="text-center mt-3">
-                        <!-- <button class="btn btn-lg btn-success mt-3" type="submit">Aceptar cambios</button>
-                    &nbsp;
-                    <button class="btn btn-lg btn-warning mt-3" type="reset">Resetear valores</button>
-                    &nbsp; -->
-                        <!-- Botón de cancelar -->
-                        <a class="btn btn-lg btn-warning mt-3" th:href="|/usuarios/edit/${usuario.id}|" type="submit">Editar <i class="fa-solid fa-user-pen"></i></a>&nbsp;
-                        <a class="btn btn-lg btn-info mt-3" th:href="|/usuarios/edit/${usuario.id}/anuncios|" type="submit">Anuncios del usuario <i class="fa-solid fa-user"></i>/<i class="fa-solid fa-house-chimney"></i></a>&nbsp;
+                        <a class="btn btn-lg btn-info mt-3" th:href="|/usuarios/edit/${usuario.id}/anuncios|" type="submit">Anuncios del usuario <i class="fa-solid fa-user"></i><i class="fa-solid fa-house-chimney"></i></a>&nbsp;
+                        <a class="btn btn-lg btn-warning mt-3" th:href="|/usuarios/edit/${usuario.id}|" type="submit">Editar usuario<i class="fa-solid fa-user-pen"></i></a>&nbsp;
                         <a class="btn btn-lg btn-primary mt-3" href="/usuarios" type="submit">Volver a Usuarios <i class="fa-solid fa-users"></i></a>
                     </div>
                 </div>

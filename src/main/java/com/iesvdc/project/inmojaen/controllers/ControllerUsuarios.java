@@ -1,7 +1,10 @@
 package com.iesvdc.project.inmojaen.controllers;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -95,9 +98,13 @@ public class ControllerUsuarios {
      */
     @GetMapping("/add")
     public String addUserForm(Model modelo) {
+        Set<Rol> rolesSet = new HashSet<>(repoRol.findAll());
+        List<Rol> roles = new ArrayList<>(rolesSet);
+        Rol rol = new Rol();
+        Long rolId = rol.getId();
+        modelo.addAttribute("roles", roles);
+        modelo.addAttribute("rolId", rolId);
         modelo.addAttribute("usuario", new Usuario());
-        // List<Rol> roles = repoRol.findAll();
-        // modelo.addAttribute("roles", roles);
         return "usuarios/add";
     }
 
@@ -107,17 +114,55 @@ public class ControllerUsuarios {
      * Escoge también el rol del usuario.
      * 
      * @param usuario Usuario a añadir.
+     * @param rol     Rol del usuario a añadir.
      * @return Redirigir a la lista total de usuarios.
      */
     @PostMapping("/add")
     public String addUser(
-            @ModelAttribute("usuario") @NonNull Usuario usuario) {
-        // Actualizar la lista de usuarios con el nuevo usuario
+            Model modelo, @ModelAttribute("usuario") @NonNull Usuario usuario, @RequestParam("rolId") Long rolId) {
+
+        // Comprobar si el username ya existe:
+        if (!repoUsuario.findByUsername(usuario.getUsername()).isEmpty()) {
+            modelo.addAttribute("titulo",
+                    " - Error al crear usuario - ");
+            modelo.addAttribute("mensaje",
+                    " - Atención: El Nombre de Usuario ya está registrado - ");
+            return "error";
+        }
+
+        // Comprobar si el email ya existe:
+        if (!repoUsuario.findByEmail(usuario.getEmail()).isEmpty()) {
+            modelo.addAttribute("titulo",
+                    " - Error al crear usuario - ");
+            modelo.addAttribute("mensaje",
+                    " - Atención: El Email ya está registrado - ");
+            return "error";
+        }
+
+        // Recuperar el Rol desde la base de datos
+        Rol rol = repoRol.findById(rolId)
+                .orElseThrow(() -> new IllegalArgumentException("Rol no válido"));
+        usuario.setRol(rol);
+
         // Codificar la contraseña:
         BCryptPasswordEncoder passwords = new BCryptPasswordEncoder();
         usuario.setPassword(passwords.encode(usuario.getPassword()));
+        // Setear las características del usuario según su rol:
+        if (rolId == 1) {
+            usuario.setInalterable(true);
+            usuario.setPremium(false);
+        } else {
+            usuario.setInalterable(false);
+            if (rolId == 2) {
+                usuario.setPremium(true);
+            } else {
+                usuario.setPremium(false);
+            }
+        }
+
         // Habilitar el usuario:
         usuario.setEnabled(true);
+        // Actualizar la lista de usuarios con el nuevo usuario
         repoUsuario.save(usuario);
         return "redirect:/usuarios";
     }
@@ -218,8 +263,9 @@ public class ControllerUsuarios {
                 modelo.addAttribute("titulo",
                         " - Error al borrar usuario: Inalterable - ");
                 modelo.addAttribute("mensaje",
-                        "El usuario es administrador, o tiene compras, ventas, reservas, "
-                                + "alquileres y/o mensajes en su historial.\n "
+                        "El usuario es administrador. "
+                                // + "o tiene compras, ventas, reservas, "
+                                // + "alquileres y/o mensajes en su historial.\n "
                                 + "No puede ser eliminado.");
                 return "error";
             }
@@ -237,7 +283,7 @@ public class ControllerUsuarios {
      */
     @PostMapping("/delete")
     public String deleteUser(
-            Model modelo, @RequestParam("id") @NonNull Long id) {
+            Model modelo, @RequestParam @NonNull Long id) {
         Optional<Usuario> usuarioABorrar = repoUsuario.findById(id);
         if (!usuarioABorrar.isPresent()) {
             modelo.addAttribute("titulo",
@@ -245,43 +291,53 @@ public class ControllerUsuarios {
             modelo.addAttribute("mensaje",
                     " - Atención: El usuario indicado no existe - ");
             return "error";
-        } else {
-            // Todo: ¿Es necesario esta comprobación? ¿Basta con que sean inalterables?
-            // Los administradores no pueden ser eliminados.
-            // if (usuarioABorrar.get().getRol().getRol().equals("ADMIN")) {
-            // modelo.addAttribute("titulo",
-            // " - Error al borrar usuario - ");
-            // modelo.addAttribute("mensaje",
-            // "El usuario de tipo 'Administrador' no puede ser eliminado ");
-            // return "error";
-            // }
-
-            // Los vendedores con anuncios publicados no pueden ser eliminados.
-            if (usuarioABorrar.get().getAnunciosEnVenta().size() > 0) {
-                modelo.addAttribute("titulo",
-                        " - Error al borrar usuario - ");
-                modelo.addAttribute("mensaje",
-                        "El usuario tiene anuncios publicados. "
-                                + "Elimine los anuncios antes de borrar el usuario.");
-                return "error";
-            }
-
-            // Los usuarios inalterables (administradores o usuarios con compras, ventas,
-            // reservas, alquileres y/o mensajes realizados) no pueden ser eliminados.
-            if (usuarioABorrar.get().getInalterable()) {
-                modelo.addAttribute("titulo",
-                        " - Error al borrar usuario - ");
-                modelo.addAttribute("mensaje",
-                        "El usuario es administrador, o tiene compras, ventas, reservas, "
-                                + "alquileres y/o mensajes en su historial.\n "
-                                + "No puede ser eliminado.");
-                return "error";
-            }
         }
 
-        // Eliminar el usuario:
-        modelo.addAttribute("usuario", usuarioABorrar.get());
-        repoUsuario.delete(usuarioABorrar.get());
+        // Todo: ¿Es necesario esta comprobación? ¿Basta con que sean inalterables?
+        // Los administradores no pueden ser eliminados.
+        // if (usuarioABorrar.get().getRol().getRol().equals("ADMIN")) {
+        // modelo.addAttribute("titulo",
+        // " - Error al borrar usuario - ");
+        // modelo.addAttribute("mensaje",
+        // "El usuario de tipo 'Administrador' no puede ser eliminado ");
+        // return "error";
+        // }
+
+        // Los vendedores con anuncios publicados no pueden ser eliminados. (Nota:
+        // activar después de la asignación de anuncios al usuario)
+        // if (usuarioABorrar.get().getAnunciosEnVenta().size() > 0) {
+        // modelo.addAttribute("titulo",
+        // " - Error al borrar usuario - ");
+        // modelo.addAttribute("mensaje",
+        // "El usuario tiene anuncios publicados. "
+        // + "Elimine los anuncios antes de borrar el usuario.");
+        // return "error";
+        // }
+
+        // Los usuarios inalterables (administradores) no pueden ser eliminados.
+        if (usuarioABorrar.get().getInalterable()) {
+            modelo.addAttribute("titulo",
+                    " - Error al borrar usuario - ");
+            modelo.addAttribute("mensaje",
+                    "El usuario es administrador. No puede ser eliminado.");
+            return "error";
+        }
+
+        try {
+            modelo.addAttribute("usuario", usuarioABorrar.get());
+            modelo.addAttribute("titulo",
+                    " - El usuario ha sido eliminado - ");
+            // Eliminar el usuario:
+            repoUsuario.delete(usuarioABorrar.get());
+            
+        } catch (Exception e) {
+            modelo.addAttribute("titulo",
+                    " - Error al borrar usuario - ");
+            modelo.addAttribute("mensaje",
+                    "El usuario tiene anuncios publicados. "
+                            + "Elimine los anuncios antes de borrar el usuario.");
+            return "error";
+        }
         return "redirect:/usuarios";
     }
 
@@ -292,7 +348,7 @@ public class ControllerUsuarios {
      * @param id Identificador del usuario a activar o desactivar.
      * @return Redirigir a la lista de usuarios.
      */
-    @GetMapping("/activate")
+    @PostMapping("/activate")
     public String activateUser(
             Model modelo, @RequestParam("id") @NonNull Long id) {
         Optional<Usuario> usuario = repoUsuario.findById(id);
@@ -303,21 +359,21 @@ public class ControllerUsuarios {
                     " - Atención: El usuario indicado no existe - ");
             return "error";
         } else {
-            // Todo: ¿Es necesario esta comprobación? Puede ser contraproducente.
-            // if (usuario.get().getInalterable()) {
-            //     modelo.addAttribute("titulo",
-            //             " - Error en el manejo de activación de usuario - ");
-            //     modelo.addAttribute("mensaje", " - Atención: "
-            //             + "El usuario indicado es inalterable y no puede ser activado o desactivado - ");
-            //     return "error";
-            // } else {
+            // Todo: ¿Es necesaria esta comprobación? Puede dar un aspecto poco intuitivo.
+            if (usuario.get().getInalterable()) {
+                modelo.addAttribute("titulo",
+                        " - Error: Desactivación de usuario anulada - ");
+                modelo.addAttribute("mensaje", " - Atención: "
+                        + "El usuario indicado es inalterable y no puede ser desactivado - ");
+                return "error";
+            } else {
                 if (usuario.get().getEnabled()) {
                     usuario.get().setEnabled(false);
                 } else {
                     usuario.get().setEnabled(true);
                 }
                 repoUsuario.save(usuario.get());
-            // }
+            }
         }
         return "redirect:/usuarios";
     }

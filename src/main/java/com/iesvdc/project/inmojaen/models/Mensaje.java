@@ -1,7 +1,7 @@
 package com.iesvdc.project.inmojaen.models;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,9 +18,9 @@ public class Mensaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String mensaje;
+    private String contenido;
     private LocalDate fecha;
-    private LocalDateTime hora;
+    private LocalTime hora;
     private Boolean leido;
     private Boolean enviado;
     private Boolean recibido;

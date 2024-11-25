@@ -12,4 +12,6 @@ public interface RepoUsuario extends JpaRepository<Usuario, Long> {
     // la gestión de usuarios en la base de datos.
     // Spring se encargará de implementarlos automáticamente.
     List<Usuario> findByUsername(String username);
+
+    List<Usuario> findByEmail(String email);
 }

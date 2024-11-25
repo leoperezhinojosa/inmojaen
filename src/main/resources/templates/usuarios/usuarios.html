@@ -44,7 +44,6 @@
               <a class="btn btn-info" th:href="|/usuarios/info/${usuario.id}|"><i class="fa-solid fa-circle-info"></i> Información</a>&nbsp;
               <a class="btn btn-warning" th:href="|/usuarios/edit/${usuario.id}|"><i class="fa-solid fa-user-pen"></i> Editar</a>&nbsp;
               <a class="btn btn-danger" th:with="id=${usuario.id}" th:href="@{/usuarios/delete/{id}(id=${id})}"><i class="fa-solid fa-trash"></i> Borrar</a>&nbsp;
-              <!-- Todo: Poner 2 tipos de botón alternativos: Activar y Desactivar -->
               <input type="hidden" name="id" th:value="${usuario.id}">
               <button class="btn btn-dark" th:if="${usuario.enabled}" type="submit"><i class="fa-solid fa-user-xmark"></i> Desactivar</button>
               <button class="btn btn-light" th:unless="${usuario.enabled}" type="submit"><i class="fa-solid fa-user-check"></i> Activar</button>

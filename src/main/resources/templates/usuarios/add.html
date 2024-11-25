@@ -15,21 +15,15 @@
             </div>
             <div class="card-body">
                 <form class="row" th:action="@{/usuarios/add}" th:object="${usuario}" method="post">
-                    
                     <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="username"><b>Nombre de Usuario (Único):</b></label>
                         <input class="form-control" th:field="*{username}" required
-                        placeholder="Escribir el Nombre del Perfil (No puede estar ya registrado)" />
+                            placeholder="Escribir el Nombre del Perfil (No puede estar ya registrado)" />
                     </div>
                     <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="email"><b>Email (Único):</b></label>
                         <input class="form-control" th:field="*{email}" required
                             placeholder="Escribir el email del usuario (No puede estar ya registrado)" />
-                    </div>
-                    <div class="mb-3 col-6 text-center">
-                        <label class="form-label" for="password"><b>Contraseña:</b></label>
-                        <input class="form-control" type="password" th:field="*{password}" required
-                            placeholder="Escribir la contraseña del usuario" />
                     </div>
                     <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="nombre"><b>Nombre:</b></label>
@@ -41,24 +35,36 @@
                         <input class="form-control" th:field="*{apellidos}" required
                             placeholder="Escribir los apellidos del nuevo usuario" />
                     </div>
+                    <div class="mb-3 col-4 text-center">
+                        <label class="form-label" for="password"><b>Contraseña:</b></label>
+                        <input class="form-control" type="password" th:field="*{password}" required
+                            placeholder="Escribir la contraseña del usuario" />
+                    </div>
+                    <div class="mb-3 col-4 text-center">
+                        <label class="form-label" for="telefono"><b>Teléfono:</b></label>
+                        <input class="form-control" type="number" th:field="*{telefono}" required
+                            placeholder="Telefono del nuevo usuario" />
+                    </div>
 
                     <!-- Escoger tipo de usuario (Crear gestores, operarios y clientes) -->
-                    <div class="mb-3 col-6 text-center">
-                        <label class="form-label" for="user" required><b>Seleccionar Tipo de Usuario:</b></label>
-                        <select th:field="*{rol}" class="form-select" required>
-                            <option th:each="rol_user: ${roles}" th:value="${rol_user.rol}"
-                                th:text="${rol_user.rol}" th:selected="${rol_user.rol}">
-                            </option>
+                    <div class="mb-3 col-4 text-center">
+                        <label class="form-label" for="rol" required><b>Seleccionar Tipo de Usuario:</b></label>
+                        <select name="rolId" id="rol" class="form-select">
+                            <!-- <option value="" disabled selected>Seleccionar un rol</option> -->
+                            <option th:each="rol : ${roles}" th:value="${rol.id}" th:text="${rol.rol}"></option>
                         </select>
                     </div>
-                    
+
                     <div class="text-center mt-3">
-                        <button class="btn btn-lg btn-success mt-3" type="submit">Crear nuevo usuario <i class="fa-solid fa-user-plus"></i> </button>
+                        <button class="btn btn-lg btn-success mt-3" type="submit">Crear nuevo usuario <i
+                                class="fa-solid fa-user-plus"></i> </button>
                         &nbsp;
-                        <button class="btn btn-lg btn-warning mt-3" type="reset">Reiniciar formulario <i class="fa-solid fa-rotate-left"></i> </button>
+                        <button class="btn btn-lg btn-warning mt-3" type="reset">Reiniciar formulario <i
+                                class="fa-solid fa-rotate-left"></i> </button>
                         &nbsp;
                         <!-- Botón de cancelar -->
-                        <a class="btn btn-lg btn-danger mt-3" href="/usuarios" type="submit">Cancelar y volver <i class="fa-solid fa-rotate-left"></i></a>
+                        <a class="btn btn-lg btn-danger mt-3" href="/usuarios" type="submit">Cancelar y volver <i
+                                class="fa-solid fa-rotate-left"></i></a>
                     </div>
                 </form>
             </div>

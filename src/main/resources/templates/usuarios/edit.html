@@ -16,25 +16,33 @@
         </div>
         <div class="card-body">
             <form class="row" th:action="@{/usuarios/add}" th:object="${usuario}" method="post">
-                <!-- <input th:field="*{usuario.id}" type="hidden" /> --> <!-- Provoca un error, ¿es necesario? -->
                 <div class="mb-3 col-6 text-center">
-                    <label class="form-label" for="nombre"><b>Nombre:</b></label>
-                    <input class="form-control" th:field="*{nombre}" 
-                      placeholder="Nombre del usuario" />
+                    <label class="form-label" for="username"><b>Nombre de Usuario (Único - No se puede cambiar):</b></label>
+                    <input class="form-control" th:field="*{username}" disabled />
                 </div>
                 <div class="mb-3 col-6 text-center">
-                  <label class="form-label" for="apellidos"><b>Apellidos:</b></label>
-                  <input class="form-control" th:field="*{apellidos}" required
-                      placeholder="Apellidos del usuario" />
-              </div>
-                <div class="mb-3 col-6 text-center">
-                    <label class="form-label" for="email"><b>Email (Único):</b></label>
+                    <label class="form-label" for="email"><b>Email (Único - No se puede cambiar):</b></label>
                     <input class="form-control" th:field="*{email}" disabled />
                 </div>
                 <div class="mb-3 col-6 text-center">
-                    <label class="form-label" for="password"><b>Contraseña (Oculta):</b></label>
+                    <label class="form-label" for="nombre"><b>Nombre:</b></label>
+                    <input class="form-control" th:field="*{nombre}" required
+                        placeholder="Editar el nombre del usuario" />
+                </div>
+                <div class="mb-3 col-6 text-center">
+                    <label class="form-label" for="apellidos"><b>Apellidos:</b></label>
+                    <input class="form-control" th:field="*{apellidos}" required
+                        placeholder="Editar los apellidos del usuario" />
+                </div>
+                <div class="mb-3 col-6 text-center">
+                    <label class="form-label" for="password"><b>Contraseña:</b></label>
                     <input class="form-control" type="password" th:field="*{password}" required
-                        placeholder="Escribir nueva Contraseña para confirmar los cambios" />
+                        placeholder="(Contraseña Oculta - Escribir nueva contraseña para completar cambios)" />
+                </div>
+                <div class="mb-3 col-6 text-center">
+                    <label class="form-label" for="telefono"><b>Teléfono:</b></label>
+                    <input class="form-control" type="number" th:field="*{telefono}" required
+                        placeholder="Editar el teléfono del usuario" />
                 </div>
 
                 <!-- ¿Modificar tipo de usuario (gestores, operarios y clientes) es aceptable? Habilitar si se desea -->
