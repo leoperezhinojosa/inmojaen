@@ -49,6 +49,7 @@ public class SecurityConfiguration {
                 .requestMatchers(
                     "/webjars/**", "/img/**", "/js/**", "/css/**", "/static/**", 
                     "/register", "/register/**", "/login", 
+                    "/public/**", "/public/*/**", "/public/*/*/**", // NEW: Acceso libre para usuarios sin registrar
                     "/help", "/about", "/error")
                 .permitAll()
                 // Configurar acceso según roles:

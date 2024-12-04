@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.iesvdc.project.inmojaen.models.Rol;
@@ -22,6 +23,7 @@ import com.iesvdc.project.inmojaen.models.Usuario;
 import com.iesvdc.project.inmojaen.repositories.RepoRol;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.NonNull;
 
 // TODO: Revisar métodos faltantes.
@@ -32,6 +34,8 @@ import lombok.NonNull;
  * El administrador puede añadir, editar o eliminar usuarios.
  * Se comprobará que el usuario a eliminar no tenga información sensible.
  */
+
+@SessionAttributes({ "usuario_temporal" })
 @Controller
 @RequestMapping("/usuarios")
 public class ControllerUsuarios {
@@ -176,20 +180,21 @@ public class ControllerUsuarios {
      * @return Vista de edición del usuario.
      */
     @GetMapping("/edit/{id}")
-    public String editUserForm(
-            Model modelo, @PathVariable("id") @NonNull Long id) {
+    public String editUserForm(Model modelo, @PathVariable("id") Long id) {
         Optional<Usuario> usuarioAEditar = repoUsuario.findById(id);
         if (!usuarioAEditar.isPresent()) {
-            modelo.addAttribute("titulo",
-                    " - Error al editar usuario - ");
-            modelo.addAttribute("mensaje",
-                    " - Atención: El usuario indicado no existe - ");
+            modelo.addAttribute("titulo", "Error al editar usuario");
+            modelo.addAttribute("mensaje", "El usuario indicado no existe");
             return "error";
-        } else {
-            List<Rol> roles = repoRol.findAll();
-            modelo.addAttribute("usuario", usuarioAEditar.get());
-            modelo.addAttribute("roles", roles);
         }
+
+        List<Rol> roles = repoRol.findAll();
+        Long rolId = usuarioAEditar.get().getRol() != null ? usuarioAEditar.get().getRol().getId() : null;
+
+        modelo.addAttribute("usuario", usuarioAEditar.get());
+        modelo.addAttribute("roles", roles);
+        modelo.addAttribute("rolId", rolId);
+
         return "usuarios/edit";
     }
 
@@ -201,15 +206,44 @@ public class ControllerUsuarios {
      * @return Redirigir a la lista de usuarios.
      */
     @PostMapping("/edit")
-    public String editUser(
-            @ModelAttribute("usuario") @NonNull Usuario usuario) {
-        // Actualizar la lista de usuarios con el usuario editado
-        // Codificar la contraseña:
-        BCryptPasswordEncoder passwords = new BCryptPasswordEncoder();
-        usuario.setPassword(passwords.encode(usuario.getPassword()));
-        // Habilitar el usuario:
-        usuario.setEnabled(true);
-        repoUsuario.save(usuario);
+    public String editUser(Model modelo, @ModelAttribute("usuario") Usuario usuarioActualizado) {
+        // Buscar el usuario a editar por ID
+        Optional<Usuario> usuario = repoUsuario.findById(usuarioActualizado.getId());
+        if (!usuario.isPresent()) {
+            modelo.addAttribute("titulo", " - Error al editar usuario - ");
+            modelo.addAttribute("mensaje", "El usuario indicado no existe.");
+            return "error";
+        }
+        
+        Usuario usuarioAEditar = usuario.get();
+    
+        // Actualizar solo los campos necesarios
+        if (usuarioActualizado.getNombre() != null) {
+            usuarioAEditar.setNombre(usuarioActualizado.getNombre());
+        }
+        if (usuarioActualizado.getApellidos() != null) {
+            usuarioAEditar.setApellidos(usuarioActualizado.getApellidos());
+        }
+        if (usuarioActualizado.getTelefono() != null) {
+            usuarioAEditar.setTelefono(usuarioActualizado.getTelefono());
+        }
+        if (usuarioActualizado.getPassword() != null && !usuarioActualizado.getPassword().isEmpty()) {
+            BCryptPasswordEncoder passwords = new BCryptPasswordEncoder();
+            usuarioAEditar.setPassword(passwords.encode(usuarioActualizado.getPassword()));
+        }
+    
+        // Verificar si se envió un nuevo rol
+        if (usuarioActualizado.getRol() != null && usuarioActualizado.getRol().getId() != null) {
+            Rol nuevoRol = repoRol.findById(usuarioActualizado.getRol().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Rol no válido"));
+            usuarioAEditar.setRol(nuevoRol);
+        }
+    
+        // Mantener campos habilitados y premium si son necesarios
+        usuarioAEditar.setEnabled(true); // Por defecto habilitado
+    
+        // Guardar los cambios
+        repoUsuario.save(usuarioAEditar);
         return "redirect:/usuarios";
     }
 
@@ -232,21 +266,19 @@ public class ControllerUsuarios {
                     " - Atención: El usuario indicado no existe - ");
             return "error";
         } else {
+            // ToDo - Verificar si el usuario tiene anuncios publicados
             Integer anunciosPublicados = repoUsuario.findById(
                     usuarioABorrar.get().getId()).get().getAnunciosEnVenta().size();
+            Integer mensajesEnviados = repoUsuario.findById(
+                    usuarioABorrar.get().getId()).get().getMensajesByEmisor().size();
+            Integer mensajesRespondidos = repoUsuario.findById(
+                    usuarioABorrar.get().getId()).get().getMensajesByReceptor().size();
 
             modelo.addAttribute("usuario", usuarioABorrar.get());
 
-            // Todo: ¿Es necesario esta comprobación? ¿Basta con que sean inalterables?
-            // Los administradores no pueden ser eliminados.
-            // if (usuarioABorrar.get().getRol().equals("ADMIN")) {
-            // modelo.addAttribute("titulo",
-            // " - Error al borrar usuario - ");
-            // modelo.addAttribute("mensaje",
-            // "El usuario 'Administrador' no puede ser eliminado ");
-            // return "error";
-            // }
-
+            // ToDo: De los 3 siguientes métodos: En lugar de borrar el usuario, se puede desactivar y dejar en la base de datos.
+            // ToDo: Ya que quien gestiona es el administrador, ¿se puede sólo dar mensajes de aviso y permitir el borrado?
+            
             // Los vendedores con anuncios publicados no pueden ser eliminados.
             if (anunciosPublicados > 0) {
                 modelo.addAttribute("titulo",
@@ -254,6 +286,16 @@ public class ControllerUsuarios {
                 modelo.addAttribute("mensaje",
                         "El usuario tiene anuncios publicados. "
                                 + "Elimine los anuncios antes de borrar el usuario.");
+                return "error";
+            }
+
+            // Los vendedores con mensajes publicados no pueden ser eliminados.
+            if (mensajesEnviados > 0 || mensajesRespondidos > 0) {
+                modelo.addAttribute("titulo",
+                        " - Error al borrar usuario - ");
+                modelo.addAttribute("mensaje",
+                        "El usuario tiene mensajes publicados. "
+                                + "Elimine los mensajes antes de borrar el usuario.");
                 return "error";
             }
 
@@ -293,27 +335,6 @@ public class ControllerUsuarios {
             return "error";
         }
 
-        // Todo: ¿Es necesario esta comprobación? ¿Basta con que sean inalterables?
-        // Los administradores no pueden ser eliminados.
-        // if (usuarioABorrar.get().getRol().getRol().equals("ADMIN")) {
-        // modelo.addAttribute("titulo",
-        // " - Error al borrar usuario - ");
-        // modelo.addAttribute("mensaje",
-        // "El usuario de tipo 'Administrador' no puede ser eliminado ");
-        // return "error";
-        // }
-
-        // Los vendedores con anuncios publicados no pueden ser eliminados. (Nota:
-        // activar después de la asignación de anuncios al usuario)
-        // if (usuarioABorrar.get().getAnunciosEnVenta().size() > 0) {
-        // modelo.addAttribute("titulo",
-        // " - Error al borrar usuario - ");
-        // modelo.addAttribute("mensaje",
-        // "El usuario tiene anuncios publicados. "
-        // + "Elimine los anuncios antes de borrar el usuario.");
-        // return "error";
-        // }
-
         // Los usuarios inalterables (administradores) no pueden ser eliminados.
         if (usuarioABorrar.get().getInalterable()) {
             modelo.addAttribute("titulo",
@@ -324,18 +345,15 @@ public class ControllerUsuarios {
         }
 
         try {
-            modelo.addAttribute("usuario", usuarioABorrar.get());
-            modelo.addAttribute("titulo",
-                    " - El usuario ha sido eliminado - ");
             // Eliminar el usuario:
             repoUsuario.delete(usuarioABorrar.get());
-            
+
         } catch (Exception e) {
             modelo.addAttribute("titulo",
                     " - Error al borrar usuario - ");
+            // Todo: Mensaje para debugger. Modificar para eliminar información sensible.
             modelo.addAttribute("mensaje",
-                    "El usuario tiene anuncios publicados. "
-                            + "Elimine los anuncios antes de borrar el usuario.");
+                    " - Atención: " + e.getMessage() + " - ");
             return "error";
         }
         return "redirect:/usuarios";

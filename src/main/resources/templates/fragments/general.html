@@ -21,7 +21,7 @@
             <!-- Barra de navegación -->
             <nav sec:authorize="hasAuthority('ADMIN')" class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">INMOJAEN - ADMINISTRADOR</a>
+                    <a class="navbar-brand" href="#"> &nbsp; <i class="fa-solid fa-screwdriver-wrench"></i> <i> ADMIN </i> </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdm"
                         aria-controls="navbarAdm" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -30,7 +30,7 @@
                         <!-- Lista de botones de la barra de navegación -->
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="/"><i class="fa-solid fa-circle-user"></i> Inicio</a>
+                                <a class="nav-link" href="/"><i class="fa-solid fa-circle-user"></i> Info</a>
                             </li>
 
                             <!-- Usuarios -->
@@ -62,7 +62,8 @@
                                 </ul>
                             </li> -->
                             <li class="nav-item">
-                                <a class="nav-link" href="/anuncios"><i class="fa-solid fa-house-chimney"></i> Anuncios </a>
+                                <a class="nav-link" href="/anuncios"><i class="fa-solid fa-house-chimney"></i> Anuncios
+                                </a>
                             </li>
 
                             <!-- Páginas apoyo extra -->
@@ -70,16 +71,19 @@
                                 <a class="nav-link" href="/help"><i class="fa-solid fa-circle-question"></i> Ayuda </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/about"><i class="fa-solid fa-circle-info"></i> Sobre esta Web </a>
+                                <a class="nav-link" href="/about"><i class="fa-solid fa-circle-info"></i> Sobre esta Web
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-danger" href="/logout"><i class="fa-solid fa-user-slash text-danger"></i> Cerrar Sesión </a>
+                                <a class="nav-link text-danger" href="/logout"><i
+                                        class="fa-solid fa-user-slash text-danger"></i> Cerrar Sesión </a>
                             </li>
                         </ul>
                         <form class="d-flex" role="search">
                             <input class="form-control me-2" type="search" placeholder="Escribir búsqueda..."
                                 aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit"><i class="fa-sharp-duotone fa-solid fa-magnifying-glass"></i></button>
+                            <button class="btn btn-outline-success" type="submit"><i
+                                    class="fa-sharp-duotone fa-solid fa-magnifying-glass"></i></button>
                         </form>
                     </div>
                 </div>
@@ -87,35 +91,51 @@
 
             <!-- Seller - Vendedor -->
             <!-- Barra de navegación -->
-            <nav sec:authorize="hasAuthority('SELLER')" class="navbar navbar-expand-lg bg-body-tertiary">
+            <nav sec:authorize="hasAuthority('SELLER')" class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSel"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        aria-controls="navbarSel" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="collapse navbar-collapse" id="navbarSel">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                                <a class="nav-link" href="/"><i class="fa-solid fa-circle-user"></i> ¡Hola, [[${#authentication.name}]]!</a>
+                            </li>
+                            <!-- Lista de anuncios - seller  -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/anuncios"> <i class="fa-solid fa-house-user"></i> Mis anuncios
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
+                                <a class="nav-link" href="/publicar"><i class="fa-solid fa-house"></i><i class="fa-solid fa-plus"></i> Publicar anuncio </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/perfil"><i class="fa-solid fa-user"></i> Mi perfil
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/anuncios"><i class="fa-solid fa-house-chimney"></i> Lista de anuncios
+                                </a>
                             </li>
                             <!-- Páginas apoyo extra -->
                             <li class="nav-item">
-                                <a class="nav-link" href="/help"></i>Ayuda</a>
+                                <a class="nav-link" href="/help"><i class="fa-solid fa-circle-question"></i> Ayuda </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/about">Sobre esta Web</a>
+                                <a class="nav-link" href="/about"><i class="fa-solid fa-circle-info"></i> Sobre esta Web
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/logout">Cerrar Sesión</a>
+                                <a class="nav-link text-danger" href="/logout"><i
+                                        class="fa-solid fa-user-slash text-danger"></i> Cerrar Sesión </a>
                             </li>
                         </ul>
                         <form class="d-flex" role="search">
                             <input class="form-control me-2" type="search" placeholder="Escribir búsqueda..."
                                 aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit"><i class="fa-sharp-duotone fa-solid fa-magnifying-glass"></i></button>
+                            <button class="btn btn-outline-success" type="submit"><i
+                                    class="fa-sharp-duotone fa-solid fa-magnifying-glass"></i></button>
                         </form>
                     </div>
                 </div>
@@ -123,38 +143,51 @@
 
             <!-- Buyer - Comprador -->
             <!-- Barra de navegación -->
-            <nav sec:authorize="hasAuthority('BUYER')" class="navbar navbar-expand-lg bg-body-tertiary"></nav>
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarBuy"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <!-- Páginas apoyo extra -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="/help"></i>Ayuda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/about">Sobre esta Web</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/logout">Cerrar Sesión</a>
-                        </li>
-                    </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Escribir búsqueda..."
-                            aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit"><i class="fa-sharp-duotone fa-solid fa-magnifying-glass"></i></button>
-                    </form>
+            <nav sec:authorize="hasAuthority('BUYER')" class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarBuy"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/"><i class="fa-solid fa-circle-user"></i> Inicio</a>
+                            </li>
+                            <!-- Lista de anuncios - buyer  -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/anuncios"><i class="fa-solid fa-house-chimney"></i> Todos los anuncios
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/favoritos"><i class="fa-solid fa-heart"></i> Mis favoritos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/perfil"><i class="fa-solid fa-user"></i> Mi perfil
+                                </a>
+                            </li>
+                            <!-- Páginas apoyo extra -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/help"><i class="fa-solid fa-circle-question"></i> Ayuda </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about"><i class="fa-solid fa-circle-info"></i> Sobre esta Web
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-danger" href="/logout"><i
+                                        class="fa-solid fa-user-slash text-danger"></i> Cerrar Sesión </a>
+                            </li>
+                        </ul>
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Escribir búsqueda..."
+                                aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit"><i
+                                    class="fa-sharp-duotone fa-solid fa-magnifying-glass"></i></button>
+                        </form>
+                    </div>
                 </div>
-            </div>
             </nav>
 
         </div>

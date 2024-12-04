@@ -15,15 +15,35 @@
             <div class="card m-4 text-center" style="width:inherit;">
                 <picture>
                     <!-- <img src="/img/inmojaen.jpg" class="card-img-top" alt="logo"> -->
-                    <img th:src="@{/img/IJmax.jpg}" class="card-img-top img-fluid rounded" 
-                    alt="logo" style="max-width: 300px; border: 2px solid #ddd;">
+                    <img th:src="@{/img/IJmax.jpg}" class="card-img-top img-fluid rounded" alt="logo"
+                        style="max-width: 300px; border: 2px solid #ddd;">
                 </picture>
                 <div class="card-body">
-                    <h5 class="card-title"><i>¿Buscas tu hogar?</i></h5>
+                    <h5 class="card-title mt-3" sec:authorize="isAuthenticated()">
+                        <i>Perfil registrado: </i><br>
+                    </h5>
+                    <h5 class="card-title mt-3" sec:authorize="isAnonymous()">
+                        <i>¡Bienvenido!<br> <i class="fa-solid fa-user-lock"></i> <br> - Inicia Sesión o continua como Invitado - </i>
+                    </h5>
                     <p sec:authorize="hasAuthority('ADMIN')">
-                        <b><i> <i class="fa-solid fa-circle-user"></i> - ADMINISTRADOR </i></b>
+                        <b><i> ADMINISTRADOR - <span sec:authentication="name"></span></i></b><br>
+                        <i> # ATENCION: No olvide cerrar la sesión al terminar # </i>
                     </p>
-                    <a sec:authorize="isAnonymous()" href="/login" class="btn btn-success">ENTRAR</a>
+                    <p sec:authorize="hasAuthority('SELLER')">
+                        <b><i> <i class="fa-solid fa-circle-user"></i> USUARIO - </i></b>
+                        <b> Nombre de usuario: <span sec:authentication="name"></span> </b> <br><br>
+                        <i> Usuario PREMIUM </i>
+                        <br>
+                    </p>
+                    <p sec:authorize="hasAuthority('BUYER')">
+                        <b><i> <i class="fa-solid fa-circle-user"></i> COMPRADOR - </i></b>
+                        <b> Nombre de usuario: <span sec:authentication="name"></span> </b> <br><br>
+                        <i> Usuario GRATUITO </i>
+                        <br>
+                    </p>
+                    <a sec:authorize="isAuthenticated()" href="/logout" class="btn btn-danger"><i class="fa-solid fa-user-slash"></i> Cerrar Sesión</a>
+                    <a sec:authorize="isAnonymous()" href="/login" class="btn btn-success mt-3"> <i class="fa-solid fa-user-shield"></i> LOGIN</a>&nbsp;&nbsp;
+                    <a sec:authorize="isAnonymous()" href="/invitado" class="btn btn-secondary mt-3"> <i class="fa-solid fa-user-clock"></i> INVITADO</a>
                 </div>
             </div>
         </div>

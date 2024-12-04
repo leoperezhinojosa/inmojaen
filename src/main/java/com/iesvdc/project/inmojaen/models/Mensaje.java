@@ -7,7 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,9 +26,11 @@ public class Mensaje {
     private Boolean enviado;
     private Boolean recibido;
     private Boolean borrado;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "emisor_id")
     private Usuario emisor;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "receptor_id")
     private Usuario receptor;
     private Boolean bloqueado;
 }

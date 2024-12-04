@@ -15,7 +15,8 @@
             <h4 class="text-center">Editar usuario <i class="fa-solid fa-user-pen"></i></h4>
         </div>
         <div class="card-body">
-            <form class="row" th:action="@{/usuarios/add}" th:object="${usuario}" method="post">
+            <form class="row" th:action="@{/usuarios/edit}" th:object="${usuario}" method="post">
+                <input type="hidden" name="id" th:field="*{id}">
                 <div class="mb-3 col-6 text-center">
                     <label class="form-label" for="username"><b>Nombre de Usuario (Único - No se puede cambiar):</b></label>
                     <input class="form-control" th:field="*{username}" disabled />
@@ -34,26 +35,30 @@
                     <input class="form-control" th:field="*{apellidos}" required
                         placeholder="Editar los apellidos del usuario" />
                 </div>
-                <div class="mb-3 col-6 text-center">
+                <div class="mb-3 col-4 text-center">
                     <label class="form-label" for="password"><b>Contraseña:</b></label>
                     <input class="form-control" type="password" th:field="*{password}" required
-                        placeholder="(Contraseña Oculta - Escribir nueva contraseña para completar cambios)" />
+                        placeholder="(Contraseña Oculta - Escribir nueva para cambiar)" />
                 </div>
-                <div class="mb-3 col-6 text-center">
+                <div class="mb-3 col-4 text-center">
                     <label class="form-label" for="telefono"><b>Teléfono:</b></label>
                     <input class="form-control" type="number" th:field="*{telefono}" required
                         placeholder="Editar el teléfono del usuario" />
                 </div>
 
-                <!-- ¿Modificar tipo de usuario (gestores, operarios y clientes) es aceptable? Habilitar si se desea -->
-                <!-- <div class="mb-3 col-6 text-center">
-                    <label class="form-label" for="user" required><b>Modificar Tipo de Usuario: (No disponible)</b></label>
-                    <select th:field="*{roles}" class="form-select" disabled>
-                        <option th:each="rol_user: ${roles}" th:value="${rol_user.id}"
-                            th:text="${rol_user.rol}" th:selected="${rol_user.rol == usuario.rol}">
+                <!-- Debug -->
+                <!-- <pre th:text="${usuario}"></pre> -->
+
+                <div class="mb-3 col-4 text-center">
+                    <label class="form-label" for="rol"><b>Rol del Usuario:</b></label>
+                    <select class="form-select" th:field="*{rol.id}" required>
+                        <option th:each="rol: ${roles}" 
+                                th:value="${rol.id}" 
+                                th:text="${rol.rol}" 
+                                th:selected="${rol.id == rolId}">
                         </option>
                     </select>
-                </div> -->
+                </div>
                 
                 <div class="text-center mt-3">
                     <button class="btn btn-lg btn-success mt-3" type="submit">Aceptar cambios <i class="fa-solid fa-check"></i> </button>
@@ -64,6 +69,9 @@
                     <a class="btn btn-lg btn-primary mt-3" href="/usuarios" type="submit">Volver a Usuarios <i class="fa-solid fa-rotate-left"></i> </a>
                 </div>
             </form>
+
+            
+
         </div>
     </div>
 </div>

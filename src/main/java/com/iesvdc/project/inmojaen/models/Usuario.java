@@ -20,9 +20,9 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
     private String nombre;
@@ -34,7 +34,12 @@ public class Usuario {
     @OneToMany
     private List<Anuncio> anunciosEnVenta;
     @OneToMany
+    @JoinColumn(name = "usuario_id")
     private List<Anuncio> anunciosFavoritos;
+    @OneToMany (mappedBy = "emisor")
+    private List<Mensaje> mensajesByEmisor;
+    @OneToMany (mappedBy = "receptor")
+    private List<Mensaje> mensajesByReceptor;
     private Boolean premium;
     private Boolean inalterable;
     private Boolean enabled;

@@ -1,5 +1,6 @@
 package com.iesvdc.project.inmojaen.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.iesvdc.project.inmojaen.models.Anuncio;
 import com.iesvdc.project.inmojaen.models.Usuario;
 import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
+import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 
 import lombok.NonNull;
 
@@ -33,6 +35,9 @@ public class ControllerAnuncios {
 
     @Autowired
     private RepoAnuncio repoAnuncio;
+
+    @Autowired
+    private RepoUsuario repoUsuario;
 
     /**
      * Endpoint: /anuncios/ (GET)
@@ -89,6 +94,8 @@ public class ControllerAnuncios {
      */
     @GetMapping("/add")
     public String addAdvertisementForm(Model modelo) {
+        List<Usuario> usuarios = repoUsuario.findAll();
+        modelo.addAttribute("usuarios", usuarios);
         modelo.addAttribute("anuncio", new Anuncio());
         return "anuncios/add";
     }
@@ -102,8 +109,16 @@ public class ControllerAnuncios {
      */
     @PostMapping("/add")
     public String addAdvertisement(
-            @ModelAttribute("anuncio") @NonNull Anuncio anuncio) {
+            @ModelAttribute("anuncio") @NonNull Anuncio anuncio, 
+            @RequestParam("id_usuario") @NonNull Long idUsuario) {
         // Actualizar la lista de anuncios con el nuevo anuncio.
+        anuncio.setActivo(true);
+        anuncio.setFechaPublicacion(LocalDate.now());
+        anuncio.setVendido(false);
+        anuncio.setReservado(false);
+        anuncio.setVisto(false);
+        // Asegura que el usuario exista, de lo contrario lanza una excepción. ¿Cambiar a un Optional?
+        anuncio.setUsuario(repoUsuario.findById(idUsuario).orElseThrow(() -> new RuntimeException("El usuario no existe")));
         repoAnuncio.save(anuncio);
         return "redirect:/anuncios";
     }
@@ -127,6 +142,8 @@ public class ControllerAnuncios {
                     " - Atención: El anuncio con ID " + id + " no existe - ");
             return "error";
         } else {
+            List<Usuario> usuarios = repoUsuario.findAll();
+            modelo.addAttribute("usuarios", usuarios);
             modelo.addAttribute("anuncio", anuncioAEditar.get());
         }
 

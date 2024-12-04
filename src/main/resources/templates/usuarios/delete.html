@@ -15,8 +15,9 @@
             </div>
             <div class="card-body">
                 <!-- <form class="row" th:action="@{/usuarios/delete}+${usuario.id}" th:object="${usuario}" method="post"> -->
-                <form class="row" th:action="|/usuarios/delete/${usuario.id}|" th:object="${usuario}" method="post">
-                    <!-- <input type="hidden" th:field="*{id}" /> -->
+                <form class="row" th:action="@{/usuarios/delete}" th:object="${usuario}" method="post">
+                    <input type="hidden" th:field="*{id}" />
+                    <input type="hidden" th:field="*{username}" />
                     <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="username"><b>Nombre de Usuario:</b></label>
                         <input class="form-control" th:field="*{username}" disabled />

@@ -16,18 +16,18 @@
             <div class="card-body">
                 <form class="row" th:action="@{/anuncios/add}" th:object="${anuncio}" method="post">
                     
-                    <div class="mb-3 col-6 text-center">
+                    <div class="mb-3 col-4 text-center">
                         <label class="form-label" for="titulo"><b>Título:</b></label>
                         <input class="form-control" th:field="*{titulo}" required
                             placeholder="Escribir el Título del Anuncio" />
                     </div>
-                    <div class="mb-3 col-6 text-center">
+                    <div class="mb-3 col-8 text-center">
                         <label class="form-label" for="descripcion"><b>Descripción:</b></label>
                         <input class="form-control" th:field="*{descripcion}" required
                             placeholder="Escribir una descripción detallada del inmueble" />
                     </div>
-                    <div class="mb-3 col-6 text-center">
-                        <label class="form-label" for="precio"><b>Precio:</b></label>
+                    <div class="mb-3 col-2 text-center">
+                        <label class="form-label" for="precio"><b>Precio de venta:</b></label>
                         <input class="form-control" type="number" th:field="*{precio}" required
                             placeholder="Precio de venta del inmueble" />
                     </div>
@@ -37,20 +37,33 @@
                         <input class="form-control" type="number" th:field="*{precio}" required
                             placeholder="Precio de alquiler del inmueble" />
                     </div> -->
-                    <div class="mb-3 col-6 text-center">
+                    <div class="mb-3 col-1 text-center">
+                        <label class="form-label" for="habitaciones"><b>Habitaciones:</b></label>
+                        <input class="form-control" type="number" th:field="*{habitaciones}" required
+                            placeholder="Habitaciones disponibles en el inmueble" />
+                    </div>
+                    <div class="mb-3 col-1 text-center">
+                        <label class="form-label" for="banos"><b>Baños:</b></label>
+                        <input class="form-control" type="number" th:field="*{banos}" required
+                            placeholder="Baños disponibles en el inmueble" />
+                    </div>
+                    <div class="mb-3 col-2 text-center">
                         <label class="form-label" for="superficie"><b>Superficie:</b></label>
                         <input class="form-control" type="number" th:field="*{superficie}" required
                             placeholder="Superficie total del inmueble (m2)" />
                     </div>
                     <div class="mb-3 col-6 text-center">
-                        <label class="form-label" for="banos"><b>Baños:</b></label>
-                        <input class="form-control" type="number" th:field="*{banos}" required
-                            placeholder="Baños disponibles en el inmueble" />
-                    </div>
-                    <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="direccion"><b>Dirección:</b></label>
                         <input class="form-control" th:field="*{direccion}" required
                             placeholder="Dirección del inmueble (Indicar zona o calle, no dirección exacta)" />
+                    </div>
+                    
+                    <!-- Escoger usuario al que pertenece el anuncio -->
+                    <div class="mb-3 col-12 text-center">
+                        <label class="form-label" for="id_usuario" required><b>Seleccionar Usuario Propietario:</b></label>
+                        <select name="id_usuario" id="id_usuario" class="form-select">
+                            <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.username}"></option>
+                        </select>
                     </div>
 
                     <!-- Todo: Escoger tipo de anuncio (Venta, Alquiler) -->
