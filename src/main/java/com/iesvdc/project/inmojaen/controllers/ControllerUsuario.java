@@ -2,15 +2,18 @@ package com.iesvdc.project.inmojaen.controllers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.iesvdc.project.inmojaen.models.Usuario;
-import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 // TODO: Revisar métodos faltantes. ¿Cambiar nombre a "/perfil"?
 
@@ -25,12 +28,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @RequestMapping("/usuario")
 public class ControllerUsuario {
-    
-    @Autowired
-    private RepoUsuario repoUsuario;
 
     @Autowired
-    private RepoAnuncio repoAnuncio;
+    private RepoUsuario repoUsuario;
 
     /**
      * Método para obtener el usuario que ha iniciado sesión
@@ -43,7 +43,7 @@ public class ControllerUsuario {
     private Usuario getLoggedUser() {
         // Obtención del usuario logueado del contexto de la aplicación.
         Authentication authentication = SecurityContextHolder
-            .getContext().getAuthentication();
+                .getContext().getAuthentication();
         String username = authentication.getName();
         // Obtención del usuario del repositorio por su username:
         Usuario usuario = repoUsuario.findByUsername(username).get(0);
@@ -54,7 +54,7 @@ public class ControllerUsuario {
     /**
      * Endpoint: /usuario/ (GET)
      * Método que obtiene el usuario que ha entrado del contexto
-     * de la aplicación. Este método es un espejo del método 
+     * de la aplicación. Este método es un espejo del método
      * getLoggedUser(), pero con un parámetro.
      * 
      * @param modelo Modelo de la vista.
@@ -68,7 +68,7 @@ public class ControllerUsuario {
 
     /**
      * Endpoint: /usuario/{id} (GET)
-     * Método para obtener el usuario que ha iniciado sesión 
+     * Método para obtener el usuario que ha iniciado sesión
      * desde el contexto de la aplicación. Éste es un espejo
      * del método getLoggedUser(), pero con un parámetro adicional.
      * 
@@ -80,7 +80,17 @@ public class ControllerUsuario {
         return getUser(modelo);
     }
 
-
-    
+    @GetMapping("/usuario/{id}/mensajes")
+    public String obtenerMensajes(@PathVariable Long id, Model model) {
+        Optional<Usuario> usuario = repoUsuario.findById(id);
+        if (usuario.isPresent()) {
+            Usuario user = usuario.get();
+            model.addAttribute("mensajesEnviados", user.getMensajesByEmisor());
+            model.addAttribute("mensajesRecibidos", user.getMensajesByReceptor());
+        } else {
+            model.addAttribute("error", "Usuario no encontrado");
+        }
+        return "mensajes";
+    }
 
 }

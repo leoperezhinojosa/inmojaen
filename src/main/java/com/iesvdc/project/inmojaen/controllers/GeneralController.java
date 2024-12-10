@@ -116,7 +116,7 @@ public class GeneralController {
             usuario.setPremium(premium);
             if (usuario.getPremium()) {
                 usuario.getRol().setId((long) 2);
-                usuario.getRol().setRol("SELLER");
+                usuario.getRol().setRol("USER");
             }
             else {
                 usuario.getRol().setId((long) 3);

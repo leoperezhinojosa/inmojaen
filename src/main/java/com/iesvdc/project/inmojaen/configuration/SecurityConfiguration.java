@@ -47,28 +47,31 @@ public class SecurityConfiguration {
             .authorizeHttpRequests((requests) -> requests
                 // Permitir acceso sin autorización a recursos estáticos y páginas públicas:
                 .requestMatchers(
-                    "/webjars/**", "/img/**", "/js/**", "/css/**", "/static/**", 
+                    "/webjars/**", "/img/**", "/js/**", "/css/**", "/static/**", "/resources/**",
+                    "/", "/invitado", "/invitado/**", "/invitado/*/**", // Rutas públicas
+                    "/uploads/**", // Uploads: acceso público
                     "/register", "/register/**", "/login", 
                     "/public/**", "/public/*/**", "/public/*/*/**", // NEW: Acceso libre para usuarios sin registrar
                     "/help", "/about", "/error")
                 .permitAll()
                 // Configurar acceso según roles:
                 .requestMatchers(
-                    "/admin/**", "/admin/*/**", "/admin/*/*/**", 
+                    "/admin/**", "/admin/*/**", "/admin/*/*/**", // Rutas para administradores
                     "/usuarios/**", "/usuarios/*/**", "/usuarios/*/*/**")
                 // .authenticated()
                 .hasAuthority("ADMIN")
                 .requestMatchers(
-                    "/seller/**", "/seller/*/**", "/seller/*/*/**")
+                    "/user/**", "/user/*/**", "/user/*/*/**") // Rutas para usuarios 
                 // .authenticated()
-                .hasAuthority("SELLER")
-                .requestMatchers(
-                    "/buyer/**", "/buyer/*/**", "/buyer/*/*/**")
+                .hasAuthority("USER")
+                // Usuario PREMIUM: Implementar en el futuro
+                // .requestMatchers( 
+                    // "/premium/**", "/premium/*/**", "/premium/*/*/**")
                 // .authenticated()
-                .hasAuthority("BUYER")
+                // .hasAuthority("PREMIUM")
                 // Escoger si cualquier otra solicitud debe estar autenticada o se permiten todas:
-                .anyRequest().authenticated() 
-                // .anyRequest().permitAll()
+                .anyRequest().authenticated() // Autenticación obligatoria
+                // .anyRequest().permitAll()  // Autenticación opcional
             // ).headers(headers -> headers
                 //         .frameOptions(frameOptions -> frameOptions
                 //                 .sameOrigin())

@@ -2,8 +2,10 @@ package com.iesvdc.project.inmojaen.models;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,14 +33,17 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "rol_id")
     private Rol rol;
-    @OneToMany
+    // @OneToMany(mappedBy = "usuario") // Si anuncios tienen referencia a Usuario
+    @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Anuncio> anunciosEnVenta;
-    @OneToMany
-    @JoinColumn(name = "usuario_id")
-    private List<Anuncio> anunciosFavoritos;
-    @OneToMany (mappedBy = "emisor")
+    // @OneToMany(mappedBy = "usuario") // Si anuncios tienen referencia a Favorito
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Favorito> favoritos;
+    // @OneToMany
+    @OneToMany(mappedBy = "emisor", fetch = FetchType.LAZY) // Vincula con 'emisor' en Mensaje
     private List<Mensaje> mensajesByEmisor;
-    @OneToMany (mappedBy = "receptor")
+    // @OneToMany
+    @OneToMany(mappedBy = "receptor", fetch = FetchType.LAZY) // Vincula con 'receptor' en Mensaje
     private List<Mensaje> mensajesByReceptor;
     private Boolean premium;
     private Boolean inalterable;

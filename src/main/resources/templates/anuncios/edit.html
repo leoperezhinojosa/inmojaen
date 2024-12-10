@@ -12,11 +12,11 @@
     <div th:replace="~{fragments/general.html :: navigation}"> </div>
     <div class="card">
         <div class="card-header">
-            <h4 class="text-center">Editar anuncio <i class="fa-solid fa-house-chimney"></i><i class="fa-solid fa-pen"></i> </h4>
+            <h4 class="text-center"> Editar anuncio <i class="fa-solid fa-house-chimney"></i><i class="fa-solid fa-pen"></i> </h4>
         </div>
         <div class="card-body">
             <form class="row" th:action="@{/anuncios/edit}" th:object="${anuncio}" method="post">
-                <!-- <input th:field="*{anuncio.id}" type="hidden" /> --> <!-- Provoca un error, ¿es necesario? -->
+                <input type="hidden" th:field="*{id}" />
                 <div class="mb-3 col-4 text-center">
                     <label class="form-label" for="titulo"><b>Título:</b></label>
                     <input class="form-control" th:field="*{titulo}" placeholder="Titulo del anuncio" />
@@ -25,19 +25,19 @@
                     <label class="form-label" for="descripcion"><b>Descripcion:</b></label>
                     <input class="form-control" th:field="*{descripcion}" placeholder="Descripcion del anuncio" />
                 </div>
-                <div class="mb-3 col-2 text-center">
+                <div class="mb-3 col-4 text-center">
                     <label class="form-label" for="precio"><b>Precio de venta:</b></label>
                     <input class="form-control" th:field="*{precio}" />
                 </div>
-                <div class="mb-3 col-1 text-center">
+                <div class="mb-3 col-2 text-center">
                     <label class="form-label" for="habitaciones"><b>Habitaciones:</b></label>
                     <input class="form-control" th:field="*{habitaciones}" />
                 </div>
-                <div class="mb-3 col-1 text-center">
+                <div class="mb-3 col-2 text-center">
                     <label class="form-label" for="banos"><b>Baños:</b></label>
                     <input class="form-control" th:field="*{banos}" />
                 </div>
-                <div class="mb-3 col-2 text-center">
+                <div class="mb-3 col-4 text-center">
                     <label class="form-label" for="superficie"><b>Superficie:</b></label>
                     <input class="form-control" th:field="*{superficie}" />
                 </div>
@@ -46,14 +46,14 @@
                     <input class="form-control" th:field="*{direccion}" />
                 </div>
 
-                <!-- ToDo: Cambiar el usuario al que pertenece el anuncio -->
                 <!-- Cambiar el usuario al que pertenece el anuncio -->
-                <!-- <div class="mb-3 col-6 text-center">
+                <div class="mb-3 col-6 text-center">
                     <label class="form-label" for="id_usuario" required><b>Modificar Usuario Propietario:</b></label>
-                    <select name="id_usuario" id="id_usuario" class="form-select">
-                        <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.username}"></option>
+                    <select name="id_usuario" id="id_usuario" class="form-select" required>
+                        <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.username}" 
+                                th:selected="${anuncio.usuario?.id == usuario.id}"></option>
                     </select>
-                </div> -->
+                </div>
 
                 <!-- Todo: Modificar tipo de anuncio (Venta, Alquiler) -->
                     <!-- <div class="mb-3 col-6 text-center">
@@ -70,7 +70,8 @@
                     &nbsp;
                     <button class="btn btn-lg btn-warning mt-3" type="reset">Resetear valores <i class="fa-solid fa-arrow-left"></i> </button>
                     &nbsp;
-                    <!-- Botón de cancelar -->
+                    <a class="btn btn-lg btn-info mt-3" th:href="|/anuncios/images/${anuncio.id}|" type="submit"> Imágenes del anuncio <i class="fa-solid fa-image"></i> </a>
+                    &nbsp;
                     <a class="btn btn-lg btn-primary mt-3" href="/anuncios" type="submit">Volver a Anuncios <i class="fa-solid fa-rotate-left"></i> </a>
                 </div>
             </form>

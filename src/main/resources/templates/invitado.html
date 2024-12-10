@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+    <title>INMOJAEN - Invitado</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+<body>
+    <div th:replace="~{fragments/general.html :: navigation}"> </div>
+    <div class="container">
+        <h1>¡Bienvenido a INMOJAEN!</h1>
+        <p>Estos son los anuncios disponibles para ti:</p>
+        <div>
+            <a href="/login" class="btn btn-primary">Iniciar sesión</a>
+            <a href="/register" class="btn btn-success">Registrarse</a>
+        </div>
+        <!-- Muestra anuncios genéricos -->
+        <div th:each="anuncio : ${anuncios}">
+            <h3 th:text="${anuncio.titulo}"></h3>
+            <p th:text="${anuncio.descripcion}"></p>
+        </div>
+    </div>
+    <div th:replace="~{fragments/general.html :: footer}"></div>
+</body>
+</html>

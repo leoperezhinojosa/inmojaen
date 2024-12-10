@@ -9,55 +9,50 @@
 
 <body>
     <div>
-        <div th:replace="~{fragments/general.html :: navigation}"> </div>
+        <div th:replace="~{fragments/general.html :: navigation}"></div>
         <div class="card">
             <div class="card-header">
-                <h4 class="text-center">INMOJAEN: Borrar Anuncio <i class="fa-solid fa-house"></i> <i class="fa-solid fa-trash"></i> </h4>
+                <h4 class="text-center">INMOJAEN: Borrar Anuncio <i class="fa-solid fa-house"></i> <i class="fa-solid fa-trash"></i></h4>
             </div>
             <div class="card-body">
-                <form class="row" th:action="@{/anuncios/delete}+${anuncio.id}" th:object="${anuncio}" method="post">
-                    <div class="mb-3 col-4 text-center">
-                        <label class="form-label" for="titulo"><b>Título:</b></label>
-                        <input class="form-control" th:field="*{titulo}" placeholder="Titulo del anuncio" disabled />
-                    </div>
-                    <div class="mb-3 col-8 text-center">
-                        <label class="form-label" for="descripcion"><b>Descripcion:</b></label>
-                        <input class="form-control" th:field="*{descripcion}" disabled />
-                    </div>
-                    <div class="mb-3 col-2 text-center">
-                        <label class="form-label" for="precio"><b>Precio de venta:</b></label>
-                        <input class="form-control" th:value="${#numbers.formatDecimal(anuncio.precio, 1, 2) + ' €'}" disabled />
-                    </div>
-                    <div class="mb-3 col-1 text-center">
-                        <label class="form-label" for="habitaciones"><b>Habitaciones:</b></label>
-                        <input class="form-control" th:field="*{habitaciones}" disabled />
-                    </div>
-                    <div class="mb-3 col-1 text-center">
-                        <label class="form-label" for="banos"><b>Baños:</b></label>
-                        <input class="form-control" th:field="*{banos}" disabled />
-                    </div>
-                    <div class="mb-3 col-2 text-center">
-                        <label class="form-label" for="superficie"><b>Superficie:</b></label>
-                        <input class="form-control" th:value="${#numbers.formatDecimal(anuncio.superficie, 1, 0) + ' m&sup2;'}" disabled />
-                    </div>
-                    <div class="mb-3 col-6 text-center">
-                        <label class="form-label" for="direccion"><b>Dirección:</b></label>
-                        <input class="form-control" th:field="*{direccion}" disabled />
-                    </div>
+                <!-- Alerta de advertencia -->
+                <div class="alert alert-danger text-center" role="alert">
+                    <strong>Advertencia:</strong> Esta acción no se puede deshacer. Al borrar un anuncio, se elimina de forma permanente, 
+                    incluyendo toda la información, las imagenes y los mensajes asociados.
+                </div>
+                <!-- Formulario para borrar anuncio -->
+                <form class="row" th:action="@{/anuncios/delete}" th:object="${anuncio}" method="post">
+                    <!-- Campo oculto para enviar el ID -->
+                    <input type="hidden" th:field="*{id}" />
 
-                    
+                    <!-- Detalles básicos del anuncio -->
+                    <div class="mb-3 col-12 text-center">
+                        <label class="form-label" for="titulo"><b>Título:</b></label>
+                        <input class="form-control" th:field="*{titulo}" disabled />
+                    </div>
+                    <div class="mb-3 col-12 text-center">
+                        <label class="form-label" for="descripcion"><b>Descripción:</b></label>
+                        <textarea class="form-control" th:field="*{descripcion}" rows="3" disabled></textarea>
+                    </div>
+                    <div class="mb-3 col-12 text-center">
+                        <label class="form-label" for="usuario.username"><b>Usuario anunciante:</b></label>
+                        <input class="form-control" th:field="*{usuario.username}" disabled />
+                    </div>
+                    <!-- Botones de acción -->
                     <div class="text-center mt-3">
-                        <button class="btn btn-lg btn-danger mt-3" type="submit">Borrar Anuncio <i class="fa-solid fa-trash"></i> </button>
+                        <button class="btn btn-lg btn-danger mt-3" type="submit">
+                            Borrar Anuncio <i class="fa-solid fa-trash"></i>
+                        </button>
                         &nbsp;&nbsp;
-                        <!-- Botón de cancelar -->
-                        <a class="btn btn-lg btn-primary mt-3" href="/anuncios">Cancelar y volver <i class="fa-solid fa-rotate-left"></i> </a>
+                        <a class="btn btn-lg btn-primary mt-3" href="/anuncios">
+                            Cancelar y Volver <i class="fa-solid fa-rotate-left"></i>
+                        </a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <div th:replace="~{fragments/general.html :: footer}"></div>
-    </div>
 </body>
 
 </html>
