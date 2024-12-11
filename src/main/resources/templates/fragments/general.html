@@ -7,8 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Bootstrap original -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
 </head>
 
 <body>
@@ -89,9 +96,9 @@
                 </div>
             </nav>
 
-            <!-- Seller - Vendedor -->
+            <!-- User - Usuario registrado -->
             <!-- Barra de navegación -->
-            <nav sec:authorize="hasAuthority('SELLER')" class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <nav sec:authorize="hasAuthority('USER')" class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSel"
                         aria-controls="navbarSel" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +109,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/"><i class="fa-solid fa-circle-user"></i> ¡Hola, [[${#authentication.name}]]!</a>
                             </li>
-                            <!-- Lista de anuncios - seller  -->
+                            <!-- Lista de anuncios - user  -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/perfil"><i class="fa-solid fa-user"></i> Mi perfil
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/anuncios"> <i class="fa-solid fa-house-user"></i> Mis anuncios
                                 </a>
@@ -111,7 +122,7 @@
                                 <a class="nav-link" href="/publicar"><i class="fa-solid fa-house"></i><i class="fa-solid fa-plus"></i> Publicar anuncio </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/perfil"><i class="fa-solid fa-user"></i> Mi perfil
+                                <a class="nav-link" href="/favoritos"><i class="fa-solid fa-heart"></i> Mis favoritos
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -140,10 +151,64 @@
                     </div>
                 </div>
             </nav>
-
-            <!-- Buyer - Comprador -->
+            
+            <!-- Invitado - Usuario NO registrado -->
             <!-- Barra de navegación -->
-            <nav sec:authorize="hasAuthority('BUYER')" class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <nav sec:authorize="hasAuthority('TEMPORAL')" class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSel"
+                        aria-controls="navbarSel" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSel">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/"><i class="fa-regular fa-circle-xmark"></i><i> Aún no has iniciado sesión </i></a>
+                            </li>
+                            <!-- Lista de anuncios - user  -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/no-registrado"><i class="fa-solid fa-user"></i> Mi perfil
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/favoritos"><i class="fa-solid fa-heart"></i> Favoritos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/anuncios"><i class="fa-solid fa-house-chimney"></i> Lista de anuncios
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/no-registrado"><i class="fa-solid fa-house"></i><i class="fa-solid fa-plus"></i> Publicar anuncio </a>
+                            </li>
+                            <!-- Páginas apoyo extra -->
+                            <li class="nav-item">
+                                <a class="nav-link" href="/help"><i class="fa-solid fa-circle-question"></i> Ayuda </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about"><i class="fa-solid fa-circle-info"></i> Sobre esta Web
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-danger" href="/login"><i
+                                    <i class="fa-solid fa-user-shield text-success"></i> Iniciar Sesión </a>
+                            </li>
+                        </ul>
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Escribir búsqueda..."
+                                aria-label="Search">
+                            <button class="btn btn-outline-success" type="submit"><i
+                                    class="fa-sharp-duotone fa-solid fa-magnifying-glass"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+
+            
+            <!-- Usuario PREMIUM - Implementar en el futuro -->
+            <!-- PREMIUM - Usuario premium -->
+            <!-- Barra de navegación -->
+            <!-- <nav sec:authorize="hasAuthority('PREMIUM')" class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarBuy"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -154,7 +219,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="/"><i class="fa-solid fa-circle-user"></i> Inicio</a>
                             </li>
-                            <!-- Lista de anuncios - buyer  -->
                             <li class="nav-item">
                                 <a class="nav-link" href="/anuncios"><i class="fa-solid fa-house-chimney"></i> Todos los anuncios
                                 </a>
@@ -167,7 +231,6 @@
                                 <a class="nav-link" href="/perfil"><i class="fa-solid fa-user"></i> Mi perfil
                                 </a>
                             </li>
-                            <!-- Páginas apoyo extra -->
                             <li class="nav-item">
                                 <a class="nav-link" href="/help"><i class="fa-solid fa-circle-question"></i> Ayuda </a>
                             </li>
@@ -188,7 +251,7 @@
                         </form>
                     </div>
                 </div>
-            </nav>
+            </nav> -->
 
         </div>
         <div th:fragment="footer">

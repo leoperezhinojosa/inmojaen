@@ -24,25 +24,29 @@
                         <label class="form-label" for="descripcion"><b>Descripcion:</b></label>
                         <input class="form-control" th:field="*{descripcion}" disabled />
                     </div>
-                    <div class="mb-3 col-2 text-center">
+                    <div class="mb-3 col-4 text-center">
                         <label class="form-label" for="precio"><b>Precio de venta:</b></label>
                         <input class="form-control" th:value="${#numbers.formatDecimal(anuncio.precio, 1, 2) + ' €'}" disabled />
                     </div>
-                    <div class="mb-3 col-1 text-center">
+                    <div class="mb-3 col-2 text-center">
                         <label class="form-label" for="habitaciones"><b>Habitaciones:</b></label>
                         <input class="form-control" th:field="*{habitaciones}" disabled />
                     </div>
-                    <div class="mb-3 col-1 text-center">
+                    <div class="mb-3 col-2 text-center">
                         <label class="form-label" for="banos"><b>Baños:</b></label>
                         <input class="form-control" th:field="*{banos}" disabled />
                     </div>
-                    <div class="mb-3 col-2 text-center">
+                    <div class="mb-3 col-4 text-center">
                         <label class="form-label" for="superficie"><b>Superficie:</b></label>
                         <input class="form-control" th:value="${#numbers.formatDecimal(anuncio.superficie, 1, 0) + ' m&sup2;'}" disabled />
                     </div>
                     <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="direccion"><b>Dirección:</b></label>
                         <input class="form-control" th:field="*{direccion}" disabled />
+                    </div>
+                    <div class="mb-3 col-6 text-center">
+                        <label class="form-label" for="vendedor.username"><b>Usuario anunciante:</b></label>
+                        <input class="form-control" th:field="*{vendedor.username}" disabled />
                     </div>
                     
                     <div class="text-center mt-3">
@@ -51,8 +55,9 @@
                     <button class="btn btn-lg btn-warning mt-3" type="reset">Resetear valores</button>
                     &nbsp; -->
                         <!-- Botón de cancelar -->
-                        <a class="btn btn-lg btn-warning mt-3" th:href="|/anuncios/edit/${anuncio.id}|" type="submit">Editar anuncio <i class="fa-solid fa-pen-to-square"></i> </a>&nbsp;
-                        <a class="btn btn-lg btn-primary mt-3" href="/anuncios" type="submit">Volver a Anuncios <i class="fa-solid fa-rotate-left"></i> </a>
+                        <a class="btn btn-lg btn-warning mt-3" th:href="|/anuncios/edit/${anuncio.id}|" type="submit"> Editar anuncio <i class="fa-solid fa-pen-to-square"></i> </a>&nbsp;
+                        <a class="btn btn-lg btn-info mt-3" th:href="|/anuncios/images/${anuncio.id}|" type="submit"> Imágenes del anuncio <i class="fa-solid fa-image"></i> </a>&nbsp;
+                        <a class="btn btn-lg btn-primary mt-3" href="/anuncios" type="submit"> Volver a Anuncios <i class="fa-solid fa-rotate-left"></i> </a>
                     </div>
                 </div>
             </div>

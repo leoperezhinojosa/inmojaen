@@ -23,7 +23,6 @@ import com.iesvdc.project.inmojaen.models.Usuario;
 import com.iesvdc.project.inmojaen.repositories.RepoRol;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.NonNull;
 
 // TODO: Revisar métodos faltantes.
@@ -269,10 +268,11 @@ public class ControllerUsuarios {
             // ToDo - Verificar si el usuario tiene anuncios publicados
             Integer anunciosPublicados = repoUsuario.findById(
                     usuarioABorrar.get().getId()).get().getAnunciosEnVenta().size();
-            Integer mensajesEnviados = repoUsuario.findById(
-                    usuarioABorrar.get().getId()).get().getMensajesByEmisor().size();
-            Integer mensajesRespondidos = repoUsuario.findById(
-                    usuarioABorrar.get().getId()).get().getMensajesByReceptor().size();
+            // ToDo: ¿Esta opción es realmente necesaria? ¿Los mensajes pueden considerarse información sensible?
+            // Integer mensajesEnviados = repoUsuario.findById(
+            //         usuarioABorrar.get().getId()).get().getMensajesByEmisor().size();
+            // Integer mensajesRespondidos = repoUsuario.findById(
+            //         usuarioABorrar.get().getId()).get().getMensajesByReceptor().size();
 
             modelo.addAttribute("usuario", usuarioABorrar.get());
 
@@ -289,18 +289,18 @@ public class ControllerUsuarios {
                 return "error";
             }
 
+            // ToDo: ¿Esta opción es realmente necesaria? ¿Los mensajes pueden considerarse información sensible?
             // Los vendedores con mensajes publicados no pueden ser eliminados.
-            if (mensajesEnviados > 0 || mensajesRespondidos > 0) {
-                modelo.addAttribute("titulo",
-                        " - Error al borrar usuario - ");
-                modelo.addAttribute("mensaje",
-                        "El usuario tiene mensajes publicados. "
-                                + "Elimine los mensajes antes de borrar el usuario.");
-                return "error";
-            }
+            // if (mensajesEnviados > 0 || mensajesRespondidos > 0) {
+            //     modelo.addAttribute("titulo",
+            //             " - Error al borrar usuario - ");
+            //     modelo.addAttribute("mensaje",
+            //             "El usuario tiene mensajes publicados. "
+            //                     + "Elimine los mensajes antes de borrar el usuario.");
+            //     return "error";
+            // }
 
-            // Los usuarios inalterables (con compras, ventas, reservas,
-            // alquileres y/o mensajes realizados) no pueden ser eliminados.
+            // Los usuarios inalterables (administradores) no pueden ser eliminados.
             if (usuarioABorrar.get().getInalterable()) {
                 modelo.addAttribute("titulo",
                         " - Error al borrar usuario: Inalterable - ");

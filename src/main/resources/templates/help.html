@@ -15,14 +15,63 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8 text-center">
-                    <p>Estas son las funcionalidades de la APP:</p>
-                    <p>Selecciona la opción que desees de los menús.
-                        Según el tipo de usuario podrás acceder a unas u otras partes de esta APP.
-                        Si accedes como Usuario Normal(Comprador - Inquilino) dispondrás de las opciones de compra y búsqueda de anuncios.
-                        Si accedes como Usuario Premium(Vendedor - Propietario) dispondrás de las opciones de venta y creación de anuncios.
-                        Están diseñadas para atender tus necesidades.</p>
-                    <p>Si necesitas más información, consulta el manual de usuario.</p>
-                    <p>Si notas algún problema en esta App, por favor, contacta con el administrador.</p>
+                    <!-- <h5>Funcionalidades de la APP:</h5><br> -->
+
+                    <!-- Contenido para usuarios no autenticados -->
+                    <p sec:authorize="isAnonymous()">
+                        <h5>¡Bienvenido a INMOJAEN!</h5><br>
+                        <i>¿Aún no has iniciado sesión? ¿O no te has registrado?</i> <br><br>
+                         Para disfrutar de más funcionalidades, por favor,
+                        <a href="/login">Inicia Sesión</a> o <a href="/register">Regístrate.</a> <br><br>
+                        Podrás guardar y consultar tus favoritos, contactar con vendedores, crear tus propios anuncios,
+                        gestionar tus datos y <b> disfrutar de todas las funcionalidades. </b>
+                        <br><br>
+                        Es un minuto, <b>¡y es GRATIS!</b>
+                    </p>
+
+                    <!-- Contenido para usuarios normales (USER) -->
+                    <p sec:authorize="hasAuthority('USER')">
+                        <h5>¡Bienvenido a INMOJAEN!</h5><br>
+                        Como <b><i>Usuario Registrado</i></b>, disfrutas de <b>todas las funcionalidades:</b> <br><br>
+                        - Creación de anuncios: Publicación de anuncios con todas sus características, y sus imágenes. <br>
+                        - Activar o desactivar tus anuncios (para recuperarlos después), editarlos o eliminarlos. <br>
+                        - Guardar tus anuncios preferidos como favoritos para consultarlos en cualquier momento. <br>
+                        - Contactar con los propietarios de los anuncios para consultar visitas, dudas y negociar. <br>
+                        - Gestión de tus datos personales. Puedes actualizar tus datos y cambiar tu contraseña. <br><br>
+                        Para saber más, consulta el <a href="/uploads/Manual de Usuario.pdf"><b>Manual de Usuario.</b></a><br><br>
+                        Si encuentras problemas técnicos o necesitas ayuda con tus anuncios, por favor, contacta
+                        con el equipo de administración: <br><br>
+                        <a href="https://www.inmojaen.admin.com">www.inmojaen.admin.com</a>
+                    </p>
+
+                    <!-- Contenido para usuarios premium (PREMIUM) (Implementar en el futuro) -->
+                    <!-- <p sec:authorize="hasAuthority('PREMIUM')">
+                        Como usuario premium, tienes acceso a herramientas avanzadas como la creación y gestión de anuncios.
+                        Si necesitas ayuda adicional, consulta el manual de usuario o contacta al administrador.
+                    </p> -->
+
+                    <!-- Contenido para administradores -->
+                    <p sec:authorize="hasAuthority('ADMIN')">
+                        Como <b>Administrador</b> tienes acceso a todas las herramientas de gestión.
+                        Puedes gestionar usuarios, anuncios y mensajes.
+                        Recuerda que al borrar cualquiera de estos, se perderán los datos permanentemente.
+                        <br><br>
+                        <i><u> Algunos detalles importantes: </u></i> <br><br>
+                        - Los anuncios se muestran en orden descendente de fecha de publicación. <br>
+                        - Al crear un usuario, <b>'username'</b> y <b>'email'</b> son únicos y no pueden estar ya
+                        registrados. <br>
+                        - Al crear un anuncio, deben proporcionarse todos los detalles necesarios. Pueden incluirse
+                        hasta 10 imagenes. <br>
+                        - Para <b>bloquear / desbloquear</b> el acceso de un usuario, anuncio o mensaje,
+                        utilizar su botón correspondiente de <b>'Activar' / 'Desactivar'.</b>
+                        <br><br>
+                        Para saber más, consulta el <a href="/uploads/Manual de Usuario.pdf"><b>manual de
+                                usuario.</b></a>
+                        <br><br>
+                        Si encuentras problemas técnicos o necesitas realizar cambios importantes, por favor, contacta
+                        al equipo de soporte: <br>
+                        <a href="https://www.inmojaen.support.com">www.inmojaen.support.com</a>
+                    </p>
                 </div>
             </div>
         </div>

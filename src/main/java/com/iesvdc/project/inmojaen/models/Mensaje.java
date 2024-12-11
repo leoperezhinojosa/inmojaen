@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,11 +27,13 @@ public class Mensaje {
     private Boolean enviado;
     private Boolean recibido;
     private Boolean borrado;
-    @ManyToOne
-    @JoinColumn(name = "emisor_id")
+    // @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "emisor_id") // Vincula con Usuario (Emisor)
     private Usuario emisor;
-    @ManyToOne
-    @JoinColumn(name = "receptor_id")
+    // @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receptor_id") // Vincula con Usuario (Receptor)
     private Usuario receptor;
     private Boolean bloqueado;
 }

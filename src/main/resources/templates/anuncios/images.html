@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>INMOJAÉN - Imágenes de Anuncio </title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+    <div>
+        <div th:replace="~{fragments/general.html :: navigation}"> </div>
+    
+        <hr>
+        <h3 class="h3 text-center"> INMOJAÉN - Imágenes del Anuncio: <i>'[[${anuncio.titulo}]]'</i> <i class="fa-solid fa-house-chimney"></i></h3>
+        <hr>
+
+        <div id="carouselExampleIndicators" class="carousel slide w-50" data-bs-ride="carousel">
+            <!-- Indicadores -->
+            <div class="carousel-indicators">
+                <th:block th:each="imagen, index : ${imagenes}">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="[[${index.index}]]" th:classappend="${index.index == 0} ? 'active'" aria-current="true" aria-label="Slide [[${index.index + 1}]]"></button>
+                </th:block>
+            </div>
+        
+            <!-- Carrusel -->
+            <div class="carousel-inner">
+                <th:block th:each="imagen, index : ${imagenes}">
+                    <div th:class="'carousel-item ' + (${index.index == 0} ? 'active' : '')">
+                        <img th:src="'http://localhost:8080/' + ${imagen.url}" class="d-block w-100" alt="Imagen ${index.index + 1}">
+                    </div>
+                </th:block>
+            </div>
+        
+            <!-- Controles de navegación -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+        
+        <div class="text-center mt-3">
+            <a class="btn btn-lg btn-warning mt-3" th:href="|/anuncios/edit/${anuncio.id}|" type="submit"> Editar imágenes <i class="fa-solid fa-pen-to-square"></i> <i class="fa-regular fa-image"></i> </a>&nbsp;
+            <a class="btn btn-lg btn-success mt-3" th:href="|/anuncios/images/${anuncio.id}|" type="submit"> Subir nueva imagen <i class="fa-solid fa-plus"></i> <i class="fa-regular fa-image"></i> </a>&nbsp;
+            <a class="btn btn-lg btn-primary mt-3" href="/anuncios" type="submit"> Volver a Anuncios <i class="fa-solid fa-rotate-left"></i> </a>
+        </div>
+        <div th:replace="~{fragments/general.html :: footer}"> </div>
+    </div>
+</body>
+
+</html>

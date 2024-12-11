@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.iesvdc.project.inmojaen.models.Anuncio;
+import com.iesvdc.project.inmojaen.models.Imagen;
 import com.iesvdc.project.inmojaen.models.Usuario;
 import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
@@ -109,7 +110,7 @@ public class ControllerAnuncios {
      */
     @PostMapping("/add")
     public String addAdvertisement(
-            @ModelAttribute("anuncio") @NonNull Anuncio anuncio, 
+            @ModelAttribute("anuncio") @NonNull Anuncio anuncio,
             @RequestParam("id_usuario") @NonNull Long idUsuario) {
         // Actualizar la lista de anuncios con el nuevo anuncio.
         anuncio.setActivo(true);
@@ -117,8 +118,10 @@ public class ControllerAnuncios {
         anuncio.setVendido(false);
         anuncio.setReservado(false);
         anuncio.setVisto(false);
-        // Asegura que el usuario exista, de lo contrario lanza una excepción. ¿Cambiar a un Optional?
-        anuncio.setUsuario(repoUsuario.findById(idUsuario).orElseThrow(() -> new RuntimeException("El usuario no existe")));
+        // Asegura que el usuario exista, de lo contrario lanza una excepción. ¿Cambiar
+        // a un Optional?
+        anuncio.setVendedor(
+                repoUsuario.findById(idUsuario).orElseThrow(() -> new RuntimeException("El usuario no existe")));
         repoAnuncio.save(anuncio);
         return "redirect:/anuncios";
     }
@@ -127,14 +130,16 @@ public class ControllerAnuncios {
      * Endpoint: /anuncios/edit/{id} (GET)
      * Muestra el formulario para editar un anuncio.
      * 
-     * @param modelo Modelo de la vista.
-     * @param id     ID del anuncio a editar.
+     * @param modelo  Modelo de la vista.
+     * @param usuario Usuario del anuncio a editar.
+     * @param id      ID del anuncio a editar.
      * @return Vista de edición del anuncio.
      */
     @GetMapping("/edit/{id}")
     public String editAdvertisementForm(
             Model modelo, @PathVariable("id") Long id) {
         Optional<Anuncio> anuncioAEditar = repoAnuncio.findById(id);
+        Optional<Usuario> usuario = repoUsuario.findById(id);
         if (!anuncioAEditar.isPresent()) {
             modelo.addAttribute("titulo",
                     " - Error al editar anuncio - ");
@@ -143,6 +148,7 @@ public class ControllerAnuncios {
             return "error";
         } else {
             List<Usuario> usuarios = repoUsuario.findAll();
+            modelo.addAttribute("usuario", usuario);
             modelo.addAttribute("usuarios", usuarios);
             modelo.addAttribute("anuncio", anuncioAEditar.get());
         }
@@ -159,9 +165,30 @@ public class ControllerAnuncios {
      */
     @PostMapping("/edit")
     public String editAdvertisement(
-            @ModelAttribute("anuncio") @NonNull Anuncio anuncio) {
-        // Actualizar la lista de anuncios con el anuncio editado.
-        repoAnuncio.save(anuncio);
+            @ModelAttribute("anuncio") @NonNull Anuncio anuncio,
+            @RequestParam("id_usuario") Long idUsuario) {
+
+        // Validar que el anuncio ya existe en la base de datos
+        Anuncio anuncioExistente = repoAnuncio.findById(anuncio.getId())
+                .orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
+
+        // Buscar el usuario por el ID proporcionado
+        Usuario usuario = repoUsuario.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Actualizar los campos del anuncio existente
+        anuncioExistente.setTitulo(anuncio.getTitulo());
+        anuncioExistente.setDescripcion(anuncio.getDescripcion());
+        anuncioExistente.setPrecio(anuncio.getPrecio());
+        anuncioExistente.setHabitaciones(anuncio.getHabitaciones());
+        anuncioExistente.setBanos(anuncio.getBanos());
+        anuncioExistente.setSuperficie(anuncio.getSuperficie());
+        anuncioExistente.setDireccion(anuncio.getDireccion());
+        anuncioExistente.setVendedor(usuario);
+
+        // Guardar el anuncio actualizado
+        repoAnuncio.save(anuncioExistente);
+
         return "redirect:/anuncios";
     }
 
@@ -222,10 +249,16 @@ public class ControllerAnuncios {
                 modelo.addAttribute("mensaje",
                         " - Atención: El anuncio con ID " + id + " no puede eliminarse - ");
                 return "error";
-            } else {
                 // Eliminar el anuncio de la base de datos.
-                modelo.addAttribute("anuncio", anuncioAEliminar.get());
-                repoAnuncio.delete(anuncioAEliminar.get());
+            } else {
+                try {
+                    modelo.addAttribute("anuncio", anuncioAEliminar.get());
+                    repoAnuncio.delete(anuncioAEliminar.get());
+                } catch (Exception e) {
+                    modelo.addAttribute("titulo", "Error al eliminar anuncio");
+                    modelo.addAttribute("mensaje", "No se pudo eliminar el anuncio. Razón: " + e.getMessage());
+                    return "error";
+                }
             }
         }
         return "redirect:/anuncios";
@@ -259,4 +292,26 @@ public class ControllerAnuncios {
         return "redirect:/anuncios";
     }
 
+    /**
+     * Endpoint: /images/{id} (GET)
+     * Muestra una página con las imágenes asociadas a un anuncio.
+     * 
+     * @param id Identificador del anuncio.
+     * @return Imagen asociada al anuncio.
+     */
+    @GetMapping("/images/{id}")
+    public String getImages(Model modelo, @PathVariable("id") @NonNull Long id) {
+        Optional<Anuncio> anuncio = repoAnuncio.findById(id);
+        if (!anuncio.isPresent()) {
+            modelo.addAttribute("titulo", "Error al mostrar anuncio");
+            modelo.addAttribute("mensaje", "El anuncio con el id " + id + " no existe");
+            return "error";
+        } else {
+            List<Imagen> imagenes = anuncio.get().getImagenes();
+            System.out.println("Imágenes asociadas: " + imagenes); // Verifica si aparecen las rutas correctas
+            modelo.addAttribute("anuncio", anuncio.get());
+            modelo.addAttribute("imagenes", imagenes); // Asegúrate de tener un método getImagenes()
+            return "anuncios/images";
+        }
+    }
 }
