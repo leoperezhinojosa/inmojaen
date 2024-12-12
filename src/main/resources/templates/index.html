@@ -19,14 +19,16 @@
                         style="max-width: 300px; border: 2px solid #ddd;">
                 </picture>
                 <div class="card-body">
-                    <h5 class="card-title mt-3" sec:authorize="isAuthenticated()">
-                        <i>Perfil registrado: </i><br>
+                    <h5 class="card-title m-1" sec:authorize="isAuthenticated()">
+                        <b>Perfil registrado: </b>
+                        <hr>
                     </h5>
-                    <h5 class="card-title mt-3" sec:authorize="isAnonymous()">
-                        <i>¡Bienvenido!<br> <i class="fa-solid fa-user-lock"></i> <br> - Inicia Sesión o continua como Invitado - </i>
+                    <h5 class="display-6 mt-3" sec:authorize="isAnonymous()">
+                        ¡Bienvenido!
+                        <hr> <i class="fa-solid fa-user-lock"></i> - Inicia Sesión o entra como Invitado
                     </h5>
                     <p sec:authorize="hasAuthority('ADMIN')">
-                        <b><i> ADMINISTRADOR - <span sec:authentication="name"></span></i></b><br>
+                        <b> ADMINISTRADOR - <span sec:authentication="name"></span></b><br>
                         <i> # ATENCION: No olvide cerrar la sesión al terminar # </i>
                     </p>
                     <p sec:authorize="hasAuthority('USER')">
@@ -42,15 +44,17 @@
                         <i> Usuario Premium </i>
                         <br>
                     </p> -->
-                    <a sec:authorize="isAuthenticated()" href="/logout" class="btn btn-lg btn-danger"><i class="fa-solid fa-user-slash"></i> Cerrar Sesión</a>
-                    <a sec:authorize="isAnonymous()" href="/login" class="btn btn-lg btn-success mt-3"> <i class="fa-solid fa-user-shield"></i> Iniciar Sesión </a>&nbsp;&nbsp;
-                    <a sec:authorize="isAnonymous()" href="/invitado" class="btn btn-lg btn-secondary mt-3"> <i class="fa-solid fa-user-clock"></i> Entrar como INVITADO </a>
+                    <a sec:authorize="isAuthenticated()" href="/logout" class="btn btn-danger"><i
+                            class="fa-solid fa-user-slash"></i> Cerrar Sesión</a>
+                    <a sec:authorize="isAnonymous()" href="/login" class="btn btn-lg btn-success mt-3"> <i
+                            class="fa-solid fa-user-shield"></i> Iniciar Sesión </a>&nbsp;&nbsp;
+                    <a sec:authorize="isAnonymous()" href="/invitado" class="btn btn-lg btn-secondary mt-3"> <i
+                            class="fa-solid fa-user-clock"></i> Entrar como INVITADO </a>
                 </div>
             </div>
         </div>
-
-        <div th:replace="~{fragments/general.html :: footer}"></div>
     </div>
+    <div th:replace="~{fragments/general.html :: footer}"></div>
 </body>
 
 </html>

@@ -10,16 +10,16 @@
     <div>
         <div th:replace="~{fragments/general.html :: navigation}"> </div>
         <hr>
-        <h4 class="h4 text-center"><i class="fa-solid fa-circle-question"></i> - AYUDA DE LA APLICACIÓN - </h4>
+        <h4 class="h4 text-center"><i class="fa-solid fa-circle-question"></i> - AYUDA DE LA APLICACIÓN </h4>
         <hr>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8 text-center">
-                    <!-- <h5>Funcionalidades de la APP:</h5><br> -->
-
-                    <!-- Contenido para usuarios no autenticados -->
-                    <p sec:authorize="isAnonymous()">
-                        <h5>¡Bienvenido a INMOJAEN!</h5><br>
+                    <!-- Mensaje común para todos los usuarios: -->
+                    <h5>¡Bienvenida/o a INMOJAEN!</h5><br>
+                    
+                    <!-- Contenido para usuarios no autenticados con rol temporal (TEMPORAL) -->
+                    <p sec:authorize="hasAuthority('TEMPORAL')">
                         <i>¿Aún no has iniciado sesión? ¿O no te has registrado?</i> <br><br>
                          Para disfrutar de más funcionalidades, por favor,
                         <a href="/login">Inicia Sesión</a> o <a href="/register">Regístrate.</a> <br><br>
@@ -31,7 +31,6 @@
 
                     <!-- Contenido para usuarios normales (USER) -->
                     <p sec:authorize="hasAuthority('USER')">
-                        <h5>¡Bienvenido a INMOJAEN!</h5><br>
                         Como <b><i>Usuario Registrado</i></b>, disfrutas de <b>todas las funcionalidades:</b> <br><br>
                         - Creación de anuncios: Publicación de anuncios con todas sus características, y sus imágenes. <br>
                         - Activar o desactivar tus anuncios (para recuperarlos después), editarlos o eliminarlos. <br>
@@ -54,7 +53,7 @@
                     <p sec:authorize="hasAuthority('ADMIN')">
                         Como <b>Administrador</b> tienes acceso a todas las herramientas de gestión.
                         Puedes gestionar usuarios, anuncios y mensajes.
-                        Recuerda que al borrar cualquiera de estos, se perderán los datos permanentemente.
+                        Recuerda que, al borrar cualquiera de estos, se perderán los datos permanentemente.
                         <br><br>
                         <i><u> Algunos detalles importantes: </u></i> <br><br>
                         - Los anuncios se muestran en orden descendente de fecha de publicación. <br>

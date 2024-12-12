@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <title>INMOJAEN: Anuncios del usuario</title>
+  <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+
+  <div th:replace="~{fragments/general.html :: navigation}"></div>
+  <hr>
+  <h3 class="h3 text-center">Anuncios publicados por el usuario <i> [[${usuario.username}]] </i> <i class="fa-solid fa-user"></i> <i class="fa-solid fa-house-chimney"></i></h3>
+  <hr>
+  
+  <div class="container">
+    <table class="table table-striped"> <!-- table-hover> -->
+      <thead>
+        <!-- <div class="d-grid gap-1">
+          <a class="btn btn-success btn-lg" th:href="@{/anuncios/add}">Publicar nuevo anuncio <i class="fa-solid fa-house"></i> <i class="fa-solid fa-plus"></i></a>&nbsp;
+        </div> -->
+        <tr>
+          <!-- Todo: Sustituir ID por imagen principal del anuncio -->
+          <th>ID</th>
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <!-- <th>Superficie</th>
+          <th>Habitaciones</th>
+          <th>Baños</th>
+          <th>Dirección</th>
+          <th>Fecha Publicacion</th>
+          <th>Fecha Reserva</th>
+          <th>Vecha Venta</th>
+          <th>Visto</th>
+          <th>Reservado</th>
+          <th>Vendido</th> -->
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="anuncio: ${anuncios}">
+          <td th:text="${anuncio.id}"></td>
+          <td th:text="${anuncio.titulo}"></td>
+          <td th:text="${anuncio.descripcion}"></td>
+          <td th:text="${#numbers.formatDecimal(anuncio.precio, 1, 2) + ' €'}"></td>
+          <!-- <td th:text="${anuncio.superficie}"></td>
+          <td th:text="${anuncio.habitaciones}"></td>
+          <td th:text="${anuncio.banos}"></td>
+          <td th:text="${anuncio.direccion}"></td>
+          <td th:text="${anuncio.fechaPublicacion}"></td>
+          <td th:text="${anuncio.fechaReserva}"></td>
+          <td th:text="${anuncio.fechaVenta}"></td>
+          <td th:text="${anuncio.visto}"></td>
+          <td th:text="${anuncio.reservado}"></td>
+          <td th:text="${anuncio.vendido}"></td> -->
+          <!-- Todo: Extra: Desarrollar anuncios de alquiler -->
+          <!-- <td th:text="${anuncio.tipo}"></td> -->
+          <!-- <td th:text="${anuncio.alquilado}"></td> -->
+          <td>
+            <form th:action="@{/anuncios/activate}" method="post">
+              <a class="btn btn-info" th:href="|/anuncios/info/${anuncio.id}|"><i class="fa-solid fa-circle-info"></i> Información</a>&nbsp;
+              <a class="btn btn-warning" th:href="|/anuncios/edit/${anuncio.id}|"><i class="fa-solid fa-square-pen"></i> Editar</a>&nbsp;
+              <a class="btn btn-danger" th:href="|/anuncios/delete/+${anuncio.id}"><i class="fa-solid fa-trash"></i> Borrar</a>&nbsp;
+              <!-- Todo: Poner 2 tipos de botón alternativos: Activar y Desactivar -->
+              <input type="hidden" name="id" th:value="${anuncio.id}">
+              <button class="btn btn-dark" th:if="${anuncio.activo}"><i class="fa-solid fa-circle-xmark"></i> Desactivar </button>
+              <button class="btn btn-light" th:unless="${anuncio.activo}"><i class="fa-solid fa-circle-check"></i> Activar </button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="text-center mt-3">
+        <a class="btn btn-lg btn-info m-1" th:href="|/usuarios/info/${usuario.id}|" type="submit">Volver al usuario <i class="users fa-solid fa-user"></i> </a>
+        <a class="btn btn-lg btn-primary m-1" href="/usuarios" type="submit">Volver a Usuarios <i class="users fa-solid fa-users"></i> </a>
+    </div>
+  </div>
+  <div th:replace="~{fragments/general.html :: footer}">
+  </div>
+</body>
+
+</html>

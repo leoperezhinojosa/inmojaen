@@ -45,8 +45,8 @@ INSERT INTO `usuario_mensajes_by_receptor` (`usuario_id`, `mensaje_id`) VALUES (
 -- Inserciones de anuncios en venta:
 INSERT INTO `usuario_anuncios_en_venta` (`anuncios_en_venta_id`, `usuario_id`) VALUES (1, 2);
 INSERT INTO `usuario_anuncios_en_venta` (`anuncios_en_venta_id`, `usuario_id`) VALUES (2, 2);
-INSERT INTO `usuario_anuncios_en_venta` (`anuncios_en_venta_id`, `usuario_id`) VALUES (3, 2);
-INSERT INTO `usuario_anuncios_en_venta` (`anuncios_en_venta_id`, `usuario_id`) VALUES (4, 2);
+INSERT INTO `usuario_anuncios_en_venta` (`anuncios_en_venta_id`, `usuario_id`) VALUES (3, 3);
+INSERT INTO `usuario_anuncios_en_venta` (`anuncios_en_venta_id`, `usuario_id`) VALUES (4, 3);
 INSERT INTO `usuario_anuncios_en_venta` (`anuncios_en_venta_id`, `usuario_id`) VALUES (5, 5);
 
 -- Inserciones de anuncios favoritos:

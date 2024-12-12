@@ -51,7 +51,7 @@
                     <label class="form-label" for="id_usuario" required><b>Modificar Usuario Propietario:</b></label>
                     <select name="id_usuario" id="id_usuario" class="form-select" required>
                         <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.username}" 
-                                th:selected="${anuncio.usuario?.id == usuario.id}"></option>
+                                th:selected="${anuncio.vendedor?.id == usuario.id}"></option>
                     </select>
                 </div>
 

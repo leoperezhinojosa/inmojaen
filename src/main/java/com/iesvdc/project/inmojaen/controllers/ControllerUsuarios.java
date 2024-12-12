@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.iesvdc.project.inmojaen.models.Anuncio;
 import com.iesvdc.project.inmojaen.models.Rol;
 import com.iesvdc.project.inmojaen.models.Usuario;
+import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
 import com.iesvdc.project.inmojaen.repositories.RepoRol;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 
@@ -213,9 +215,9 @@ public class ControllerUsuarios {
             modelo.addAttribute("mensaje", "El usuario indicado no existe.");
             return "error";
         }
-        
+
         Usuario usuarioAEditar = usuario.get();
-    
+
         // Actualizar solo los campos necesarios
         if (usuarioActualizado.getNombre() != null) {
             usuarioAEditar.setNombre(usuarioActualizado.getNombre());
@@ -230,17 +232,17 @@ public class ControllerUsuarios {
             BCryptPasswordEncoder passwords = new BCryptPasswordEncoder();
             usuarioAEditar.setPassword(passwords.encode(usuarioActualizado.getPassword()));
         }
-    
+
         // Verificar si se envió un nuevo rol
         if (usuarioActualizado.getRol() != null && usuarioActualizado.getRol().getId() != null) {
             Rol nuevoRol = repoRol.findById(usuarioActualizado.getRol().getId())
                     .orElseThrow(() -> new IllegalArgumentException("Rol no válido"));
             usuarioAEditar.setRol(nuevoRol);
         }
-    
+
         // Mantener campos habilitados y premium si son necesarios
         usuarioAEditar.setEnabled(true); // Por defecto habilitado
-    
+
         // Guardar los cambios
         repoUsuario.save(usuarioAEditar);
         return "redirect:/usuarios";
@@ -268,17 +270,20 @@ public class ControllerUsuarios {
             // ToDo - Verificar si el usuario tiene anuncios publicados
             Integer anunciosPublicados = repoUsuario.findById(
                     usuarioABorrar.get().getId()).get().getAnunciosEnVenta().size();
-            // ToDo: ¿Esta opción es realmente necesaria? ¿Los mensajes pueden considerarse información sensible?
+            // ToDo: ¿Esta opción es realmente necesaria? ¿Los mensajes pueden considerarse
+            // información sensible?
             // Integer mensajesEnviados = repoUsuario.findById(
-            //         usuarioABorrar.get().getId()).get().getMensajesByEmisor().size();
+            // usuarioABorrar.get().getId()).get().getMensajesByEmisor().size();
             // Integer mensajesRespondidos = repoUsuario.findById(
-            //         usuarioABorrar.get().getId()).get().getMensajesByReceptor().size();
+            // usuarioABorrar.get().getId()).get().getMensajesByReceptor().size();
 
             modelo.addAttribute("usuario", usuarioABorrar.get());
 
-            // ToDo: De los 3 siguientes métodos: En lugar de borrar el usuario, se puede desactivar y dejar en la base de datos.
-            // ToDo: Ya que quien gestiona es el administrador, ¿se puede sólo dar mensajes de aviso y permitir el borrado?
-            
+            // ToDo: De los 3 siguientes métodos: En lugar de borrar el usuario, se puede
+            // desactivar y dejar en la base de datos.
+            // ToDo: Ya que quien gestiona es el administrador, ¿se puede sólo dar mensajes
+            // de aviso y permitir el borrado?
+
             // Los vendedores con anuncios publicados no pueden ser eliminados.
             if (anunciosPublicados > 0) {
                 modelo.addAttribute("titulo",
@@ -292,12 +297,12 @@ public class ControllerUsuarios {
             // ToDo: ¿Esta opción es realmente necesaria? ¿Los mensajes pueden considerarse información sensible?
             // Los vendedores con mensajes publicados no pueden ser eliminados.
             // if (mensajesEnviados > 0 || mensajesRespondidos > 0) {
-            //     modelo.addAttribute("titulo",
-            //             " - Error al borrar usuario - ");
-            //     modelo.addAttribute("mensaje",
-            //             "El usuario tiene mensajes publicados. "
-            //                     + "Elimine los mensajes antes de borrar el usuario.");
-            //     return "error";
+            // modelo.addAttribute("titulo",
+            // " - Error al borrar usuario - ");
+            // modelo.addAttribute("mensaje",
+            // "El usuario tiene mensajes publicados. "
+            // + "Elimine los mensajes antes de borrar el usuario.");
+            // return "error";
             // }
 
             // Los usuarios inalterables (administradores) no pueden ser eliminados.
@@ -351,9 +356,9 @@ public class ControllerUsuarios {
         } catch (Exception e) {
             modelo.addAttribute("titulo",
                     " - Error al borrar usuario - ");
-            // Todo: Mensaje para debugger. Modificar para eliminar información sensible.
-            modelo.addAttribute("mensaje",
-                    " - Atención: " + e.getMessage() + " - ");
+            // Mensaje para debugger. COMENTAR para eliminar información sensible.
+            // modelo.addAttribute("mensaje",
+            // " - Atención: " + e.getMessage() + " - ");
             return "error";
         }
         return "redirect:/usuarios";
@@ -394,6 +399,38 @@ public class ControllerUsuarios {
             }
         }
         return "redirect:/usuarios";
+    }
+
+    /**
+     * Endpoint: /usuarios/{id}/anuncios (GET)
+     * Muestra los anuncios de un usuario.
+     * 
+     * @param modelo
+     * @param id
+     * @return Vista de los anuncios de un usuario.
+     */
+    @GetMapping("/anuncios/{id}")
+    public String getUserAdvertisements(Model modelo, @PathVariable("id") @NonNull Long id) {
+
+        if (!repoUsuario.existsById(id)) {
+            modelo.addAttribute("titulo",
+                    " - Error al mostrar anuncios - ");
+            modelo.addAttribute("mensaje",
+                    " - El usuario indicado no existe - ");
+            return "error";
+        }
+        List<Anuncio> anuncios = repoUsuario.findById(id).get().getAnunciosEnVenta();
+        // if (anuncios.isEmpty()) {
+        // modelo.addAttribute("titulo",
+        // " - Sin anuncios publicados - ");
+        // modelo.addAttribute("mensaje",
+        // " - El usuario indicado aún no ha publicado anuncios - ");
+        // return "error";
+        // }
+        modelo.addAttribute("usuario", repoUsuario.findById(id).get());
+        modelo.addAttribute("anuncios", anuncios);
+        return "usuarios/anuncios";
+
     }
 
 }
