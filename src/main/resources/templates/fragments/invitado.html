@@ -1,0 +1,28 @@
+<nav th:fragment="navigation(role)">
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fa-solid fa-house"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item" th:if="${role == 'TEMPORAL'}">
+                        <a class="nav-link" href="/no-registrado">Mi perfil</a>
+                    </li>
+                    <li class="nav-item" th:if="${role == 'TEMPORAL'}">
+                        <a class="nav-link" href="#" onclick="alert('Regístrate para publicar anuncios')">Publicar anuncio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">Sobre esta web</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="/login"><i class="fa-solid fa-sign-in-alt"></i> Iniciar sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

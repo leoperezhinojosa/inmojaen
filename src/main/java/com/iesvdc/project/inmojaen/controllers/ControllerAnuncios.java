@@ -50,6 +50,7 @@ public class ControllerAnuncios {
     @GetMapping(path = "/")
     public String findAll(Model modelo) {
         List<Anuncio> anuncios = repoAnuncio.findAll();
+        // ToDo: ¿Posible inserción de imagen principal de cada anuncio? Revisar ControllerImagen.
         modelo.addAttribute("anuncios", anuncios);
         return "anuncios/anuncios";
     }

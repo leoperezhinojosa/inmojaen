@@ -20,8 +20,9 @@
           <a class="btn btn-success btn-lg" th:href="@{/anuncios/add}">Publicar nuevo anuncio <i class="fa-solid fa-house"></i> <i class="fa-solid fa-plus"></i></a>&nbsp;
         </div>
         <tr>
-          <!-- Todo: Sustituir ID por imagen principal del anuncio -->
+          <!-- Todo: Sustituir ID por imagen principal del anuncio. Revisar ControllerAnuncios. -->
           <th>ID</th>
+          <!-- <th>Imagen</th> -->
           <th>Título</th>
           <th>Descripción</th>
           <th>Precio</th>
@@ -41,6 +42,7 @@
       <tbody>
         <tr th:each="anuncio: ${anuncios}">
           <td th:text="${anuncio.id}"></td>
+          <!-- <td th:text="${anuncio.imagen}"></td> -->
           <td th:text="${anuncio.titulo}"></td>
           <td th:text="${anuncio.descripcion}"></td>
           <td th:text="${#numbers.formatDecimal(anuncio.precio, 1, 2) + ' €'}"></td>

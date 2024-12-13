@@ -23,10 +23,10 @@
                         <b>Perfil registrado: </b>
                         <hr>
                     </h5>
-                    <h5 class="display-6 mt-3" sec:authorize="isAnonymous()">
+                    <h4 class="card-title" sec:authorize="isAnonymous()">
                         ¡Bienvenido!
                         <hr> <i class="fa-solid fa-user-lock"></i> - Inicia Sesión o entra como Invitado
-                    </h5>
+                    </h4>
                     <p sec:authorize="hasAuthority('ADMIN')">
                         <b> ADMINISTRADOR - <span sec:authentication="name"></span></b><br>
                         <i> # ATENCION: No olvide cerrar la sesión al terminar # </i>
@@ -34,7 +34,6 @@
                     <p sec:authorize="hasAuthority('USER')">
                         <b><i> <i class="fa-solid fa-circle-user"></i> USUARIO - </i></b>
                         <b> Nombre de usuario: <span sec:authentication="name"></span> </b> <br><br>
-                        <i> Usuario PREMIUM </i>
                         <br>
                     </p>
                     <!-- USUARIO PREMIUM (Implementar en el futuro) -->

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INMOJAEN - Invitado</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+<body>
+    <header>
+        <div th:replace="~{fragments/general.html :: navigation('TEMPORAL')}"></div>
+    </header>
+    <main class="container">
+        <h1>¡Bienvenido a INMOJAEN!</h1>
+        <p>Descubre los mejores anuncios disponibles. Regístrate para disfrutar de todas las funcionalidades:</p>
+        <div class="my-3">
+            <a href="/login" class="btn btn-primary">Iniciar sesión</a>
+            <a href="/register" class="btn btn-success">Registrarse</a>
+        </div>
+        <!-- Lista de anuncios -->
+        <section>
+            <h2>Anuncios Disponibles</h2>
+            <div class="row" th:if="${anuncios.size() > 0}">
+                <div class="col-md-4" th:each="anuncio : ${anuncios}">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${anuncio.titulo}">Título del Anuncio</h5>
+                            <p class="card-text" th:text="${anuncio.descripcion}">Descripción...</p>
+                            <button class="btn btn-outline-secondary fav-btn" 
+                                th:data-id="${anuncio.id}" 
+                                th:data-title="${anuncio.titulo}">
+                                Añadir a Favoritos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p th:if="${anuncios.size() == 0}">No hay anuncios disponibles en este momento.</p>
+        </section>
+        <!-- Favoritos -->
+        <section id="favoritos">
+            <h2>Mis Favoritos</h2>
+            <ul id="fav-list"></ul>
+        </section>
+    </main>
+    <footer>
+        <div th:replace="~{fragments/general.html :: footer}"></div>
+    </footer>
+    <script th:src="@{/js/favoritos.js}"></script>
+</body>
+</html>
