@@ -23,7 +23,7 @@
                         <b>Perfil registrado: </b>
                         <hr>
                     </h5>
-                    <h5 class="display-6 mt-3" sec:authorize="isAnonymous()">
+                    <h5 class=" card-title h4 m-1" sec:authorize="isAnonymous()">
                         ¡Bienvenido!
                         <hr> <i class="fa-solid fa-user-lock"></i> - Inicia Sesión o entra como Invitado
                     </h5>
@@ -33,9 +33,7 @@
                     </p>
                     <p sec:authorize="hasAuthority('USER')">
                         <b><i> <i class="fa-solid fa-circle-user"></i> USUARIO - </i></b>
-                        <b> Nombre de usuario: <span sec:authentication="name"></span> </b> <br><br>
-                        <i> Usuario PREMIUM </i>
-                        <br>
+                        <b> Nombre de usuario: <span sec:authentication="name"></span> </b>
                     </p>
                     <!-- USUARIO PREMIUM (Implementar en el futuro) -->
                     <!-- <p sec:authorize="hasAuthority('PREMIUM')">
@@ -46,10 +44,10 @@
                     </p> -->
                     <a sec:authorize="isAuthenticated()" href="/logout" class="btn btn-danger"><i
                             class="fa-solid fa-user-slash"></i> Cerrar Sesión</a>
-                    <a sec:authorize="isAnonymous()" href="/login" class="btn btn-lg btn-success mt-3"> <i
+                    <a sec:authorize="isAnonymous()" href="/login" class="btn btn-success mt-3"> <i
                             class="fa-solid fa-user-shield"></i> Iniciar Sesión </a>&nbsp;&nbsp;
-                    <a sec:authorize="isAnonymous()" href="/invitado" class="btn btn-lg btn-secondary mt-3"> <i
-                            class="fa-solid fa-user-clock"></i> Entrar como INVITADO </a>
+                    <a sec:authorize="isAnonymous()" href="/invitado" class="btn btn-secondary mt-3"> <i
+                            class="fa-solid fa-user-clock"></i> Invitado </a>
                 </div>
             </div>
         </div>

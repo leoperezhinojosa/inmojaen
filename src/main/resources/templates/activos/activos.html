@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <title>INMOJAEN: Anuncios</title>
+  <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+  <div th:replace="~{fragments/general.html :: navigation}"></div>
+  <hr>
+  <h3 class="h3 text-center"> INMOJAÉN - Anuncios Disponibles <i class="fa-solid fa-house-chimney"></i></h3>
+  <hr>
+
+  <div class="container">
+    <table class="table table-hover table-bordered">
+      <thead>
+        <tr>
+          <!-- <th>Imagen</th> -->
+          <th>Título</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="anuncio: ${anuncios}">
+          <!-- Muestra la imagen principal del anuncio (asumiendo que la primera imagen está en anuncio.imagenes[0]) -->
+          <!-- <td>
+            <img th:src="@{|/imagenes/${anuncio.imagenes[0].url}|}" alt="Imagen anuncio" class="img-thumbnail" style="width: 100px; height: 100px;">
+          </td> -->
+          <td th:text="${anuncio.titulo}"></td>
+          <td th:text="${anuncio.descripcion}"></td>
+          <td th:text="${#numbers.formatDecimal(anuncio.precio, 1, 2) + ' €'}"></td>
+          <td>
+            <div class="btn-group">
+              <!-- Botón para ver información detallada -->
+              <a class="btn btn-info btn-sm" th:href="|/anuncios/info/${anuncio.id}|">
+                  <i class="fa-solid fa-circle-info"></i> Información
+              </a>
+              <!-- Botón para marcar/desmarcar como favorito -->
+              <form th:action="@{/favoritos/favoritos}" method="post" id="form-favorito-[[${anuncio.id}]]">
+                  <input type="hidden" name="anuncioId" th:value="${anuncio.id}">
+                  <input type="hidden" name="usuarioId" th:value="${usuario.id}">
+                  <button type="submit" class="btn btn-light btn-sm" id="btn-favorito-[[${anuncio.id}]]">
+                      <i th:class="${#lists.contains(anuncio.favoritos, usuario) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}"></i>
+                      <span th:text="${#lists.contains(anuncio.favoritos, usuario) ? 'Quitar favorito' : 'Guardar favorito'}"></span>
+                  </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div th:replace="~{fragments/general.html :: footer}"></div>
+</body>
+
+</html>
