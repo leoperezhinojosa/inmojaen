@@ -61,7 +61,9 @@ public class SecurityConfiguration {
                         // .authenticated()
                     .hasAuthority("ADMIN")
                     .requestMatchers(
-                        "/user/**", "/user/*/**", "/user/*/*/**") // Rutas para usuarios
+                        "/usuario/**", "/usuario/*/**", "/usuario/*/*/**", // Rutas para usuarios
+                        "/activos/**", "/activos/*/**", "/activos/*/*/**",
+                        "/favoritos/**", "/favoritos/*/**", "/favoritos/*/*/**")
                     // .authenticated()
                     .hasAuthority("USER")
                     // Usuario PREMIUM: Implementar en el futuro
