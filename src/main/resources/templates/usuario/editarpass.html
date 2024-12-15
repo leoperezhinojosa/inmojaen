@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>INMOJAÉN - Edición de Usuario</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+    <div>
+        <div th:replace="~{fragments/general.html :: navigation}"></div>
+        <hr>
+        <h3 class="h3 text-center"> INMOJAÉN - Cambiar contraseña de acceso de <i> [[${usuario.username}]] </i>
+            <i class="fa-solid fa-pen-to-square"></i> <i class="fa-solid fa-lock"></i>
+        </h3>
+        <hr>
+        <div class="container">
+            <form th:action="@{/usuario/editarpass}" method="post">
+                <input type="hidden" th:value="${usuario.id}" name="id">
+                <div class="text-center mt-3">
+                    <!-- Mensaje de error -->
+                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                        <p th:text="${error}"></p>
+                    </div>
+
+                    <!-- Campos de edición -->
+                    <!-- La contraseña no se modifica aquí, este campo comprueba la contraseña actual antes de modificarla. -->
+                    <label for="password"> <big> # Para cambiar la contraseña: Introducir contraseña actual # </big>
+                    </label>
+                    <input type="password" class="form-control text-center m-3" id="password"
+                        placeholder="Introducir contraseña guardada" name="password" required>
+                    <button type="submit" class="btn btn-success"> Introducir contraseña <i
+                            class="fa-solid fa-unlock"></i> </button>
+                    <hr>
+                    <a class="btn btn-primary" href="/usuario/perfil"> Volver a Mi Perfil <i
+                            class="fa-solid fa-user"></i> </a>
+                    &nbsp;&nbsp;
+                    <a class="btn btn-info" href="/activos"> Volver a Inicio <i class="fa-solid fa-rotate-left"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <div th:replace="~{fragments/general.html :: footer}"> </div>
+    </div>
+</body>
+
+</html>

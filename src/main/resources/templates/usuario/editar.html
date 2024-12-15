@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>INMOJAÉN - Edición de Usuario</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+    <div>
+        <div th:replace="~{fragments/general.html :: navigation}"></div>
+        <hr>
+        <h3 class="h3 text-center"> INMOJAÉN - Editar perfil de <i> [[${usuario.username}]] </i> 
+            <i class="fa-solid fa-user-pen"></i>
+        </h3>
+        <hr>
+        <div class="container">
+            <form th:action="@{/usuario/editar}" method="post">
+                <input type="hidden" th:value="${usuario.id}" name="id">
+
+                <!-- Mensajes de error y exito -->
+                <div th:if="${success}" class="alert alert-success" role="alert">
+                    <p th:text="${success}"></p>
+                </div>
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <p th:text="${error}"></p>
+                </div>
+
+                <!-- Campos de edición -->
+                <div class="form-group">
+                    <label for="username"> <b> Nombre de usuario (No se puede editar): </b> </label>
+                    <input type="text" class="form-control" id="username" name="username" th:value="${usuario.username}"
+                        disabled>
+                </div>
+                <div class="form-group">
+                    <label for="email"> <b> Correo electrónico: </b> </label>
+                    <input type="email" class="form-control" id="email" name="email" th:value="${usuario.email}">
+                </div>
+                <div class="form-group">
+                    <label for="nombre"> <b> Nombre: </b> </label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" th:value="${usuario.nombre}">
+                </div>
+                <div class="form-group">
+                    <label for="apellidos"> <b> Apellidos: </b> </label>
+                    <input type="text" class="form-control" id="apellidos" name="apellidos"
+                        th:value="${usuario.apellidos}">
+                </div>
+                <div class="form-group">
+                    <label for="telefono"> <b> Teléfono: </b> </label>
+                    <input type="tel" class="form-control" id="telefono" name="telefono" th:value="${usuario.telefono}">
+                </div>
+                <!-- La contraseña no se modifica aquí, este campo comprueba la contraseña actual antes de la edición. -->
+                <!-- Puede cambiarse en la sección de "Cambiar contraseña". -->
+                <div class="form-group">
+                    <label for="password"> <b> Contraseña actual (Obligatoria para confirmar los cambios):</b> </label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-success"> Guardar cambios <i class="fa-solid fa-user-pen"></i> </button>
+                    &nbsp;&nbsp;
+                    <button type="reset" class="btn btn-warning">Resetear valores <i class="fa-solid fa-delete-left"></i> </button>
+                    &nbsp;&nbsp;
+                    <a class="btn btn-primary" href="/usuario/perfil"> Volver a Mi Perfil <i class="fa-solid fa-rotate-left"></i> </a>
+                    &nbsp;&nbsp;
+                    <a class="btn btn-info" href="/activos"> Volver a Inicio <i class="fa-solid fa-house"></i></a>
+                </div>
+            </form>
+        </div>
+
+        <div th:replace="~{fragments/general.html :: footer}"> </div>
+    </div>
+</body>
+
+</html>
