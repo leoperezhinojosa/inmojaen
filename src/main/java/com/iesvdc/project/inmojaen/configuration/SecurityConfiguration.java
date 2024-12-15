@@ -57,7 +57,8 @@ public class SecurityConfiguration {
                     // Configurar acceso según roles:
                     .requestMatchers(
                         "/admin/**", "/admin/*/**", "/admin/*/*/**", // Rutas para administradores
-                        "/usuarios/**", "/usuarios/*/**", "/usuarios/*/*/**")
+                        "/usuarios/**", "/usuarios/*/**", "/usuarios/*/*/**",
+                        "/anuncios/**", "/anuncios/*/**", "/anuncios/*/*/**")
                         // .authenticated()
                     .hasAuthority("ADMIN")
                     .requestMatchers(

@@ -1,5 +1,6 @@
 package com.iesvdc.project.inmojaen.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.iesvdc.project.inmojaen.models.Anuncio;
+import com.iesvdc.project.inmojaen.models.Favorito;
+import com.iesvdc.project.inmojaen.models.Imagen;
 import com.iesvdc.project.inmojaen.models.Usuario;
 import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
@@ -92,23 +95,33 @@ public class ControllerActivos {
     /**
      * Endpoint: /activos/info/{id} (GET)
      * Metodo para obtener la informacion de un anuncio activo.
+     * También lleva las imágenes del mismo.
      * 
      * @param modelo Modelo de la vista.
      * @param id ID del anuncio.
      * @return Vista de la informacion completa del anuncio.
      */
     @GetMapping("/info/{id}")
-    public String getUserInfo(Model modelo, @PathVariable("id") @NonNull Long id) {
-        Optional<Anuncio> anuncio = repoAnuncio.findById(id);
-        if (!anuncio.isPresent() || !anuncio.get().getActivo()) {
-            modelo.addAttribute("titulo", " - Error al mostrar anuncio - ");
-            modelo.addAttribute("mensaje", "El anuncio con el id " + id + " no existe.");
-            return "error";
-        } else {
-            modelo.addAttribute("anuncio", anuncio.get());
-            return "activos/info";
-        }
+public String getAnuncioInfo(Model modelo, @PathVariable("id") @NonNull Long id) {
+    Optional<Anuncio> anuncio = repoAnuncio.findById(id);
+
+    if (!anuncio.isPresent() || !anuncio.get().getActivo()) {
+        modelo.addAttribute("titulo", " - Error al mostrar anuncio - ");
+        modelo.addAttribute("mensaje", "El anuncio con el id " + id + " no existe.");
+        return "error";
+    } else {
+        Anuncio anuncioObtenido = anuncio.get();
+        
+        // Obtener las imágenes asociadas al anuncio:
+        List<Imagen> imagenes = anuncioObtenido.getImagenes();
+        
+        // Añadir datos al modelo:
+        modelo.addAttribute("anuncio", anuncioObtenido);
+        modelo.addAttribute("imagenes", imagenes);
+
+        return "activos/info";
     }
+}
 
     /**
      * Endpoint: /activos/add (GET)
@@ -122,7 +135,37 @@ public class ControllerActivos {
     public String add(@PathVariable("id") Long id, Model modelo, Anuncio anuncio) {
         return "activos/add";
     }
-    
+
+    /**
+     * Endpoint: /favoritos (GET)
+     * Vista de la gestion de favoritos.
+     * 
+     * @param modelo Modelo de la vista.
+     * @return Vista de la gestion de favoritos.
+     */
+    @GetMapping("/favoritos")
+    public String getFavoritos(Model modelo) {
+        Usuario usuario = getLoggedUser();
+        if (usuario.getId() == null) {
+            modelo.addAttribute("titulo", " - Error al gestionar favorito - ");
+            modelo.addAttribute("mensaje", "El usuario indicado no existe");
+            return "error";
+        }
+
+        if (usuario != null) {
+            List<Favorito> favoritos = usuario.getFavoritos();
+            List<Anuncio> anuncios = new ArrayList<>();
+            // Recorrer la lista de favoritos y obtener los anuncios correspondientes:
+            for (Favorito favorito : favoritos) {
+                anuncios.add(favorito.getAnuncio());
+            }
+            modelo.addAttribute("usuario", usuario);
+            modelo.addAttribute("anuncios", anuncios);
+        }
+
+        return "activos/favoritos";
+    }
+
 
 
 

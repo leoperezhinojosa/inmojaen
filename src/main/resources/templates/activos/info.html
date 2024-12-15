@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>INMOJAEN: Información del anuncio</title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+
+    <div>
+        <div th:replace="~{fragments/general.html :: navigation}"> </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="text-center">
+                    Anuncio: <i> <span th:text="${anuncio.titulo}"></span></i> <i class="fa-solid fa-house-chimney"></i>
+                </h4>
+            </div>
+            <div class="card-body">
+
+                <!-- Carrusel de Imágenes -->
+                <div class="d-flex justify-content-center">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel"
+                        style="max-width: 600px;">
+                        <!-- Indicadores -->
+                        <div class="carousel-indicators">
+                            <th:block th:each="imagen, index : ${imagenes}">
+                                <button type="button" data-bs-target="#carouselExampleIndicators"
+                                    data-bs-slide-to="[[${index.index}]]"
+                                    th:classappend="${index.index == 0} ? 'active'" aria-current="true"
+                                    aria-label="Slide [[${index.index + 1}]]"></button>
+                            </th:block>
+                        </div>
+
+                        <!-- Carrusel -->
+                        <div class="carousel-inner">
+                            <th:block th:each="imagen, index : ${imagenes}">
+                                <div th:class="'carousel-item ' + (${index.index == 0} ? 'active' : '')">
+                                    <img th:src="'http://localhost:8080/' + ${imagen.url}" class="d-block w-100"
+                                        alt="Imagen [[${index.index + 1}]]" style="height: 400px; object-fit: cover;">
+                                </div>
+                            </th:block>
+                        </div>
+
+                        <!-- Controles de navegación -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Siguiente</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Información del Anuncio -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><b>Descripción:</b></label>
+                            <p class="form-control-plaintext" th:text="${anuncio.descripcion}"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><b>Precio de venta:</b></label>
+                            <p class="form-control-plaintext"
+                                th:text="${#numbers.formatDecimal(anuncio.precio, 1, 2) + ' €'}"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><b>Superficie:</b></label>
+                            <p class="form-control-plaintext"
+                                th:text="${#numbers.formatDecimal(anuncio.superficie, 1, 0) + ' m²'}"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><b>Habitaciones:</b></label>
+                            <p class="form-control-plaintext" th:text="${anuncio.habitaciones}"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><b>Baños:</b></label>
+                            <p class="form-control-plaintext" th:text="${anuncio.banos}"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><b>Dirección:</b></label>
+                            <p class="form-control-plaintext" th:text="${anuncio.direccion}"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><b>Usuario anunciante:</b></label>
+                            <p class="form-control-plaintext" th:text="${anuncio.vendedor.username}"></p>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <!-- <button class="btn btn-lg btn-success mt-3" type="submit">Aceptar cambios</button>
+                    &nbsp;
+                    <button class="btn btn-lg btn-warning mt-3" type="reset">Resetear valores</button>
+                    &nbsp; -->
+                        <!-- Enlace a MENSAJERÍA EXTERNA -->
+                        <a class="btn btn-info mt-3"
+                            th:href="'mailto:' + ${anuncio.vendedor.email} + '?subject=Interés%20en%20el%20anuncio:%20' + ${anuncio.titulo}"
+                            type="button">
+                            Contactar por EMAIL <i class="fa-solid fa-envelope"></i>
+                        </a>&nbsp;
+                        <a class="btn btn-primary mt-3" href="/activos" type="submit"> Ir a Anuncios <i
+                                class="fa-solid fa-house-chimney"></i> </a>&nbsp;
+                        <a class="btn btn-success mt-3" href="/activos/favoritos" type="submit"> Ir a Favoritos <i
+                                class="fa-solid fa-heart"></i> </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/general.html :: footer}"></div>
+    </div>
+</body>
+
+</html>

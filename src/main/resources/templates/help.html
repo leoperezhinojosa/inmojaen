@@ -52,16 +52,16 @@
                     <!-- Contenido para administradores -->
                     <p sec:authorize="hasAuthority('ADMIN')">
                         Como <b>Administrador</b> tienes acceso a todas las herramientas de gestión.
-                        Puedes gestionar usuarios, anuncios y mensajes.
-                        Recuerda que, al borrar cualquiera de estos, se perderán los datos permanentemente.
+                        Puedes gestionar todos los usuarios y todos los anuncios.
+                        Recuerda que, al borrar cualquiera de ellos, sus datos se perderán permanentemente.
                         <br><br>
-                        <i><u> Algunos detalles importantes: </u></i> <br><br>
-                        - Los anuncios se muestran en orden descendente de fecha de publicación. <br>
-                        - Al crear un usuario, <b>'username'</b> y <b>'email'</b> son únicos y no pueden estar ya
-                        registrados. <br>
-                        - Al crear un anuncio, deben proporcionarse todos los detalles necesarios. Pueden incluirse
-                        hasta 10 imagenes. <br>
-                        - Para <b>bloquear / desbloquear</b> el acceso de un usuario, anuncio o mensaje,
+                        <i><u> Detalles a tener en cuenta: </u></i> <br><br>
+                        - Al crear un usuario, el atributo <b>'username'</b> es único y no puede estar ya
+                        registrado ni cambiarse. <br> 
+                        -El atributo <b> 'email' </b> es único, pero el <b> usuario </b> puede cambiarlo 
+                        si también el nuevo email es único.  <br>
+                        - Al crear un anuncio, deben proporcionarse todos los detalles necesarios. <br>
+                        - Para <b>bloquear / desbloquear</b> el acceso de un usuario o anuncio,
                         utilizar su botón correspondiente de <b>'Activar' / 'Desactivar'.</b>
                         <br><br>
                         Para saber más, consulta el <a href="/uploads/Manual de Usuario.pdf"><b>manual de

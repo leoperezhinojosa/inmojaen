@@ -4,8 +4,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.iesvdc.project.inmojaen.models.Anuncio;
-import com.iesvdc.project.inmojaen.models.Favorito;
 import com.iesvdc.project.inmojaen.models.Usuario;
-import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-// TODO: Revisar métodos faltantes. ¿Cambiar nombre a "/perfil"?
 
 /**
  * Controlador del usuario.
@@ -253,34 +246,5 @@ public class ControllerUsuario {
         return "mensajes";
     }
 
-    /**
-     * Endpoint: /favoritos (GET)
-     * Vista de la gestion de favoritos.
-     * 
-     * @param modelo Modelo de la vista.
-     * @return Vista de la gestion de favoritos.
-     */
-    @GetMapping("/favoritos")
-    public String getFavoritos(Model modelo) {
-        Usuario usuario = getLoggedUser();
-        if (usuario.getId() == null) {
-            modelo.addAttribute("titulo", " - Error al gestionar favorito - ");
-            modelo.addAttribute("mensaje", "El usuario indicado no existe");
-            return "error";
-        }
-
-        if (usuario != null) {
-            List<Favorito> favoritos = usuario.getFavoritos();
-            List<Anuncio> anuncios = new ArrayList<>();
-            // Recorrer la lista de favoritos y obtener los anuncios correspondientes:
-            for (Favorito favorito : favoritos) {
-                anuncios.add(favorito.getAnuncio());
-            }
-            modelo.addAttribute("usuario", usuario);
-            modelo.addAttribute("anuncios", anuncios);
-        }
-
-        return "usuario/favoritos";
-    }
 
 }

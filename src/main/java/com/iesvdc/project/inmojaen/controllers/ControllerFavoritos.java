@@ -18,15 +18,13 @@ import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
-
 @Controller
 @RequestMapping("/favoritos")
 public class ControllerFavoritos {
 
     @Autowired
     private RepoFavorito repoFavorito;
-    
+
     @Autowired
     private RepoAnuncio repoAnuncio;
 
@@ -37,7 +35,7 @@ public class ControllerFavoritos {
      * Endpoint: /favoritos (POST)
      * Agrega o elimina un anuncio de favoritos de un usuario.
      * 
-     * @param modelo Modelo de la vista.
+     * @param modelo    Modelo de la vista.
      * @param usuarioId ID del usuario anunciante.
      * @param anuncioId ID del anuncio de inmueble.
      * @return Vista de la gestion de favoritos.
@@ -49,10 +47,10 @@ public class ControllerFavoritos {
             modelo.addAttribute("mensaje", "El anuncio o el usuario indicado no existen");
             return "error";
         }
-        
+
         Usuario usuario = repoUsuario.findById(usuarioId).get();
         Anuncio anuncio = repoAnuncio.findById(anuncioId).get();
-        
+
         if (usuario == null || anuncio == null) {
             modelo.addAttribute("titulo", "Error al gestionar favorito");
             modelo.addAttribute("mensaje", "El usuario o el anuncio indicado no existen");
@@ -61,21 +59,21 @@ public class ControllerFavoritos {
             modelo.addAttribute("anuncio", anuncio);
             modelo.addAttribute("usuario", usuario);
             Optional<Favorito> favorito = repoFavorito.findByUsuarioAndAnuncio(usuario, anuncio);
-            
+
             if (favorito.isPresent()) {
                 // Si ya es favorito, eliminar
                 repoFavorito.delete(favorito.get());
-            } else {
-                // Si no es favorito, agregar
-                Favorito nuevoFavorito = new Favorito();
-                nuevoFavorito.setUsuario(usuario);
-                nuevoFavorito.setAnuncio(anuncio);
-                repoFavorito.save(nuevoFavorito);
+                return "redirect:/activos/favoritos";
             }
         }
+
+        // Si no es favorito, agregar
+        Favorito nuevoFavorito = new Favorito();
+        nuevoFavorito.setUsuario(usuario);
+        nuevoFavorito.setAnuncio(anuncio);
+        repoFavorito.save(nuevoFavorito);
 
         return "redirect:/activos";
     }
 
-    
 }

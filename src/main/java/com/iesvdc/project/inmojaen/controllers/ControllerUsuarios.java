@@ -21,13 +21,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.iesvdc.project.inmojaen.models.Anuncio;
 import com.iesvdc.project.inmojaen.models.Rol;
 import com.iesvdc.project.inmojaen.models.Usuario;
-import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
 import com.iesvdc.project.inmojaen.repositories.RepoRol;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 
 import lombok.NonNull;
 
-// TODO: Revisar métodos faltantes.
 
 /**
  * Controlador de usuarios.
@@ -35,7 +33,6 @@ import lombok.NonNull;
  * El administrador puede añadir, editar o eliminar usuarios.
  * Se comprobará que el usuario a eliminar no tenga información sensible.
  */
-
 @SessionAttributes({ "usuario_temporal" })
 @Controller
 @RequestMapping("/usuarios")
