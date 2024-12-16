@@ -15,10 +15,11 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8 text-center">
-                    <!-- Mensaje común para todos los usuarios: -->
+                    <!-- Mensaje común para todos los usuarios: 
+                        (Por cierto: Las etiquetas h1, h2, etc. INTERFIEREN con sec:authorize) -->
                     <h5>¡Bienvenida/o a INMOJAEN!</h5><br>
                     
-                    <!-- Contenido para usuarios no autenticados con rol temporal (TEMPORAL) -->
+                    <!-- Contenido para usuarios autenticados como invitados (TEMPORAL) -->
                     <p sec:authorize="hasAuthority('TEMPORAL')">
                         <i>¿Aún no has iniciado sesión? ¿O no te has registrado?</i> <br><br>
                          Para disfrutar de más funcionalidades, por favor,
@@ -43,13 +44,7 @@
                         <a href="https://www.inmojaen.admin.com">www.inmojaen.admin.com</a>
                     </p>
 
-                    <!-- Contenido para usuarios premium (PREMIUM) (Implementar en el futuro) -->
-                    <!-- <p sec:authorize="hasAuthority('PREMIUM')">
-                        Como usuario premium, tienes acceso a herramientas avanzadas como la creación y gestión de anuncios.
-                        Si necesitas ayuda adicional, consulta el manual de usuario o contacta al administrador.
-                    </p> -->
-
-                    <!-- Contenido para administradores -->
+                    <!-- Contenido para administradores (ADMIN) -->
                     <p sec:authorize="hasAuthority('ADMIN')">
                         Como <b>Administrador</b> tienes acceso a todas las herramientas de gestión.
                         Puedes gestionar todos los usuarios y todos los anuncios.

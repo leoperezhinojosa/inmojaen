@@ -18,8 +18,7 @@ public class ControllerInvitado {
 
     @GetMapping("/invitado")
     public String invitado(Model modelo) {
-        // ToDo: Añadir lógica específica para el usuario invitado
-        List<Anuncio> anuncios = repoAnuncio.findAll(); // Implementa esta lógica en tu servicio
+        List<Anuncio> anuncios = repoAnuncio.findAll(); 
         modelo.addAttribute("anuncios", anuncios);
         return "invitado";
     }

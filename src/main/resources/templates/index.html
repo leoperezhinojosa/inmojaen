@@ -35,13 +35,6 @@
                         <b><i> <i class="fa-solid fa-circle-user"></i> USUARIO - </i></b>
                         <b> Nombre de usuario: <span sec:authentication="name"></span> </b>
                     </p>
-                    <!-- USUARIO PREMIUM (Implementar en el futuro) -->
-                    <!-- <p sec:authorize="hasAuthority('PREMIUM')">
-                        <b><i> <i class="fa-solid fa-circle-user"></i> USUARIO PREMIUM - </i></b>
-                        <b> Nombre de usuario: <span sec:authentication="name"></span> </b> <br><br>
-                        <i> Usuario Premium </i>
-                        <br>
-                    </p> -->
                     <a sec:authorize="isAuthenticated()" href="/logout" class="btn btn-danger"><i
                             class="fa-solid fa-user-slash"></i> Cerrar Sesión</a>
                     <a sec:authorize="isAnonymous()" href="/login" class="btn btn-success mt-3"> <i

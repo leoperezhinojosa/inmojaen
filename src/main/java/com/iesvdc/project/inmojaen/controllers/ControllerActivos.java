@@ -10,19 +10,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.iesvdc.project.inmojaen.models.Anuncio;
 import com.iesvdc.project.inmojaen.models.Favorito;
 import com.iesvdc.project.inmojaen.models.Imagen;
 import com.iesvdc.project.inmojaen.models.Usuario;
 import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
+import com.iesvdc.project.inmojaen.repositories.RepoFavorito;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 
 import lombok.NonNull;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * Controlador de anuncios activos.
@@ -41,6 +44,8 @@ public class ControllerActivos {
     @Autowired
     private RepoUsuario repoUsuario;
 
+    @Autowired
+    private RepoFavorito repoFavorito;
 
     /**
      * Método que obtiene el usuario que ha entrado del contexto
@@ -60,7 +65,7 @@ public class ControllerActivos {
 
         return usuario;
     }
-    
+
     /**
      * Endpoint: /activos (GET)
      * Metodo para obtener los anuncios activos.
@@ -73,7 +78,8 @@ public class ControllerActivos {
         Usuario usuario = getLoggedUser();
         List<Anuncio> anuncios = repoAnuncio.findAll();
         for (Anuncio anuncio : anuncios) {
-            if (!anuncio.getActivo()) anuncios.remove(anuncio);
+            if (!anuncio.getActivo())
+                anuncios.remove(anuncio);
         }
         modelo.addAttribute("usuario", usuario);
         modelo.addAttribute("anuncios", anuncios);
@@ -98,36 +104,36 @@ public class ControllerActivos {
      * También lleva las imágenes del mismo.
      * 
      * @param modelo Modelo de la vista.
-     * @param id ID del anuncio.
+     * @param id     ID del anuncio.
      * @return Vista de la informacion completa del anuncio.
      */
     @GetMapping("/info/{id}")
-public String getAnuncioInfo(Model modelo, @PathVariable("id") @NonNull Long id) {
-    Optional<Anuncio> anuncio = repoAnuncio.findById(id);
+    public String getAnuncioInfo(Model modelo, @PathVariable("id") @NonNull Long id) {
+        Optional<Anuncio> anuncio = repoAnuncio.findById(id);
 
-    if (!anuncio.isPresent() || !anuncio.get().getActivo()) {
-        modelo.addAttribute("titulo", " - Error al mostrar anuncio - ");
-        modelo.addAttribute("mensaje", "El anuncio con el id " + id + " no existe.");
-        return "error";
-    } else {
-        Anuncio anuncioObtenido = anuncio.get();
-        
-        // Obtener las imágenes asociadas al anuncio:
-        List<Imagen> imagenes = anuncioObtenido.getImagenes();
-        
-        // Añadir datos al modelo:
-        modelo.addAttribute("anuncio", anuncioObtenido);
-        modelo.addAttribute("imagenes", imagenes);
+        if (!anuncio.isPresent() || !anuncio.get().getActivo()) {
+            modelo.addAttribute("titulo", " - Error al mostrar anuncio - ");
+            modelo.addAttribute("mensaje", "El anuncio con el id " + id + " no existe.");
+            return "error";
+        } else {
+            Anuncio anuncioObtenido = anuncio.get();
 
-        return "activos/info";
+            // Obtener las imágenes asociadas al anuncio:
+            List<Imagen> imagenes = anuncioObtenido.getImagenes();
+
+            // Añadir datos al modelo:
+            modelo.addAttribute("anuncio", anuncioObtenido);
+            modelo.addAttribute("imagenes", imagenes);
+
+            return "activos/info";
+        }
     }
-}
 
     /**
      * Endpoint: /activos/add (GET)
      * Metodo para agregar un anuncio activo a la base de datos.
      * 
-     * @param id ID del usuario logueado.
+     * @param id     ID del usuario logueado.
      * @param modelo Modelo de la vista.
      * @return Vista de los anuncios del usuario.
      */
@@ -166,51 +172,28 @@ public String getAnuncioInfo(Model modelo, @PathVariable("id") @NonNull Long id)
         return "activos/favoritos";
     }
 
+    @PostMapping("/favoritos")
+    public String toggleFavorito(@RequestParam("anuncioId") Long anuncioId,
+            @RequestParam("usuarioId") Long usuarioId,
+            RedirectAttributes redirectAttributes) {
+        // Obtener usuario y anuncio
+        Usuario usuario = repoUsuario.findById(usuarioId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        Anuncio anuncio = repoAnuncio.findById(anuncioId)
+                .orElseThrow(() -> new IllegalArgumentException("Anuncio no encontrado"));
 
+        // Alternar favorito
+        Optional<Favorito> favoritoExistente = repoFavorito.findByUsuarioAndAnuncio(usuario, anuncio);
+        if (favoritoExistente.isPresent()) {
+            repoFavorito.delete(favoritoExistente.get());
+        } else {
+            Favorito nuevoFavorito = new Favorito();
+            nuevoFavorito.setUsuario(usuario);
+            nuevoFavorito.setAnuncio(anuncio);
+            repoFavorito.save(nuevoFavorito);
+        }
 
+        return "redirect:/activos";
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Todo -> Ya veremos si acabo usando esto...
-     * 
-     * Endpoint: /activos/buscar (GET)
-     * Metodo para buscar anuncios activos por precio y superficie.
-     * 
-     * @param modelo Modelo de la vista.
-     * @param precioMin Precio mínimo.
-     * @param precioMax Precio máximo.
-     * @param superficieMin Superficie mínima.
-     * @param superficieMax Superficie máxima.
-     * @return Vista de los anuncios activos filtrados.
-     */
-    // @GetMapping("/buscar")
-    // public String findByFilters(Model modelo, @RequestParam(required = false) Double precioMin, @RequestParam(required = false) Double precioMax,
-    //         @RequestParam(required = false) Double superficieMin, @RequestParam(required = false) Double superficieMax) {
-    //     List<Anuncio> anuncios = repoAnuncio.findByFilters(precioMin, precioMax, superficieMin, superficieMax);
-    //     for (Anuncio anuncio : anuncios) {
-    //         if (!anuncio.getActivo()) anuncios.remove(anuncio);
-    //     }
-    //     modelo.addAttribute("anuncios", anuncios);
-    //     return "activos/activos";
-    // }
-    
 }

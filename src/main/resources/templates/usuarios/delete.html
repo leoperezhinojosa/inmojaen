@@ -14,7 +14,6 @@
                 <h4 class="text-center">INMOJAEN: Borrar usuario <i class="fa-solid fa-user"></i> <i class="fa-solid fa-trash"></i> </h4>
             </div>
             <div class="card-body">
-                <!-- <form class="row" th:action="@{/usuarios/delete}+${usuario.id}" th:object="${usuario}" method="post"> -->
                 <form class="row" th:action="@{/usuarios/delete}" th:object="${usuario}" method="post">
                     <input type="hidden" th:field="*{id}" />
                     <input type="hidden" th:field="*{username}" />
@@ -30,10 +29,6 @@
                         <label class="form-label" for="email"><b>Email:</b></label>
                         <input class="form-control" th:field="*{email}" disabled />
                     </div>
-                    <!-- <div class="mb-3 col-6 text-center">
-                        <label class="form-label" for="password"><b>Contraseña (Oculta):</b></label>
-                        <input class="form-control" type="password" th:field="*{password}" disabled />
-                    </div> -->
                     <div class="mb-3 col-6 text-center">
                         <label class="form-label" for="nombre"><b>Nombre:</b></label>
                         <input class="form-control" th:field="*{nombre}" disabled />

@@ -67,11 +67,6 @@ public class SecurityConfiguration {
                         "/favoritos/**", "/favoritos/*/**", "/favoritos/*/*/**")
                     // .authenticated()
                     .hasAuthority("USER")
-                    // Usuario PREMIUM: Implementar en el futuro
-                    // .requestMatchers(
-                        // "/premium/**", "/premium/*/**", "/premium/*/*/**")
-                        // .authenticated()
-                        // .hasAuthority("PREMIUM")
                         // Escoger si cualquier otra solicitud debe estar autenticada o se permiten
                         // todas:
                         .anyRequest().authenticated() // Autenticación obligatoria

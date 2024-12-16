@@ -4,8 +4,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +15,6 @@ import com.iesvdc.project.inmojaen.models.Usuario;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
@@ -223,27 +220,6 @@ public class ControllerUsuario {
         // Añadir mensaje flash:
         redirectAttributes.addFlashAttribute("success", "La contraseña se ha cambiado correctamente.");
         return "redirect:/usuario/perfil";
-    }
-
-    /**
-     * Endpoint: /usuario/{id}/mensajes (GET)
-     * Muestra los mensajes de un usuario.
-     * 
-     * @param id    ID del usuario.
-     * @param model Modelo de la vista.
-     * @return Vista de los mensajes del usuario con el ID indicado.
-     */
-    @GetMapping("/usuario/{id}/mensajes")
-    public String obtenerMensajes(@PathVariable Long id, Model model) {
-        Optional<Usuario> usuario = repoUsuario.findById(id);
-        if (usuario.isPresent()) {
-            Usuario user = usuario.get();
-            model.addAttribute("mensajesEnviados", user.getMensajesByEmisor());
-            model.addAttribute("mensajesRecibidos", user.getMensajesByReceptor());
-        } else {
-            model.addAttribute("error", "Usuario no encontrado");
-        }
-        return "mensajes";
     }
 
 

@@ -39,14 +39,15 @@
                   <i class="fa-solid fa-circle-info"></i> Información
               </a>
               <!-- Botón para marcar/desmarcar como favorito -->
-              <form th:action="@{/favoritos/favoritos}" method="post" id="form-favorito-[[${anuncio.id}]]">
-                  <input type="hidden" name="anuncioId" th:value="${anuncio.id}">
-                  <input type="hidden" name="usuarioId" th:value="${usuario.id}">
-                  <button type="submit" class="btn btn-light btn-sm" id="btn-favorito-[[${anuncio.id}]]">
-                      <i th:class="${#lists.contains(anuncio.favoritos, usuario) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}"></i>
-                      <span th:text="${#lists.contains(anuncio.favoritos, usuario) ? 'Quitar favorito' : 'Guardar favorito'}"></span>
-                  </button>
-              </form>
+              <form th:action="@{/activos/favoritos}" method="post" id="form-favorito-[[${anuncio.id}]]">
+                <input type="hidden" name="anuncioId" th:value="${anuncio.id}">
+                <input type="hidden" name="usuarioId" th:value="${usuario.id}">
+                <button type="submit" class="btn btn-sm" 
+                        th:classappend="${#lists.contains(anuncio.favoritos, usuario) ? ' btn-danger' : ' btn-light'}">
+                    <i th:class="${#lists.contains(anuncio.favoritos, usuario) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}"></i>
+                    <span th:text="${#lists.contains(anuncio.favoritos, usuario) ? 'Quitar favorito' : 'Guardar favorito'}"></span>
+                </button>
+            </form>
             </div>
           </td>
         </tr>

@@ -1,6 +1,7 @@
 package com.iesvdc.project.inmojaen.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -21,7 +22,6 @@ public class Anuncio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String titulo;
     private String descripcion;
     private Double precio;
@@ -39,10 +39,8 @@ public class Anuncio {
     @JoinColumn(name = "vendedor_id", nullable = false)
     private Usuario vendedor;
     @OneToMany(mappedBy = "anuncio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Favorito> favoritos;
+    private List<Favorito> favoritos = new ArrayList<>();
     @OneToMany
     private List<Imagen> imagenes;
-    @OneToMany
-    private List<Mensaje> mensajes;
     private Boolean activo;
 }

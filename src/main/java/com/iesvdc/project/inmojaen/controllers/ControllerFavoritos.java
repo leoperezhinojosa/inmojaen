@@ -1,6 +1,5 @@
 package com.iesvdc.project.inmojaen.controllers;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
 import com.iesvdc.project.inmojaen.repositories.RepoFavorito;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequestMapping("/favoritos")
