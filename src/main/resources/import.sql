@@ -27,11 +27,6 @@ INSERT INTO `imagen` (`url`, `activo`, `principal`, `descripcion`) VALUES ('uplo
 INSERT INTO `imagen` (`url`, `activo`, `principal`, `descripcion`) VALUES ('uploads/foto4.jpg', 1, 0, 'salones');
 INSERT INTO `imagen` (`url`, `activo`, `principal`, `descripcion`) VALUES ('uploads/foto5.jpg', 1, 0, 'exterior');
 
--- Inserciones de anuncios en venta:
-INSERT INTO `usuario_anuncios_en_venta` (`anuncios_en_venta_id`, `usuario_id`) VALUES (1, 2);
-INSERT INTO `usuario_anuncios_en_venta` (`anuncios_en_venta_id`, `usuario_id`) VALUES (2, 2);
-INSERT INTO `usuario_anuncios_en_venta` (`anuncios_en_venta_id`, `usuario_id`) VALUES (3, 3);
-
 -- Inserciones de anuncios favoritos:
 INSERT INTO `favorito` (`anuncio_id`, `usuario_id`) VALUES (1, 3);
 INSERT INTO `favorito` (`anuncio_id`, `usuario_id`) VALUES (2, 3);

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>INMOJAEN: Borrar Anuncio </title>
+    <th:block th:replace="~{fragments/general.html :: headerfiles}"></th:block>
+</head>
+
+<body>
+    <div>
+        <div th:replace="~{fragments/general.html :: navigation}"></div>
+        <br>
+        <div class="card">
+            <div class="card-header">
+                <!-- Esta clase no borra el anuncio, sólo lo desactiva -->
+                <h4 class="text-center">INMOJAEN: Borrar Anuncio de usuario [[${usuario.username}]] <i class="fa-solid fa-house"></i> <i class="fa-solid fa-trash"></i></h4>
+            </div>
+            <div class="card-body">
+                <!-- Alerta de advertencia -->
+                <div class="alert alert-danger text-center" role="alert">
+                    <strong>Advertencia:</strong> Esta acción no se puede deshacer. ¿Seguro que quieres borrarlo?
+                </div>
+                <!-- Formulario para borrar/desactivar anuncio -->
+                <form class="row" th:action="@{/anuncios/desactivar}" th:object="${anuncio}" method="post">
+                    <!-- Campo oculto para enviar el ID -->
+                    <input type="hidden" th:field="*{id}" />
+
+                    <!-- Detalles básicos del anuncio -->
+                    <div class="mb-3 col-12 text-center">
+                        <label class="form-label" for="titulo"><b>Título:</b></label>
+                        <input class="form-control" th:field="*{titulo}" disabled />
+                    </div>
+                    <div class="mb-3 col-12 text-center">
+                        <label class="form-label" for="descripcion"><b>Descripción:</b></label>
+                        <textarea class="form-control" th:field="*{descripcion}" rows="3" disabled></textarea>
+                    </div>
+                    <!-- Botones de acción -->
+                    <div class="text-center mt-3">
+                        <button class="btn btn-lg btn-danger mt-3" type="submit">
+                            Borrar Anuncio <i class="fa-solid fa-trash"></i>
+                        </button>
+                        &nbsp;&nbsp;
+                        <a class="btn btn-lg btn-primary mt-3" href="/usuario/publicados">
+                            Cancelar y Volver <i class="fa-solid fa-rotate-left"></i>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{fragments/general.html :: footer}"></div>
+</body>
+
+</html>

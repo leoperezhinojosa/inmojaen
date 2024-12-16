@@ -25,17 +25,6 @@
           <th>Título</th>
           <th>Descripción</th>
           <th>Precio</th>
-          <!-- <th>Superficie</th>
-          <th>Habitaciones</th>
-          <th>Baños</th>
-          <th>Dirección</th>
-          <th>Fecha Publicacion</th>
-          <th>Fecha Reserva</th>
-          <th>Vecha Venta</th>
-          <th>Visto</th>
-          <th>Reservado</th>
-          <th>Vendido</th> -->
-          <th>Opciones</th>
         </tr>
       </thead>
       <tbody>
@@ -44,25 +33,12 @@
           <td th:text="${anuncio.titulo}"></td>
           <td th:text="${anuncio.descripcion}"></td>
           <td th:text="${#numbers.formatDecimal(anuncio.precio, 1, 2) + ' €'}"></td>
-          <!-- <td th:text="${anuncio.superficie}"></td>
-          <td th:text="${anuncio.habitaciones}"></td>
-          <td th:text="${anuncio.banos}"></td>
-          <td th:text="${anuncio.direccion}"></td>
-          <td th:text="${anuncio.fechaPublicacion}"></td>
-          <td th:text="${anuncio.fechaReserva}"></td>
-          <td th:text="${anuncio.fechaVenta}"></td>
-          <td th:text="${anuncio.visto}"></td>
-          <td th:text="${anuncio.reservado}"></td>
-          <td th:text="${anuncio.vendido}"></td> -->
-          <!-- Todo: Extra: Desarrollar anuncios de alquiler -->
-          <!-- <td th:text="${anuncio.tipo}"></td> -->
-          <!-- <td th:text="${anuncio.alquilado}"></td> -->
           <td>
             <form th:action="@{/anuncios/activate}" method="post">
               <a class="btn btn-info" th:href="|/anuncios/info/${anuncio.id}|"><i class="fa-solid fa-circle-info"></i> Información</a>&nbsp;
               <a class="btn btn-warning" th:href="|/anuncios/edit/${anuncio.id}|"><i class="fa-solid fa-square-pen"></i> Editar</a>&nbsp;
               <a class="btn btn-danger" th:href="|/anuncios/delete/+${anuncio.id}"><i class="fa-solid fa-trash"></i> Borrar</a>&nbsp;
-              <!-- Todo: Poner 2 tipos de botón alternativos: Activar y Desactivar -->
+              <!-- Tipos de botón alternativos: Activar y Desactivar -->
               <input type="hidden" name="id" th:value="${anuncio.id}">
               <button class="btn btn-dark" th:if="${anuncio.activo}"><i class="fa-solid fa-circle-xmark"></i> Desactivar </button>
               <button class="btn btn-light" th:unless="${anuncio.activo}"><i class="fa-solid fa-circle-check"></i> Activar </button>

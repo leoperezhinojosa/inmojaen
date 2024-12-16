@@ -4,6 +4,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,12 +15,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.iesvdc.project.inmojaen.models.Anuncio;
+import com.iesvdc.project.inmojaen.models.Imagen;
 import com.iesvdc.project.inmojaen.models.Usuario;
+import com.iesvdc.project.inmojaen.repositories.RepoAnuncio;
 import com.iesvdc.project.inmojaen.repositories.RepoUsuario;
+
+import lombok.NonNull;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 
 /**
  * Controlador del usuario.
@@ -32,6 +42,9 @@ public class ControllerUsuario {
 
     @Autowired
     private RepoUsuario repoUsuario;
+
+    @Autowired
+    private RepoAnuncio repoAnuncio;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -196,7 +209,8 @@ public class ControllerUsuario {
             RedirectAttributes redirectAttributes) {
         Usuario usuario = getLoggedUser();
 
-        // Validar que la nueva contraseña no esté vacía y que coincida con la confirmación:
+        // Validar que la nueva contraseña no esté vacía y que coincida con la
+        // confirmación:
         if (newPassword == null || newPassword.isEmpty() || !newPassword.equals(confirmPassword)) {
             modelo.addAttribute("error", "Las contraseñas no coinciden o son inválidas.");
             modelo.addAttribute("usuario", usuario);
@@ -222,5 +236,243 @@ public class ControllerUsuario {
         return "redirect:/usuario/perfil";
     }
 
+    /**
+     * Endpoint: /usuario/publicados (GET)
+     * Método para traer los anuncios activos publicados por el usuario logueado.
+     * Nota: Si el usuario los borra, sólo se desactivarán.
+     * 
+     * @param modelo Modelo de la vista.
+     * @param id     ID del usuario logueado.
+     * @return Vista de los anuncios activos.
+     */
+    @GetMapping("/publicados")
+    public String getPublicados(Model modelo) {
+        Usuario usuarioLogueado = getLoggedUser();
+        List<Anuncio> anunciosActivos = usuarioLogueado.getAnunciosEnVenta()
+                .stream()
+                .filter(Anuncio::getActivo) // Filtra los anuncios activos
+                .toList(); // Convierte el stream en una lista
+
+        modelo.addAttribute("anuncios", anunciosActivos);
+        modelo.addAttribute("usuario", usuarioLogueado);
+        return "usuario/publicados";
+    }
+
+    /**
+     * Endpoint: /usuario/info/{id} (GET)
+     * Método para mostrar la información de un anuncio del usuario logueado.
+     * 
+     * @param modelo Modelo de la vista.
+     * @param id     ID del anuncio a mostrar.
+     * @return Vista detallada del anuncio.
+     */
+    @GetMapping("/info/{id}")
+    public String getAnuncioInfo(Model modelo, @PathVariable("id") @NonNull Long id) {
+        Optional<Anuncio> anuncio = repoAnuncio.findById(id);
+
+        Usuario usuario = getLoggedUser();
+
+        if (!anuncio.isPresent() || !anuncio.get().getActivo()) {
+            modelo.addAttribute("titulo", " - Error al mostrar anuncio - ");
+            modelo.addAttribute("mensaje", "El anuncio con el id " + id + " no existe.");
+            return "error";
+        } else {
+            Anuncio anuncioObtenido = anuncio.get();
+
+            // Obtener las imágenes asociadas al anuncio:
+            List<Imagen> imagenes = anuncioObtenido.getImagenes();
+
+            // Añadir datos al modelo:
+            modelo.addAttribute("usuario", usuario);
+            modelo.addAttribute("anuncio", anuncioObtenido);
+            modelo.addAttribute("imagenes", imagenes);
+
+            return "usuario/info";
+        }
+    }
+
+    /**
+     * Endpoint: /usuario/crear (GET)
+     * Muestra el formulario para añadir un anuncio nuevo.
+     * 
+     * @param modelo Modelo de la vista.
+     * @return Vista del formulario de añadir anuncio.
+     */
+    @GetMapping("/crear")
+    public String addCreationForm(Model modelo) {
+        Usuario usuario = getLoggedUser();
+        modelo.addAttribute("usuario", usuario);
+        modelo.addAttribute("anuncio", new Anuncio());
+        return "usuario/crear";
+    }
+
+    /**
+     * Endpoint: /usuario/crear (POST)
+     * Añade un anuncio nuevo del usuario logueado a la base de datos.
+     * 
+     * @param anuncio Anuncio a añadir.
+     * @return Redirección a la lista de anuncios del usuario.
+     */
+    @PostMapping("/crear")
+    public String addCreation(
+            @ModelAttribute("anuncio") @NonNull Anuncio anuncio) {
+        // Añadir un nuevo anuncio al usuario logueado:
+        anuncio.setActivo(true);
+        anuncio.setFechaPublicacion(LocalDate.now());
+        anuncio.setVendido(false);
+        anuncio.setReservado(false);
+        anuncio.setVisto(false);
+        // Se asigna al usuario logueado:
+        anuncio.setVendedor(getLoggedUser());
+        repoAnuncio.save(anuncio);
+        return "redirect:/usuario/publicados";
+    }
+
+    /**
+     * Endpoint: /usuario/editar-anuncio/{id} (GET)
+     * Muestra el formulario para editar un anuncio del usuario logueado.
+     * 
+     * @param modelo  Modelo de la vista.
+     * @param usuario Usuario logueado.
+     * @param id      ID del anuncio a editar.
+     * @return Vista de edición del anuncio.
+     */
+    @GetMapping("/editar-anuncio/{id}")
+    public String editAnuncioForm(
+            Model modelo, @PathVariable("id") Long id) {
+        Optional<Anuncio> anuncioAEditar = repoAnuncio.findById(id);
+        Usuario usuario = getLoggedUser();
+        if (!anuncioAEditar.isPresent()) {
+            modelo.addAttribute("titulo",
+                    " - Error al editar anuncio - ");
+            modelo.addAttribute("mensaje",
+                    " - Atención: El anuncio con ID " + id + " no existe - ");
+            return "error";
+        } else {
+            modelo.addAttribute("usuario", usuario);
+            modelo.addAttribute("anuncio", anuncioAEditar.get());
+        }
+
+        return "usuario/editar-anuncio";
+    }
+
+    /**
+     * Endpoint: /usuario/editar-anuncio (POST)
+     * Edita un anuncio existente del usuario logueado en la base de datos.
+     * 
+     * @param anuncio Anuncio a editar.
+     * @return Redirección a la lista total de anuncios.
+     */
+    @PostMapping("/editar-anuncio")
+    public String editAdvertisement(
+            @ModelAttribute("anuncio") @NonNull Anuncio anuncio,
+            @RequestParam("id_usuario") Long idUsuario) {
+
+        // Validar que el anuncio ya existe en la base de datos
+        Anuncio anuncioExistente = repoAnuncio.findById(anuncio.getId())
+                .orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
+
+        Usuario usuario = getLoggedUser();
+
+        // Actualizar los campos del anuncio existente
+        anuncioExistente.setTitulo(anuncio.getTitulo());
+        anuncioExistente.setDescripcion(anuncio.getDescripcion());
+        anuncioExistente.setPrecio(anuncio.getPrecio());
+        anuncioExistente.setHabitaciones(anuncio.getHabitaciones());
+        anuncioExistente.setBanos(anuncio.getBanos());
+        anuncioExistente.setSuperficie(anuncio.getSuperficie());
+        anuncioExistente.setDireccion(anuncio.getDireccion());
+        anuncioExistente.setVendedor(usuario);
+
+        // Guardar el anuncio actualizado
+        repoAnuncio.save(anuncioExistente);
+
+        return "redirect:/publicados";
+    }
+
+    /**
+     * Endpoint: /usuario/borrar-anuncio/{id} (GET)
+     * Muestra el formulario para eliminar/desactivar un anuncio del usuario logueado.
+     * 
+     * @param id ID del anuncio a eliminar/desactivar.
+     * @return Metodo POST para eliminar el anuncio.
+     */
+    @GetMapping("/borrar-anuncio/{id}")
+    public String deleteAdvertisementForm(
+            Model modelo, @PathVariable("id") @NonNull Long id) {
+        Optional<Anuncio> anuncioAEliminar = repoAnuncio.findById(id);
+        Usuario usuario = getLoggedUser();
+        if (!anuncioAEliminar.isPresent()) {
+            modelo.addAttribute("titulo",
+                    " - Error al eliminar anuncio - ");
+            modelo.addAttribute("mensaje",
+                    " - Atención: El anuncio con ID " + id + " no existe - ");
+            return "error";
+        } else {
+            // Los anuncios reservados o comprados no pueden eliminarse/desactivarse.
+            if (anuncioAEliminar.get().getReservado() || anuncioAEliminar.get().getVendido()) {
+                modelo.addAttribute("titulo",
+                        " - Error al eliminar anuncio - ");
+                modelo.addAttribute("mensaje",
+                        " - Atención: El anuncio con ID " + id + " no puede eliminarse - ");
+                return "error";
+            } else {
+                modelo.addAttribute("usuario", usuario);
+                modelo.addAttribute("anuncio", anuncioAEliminar.get());
+            }
+        }
+        return "usuario/borrar-anuncio";
+    }
+
+    /**
+     * Endpoint: /borrar-anuncio (POST)
+     * Desactiva un anuncio.
+     * Nota: Este método puede reformularse para activar/desactivar anuncios.
+     * 
+     * @param id Identificador del anuncio a activar o desactivar un anuncio del
+     *           usuario logueado.
+     * @return Redirigir a la lista de anuncios publicados por el usuario.
+     */
+    @PostMapping("/borrar-anuncio")
+    public String unactivateAdvertisement(
+            Model modelo, @RequestParam("id") @NonNull Long id) {
+        Optional<Anuncio> anuncio = repoAnuncio.findById(id);
+        if (!anuncio.isPresent()) {
+            modelo.addAttribute("titulo",
+                    " - Error en el borrado de anuncio - ");
+                    // " - Error en el manejo de activación de anuncio - ");
+            modelo.addAttribute("mensaje",
+                    " - Atención: El anuncio indicado no existe - ");
+            return "error";
+        } else {
+            // Se desactiva el anuncio, con lo que no aparece después:
+            anuncio.get().setActivo(false);
+            repoAnuncio.save(anuncio.get());
+        }
+        return "redirect:/usuario/publicados";
+    }
+
+    /**
+     * Endpoint: /images/{id} (GET)
+     * Muestra una página con las imágenes asociadas a un anuncio.
+     * 
+     * @param id Identificador del anuncio.
+     * @return Imagen asociada al anuncio.
+     */
+    @GetMapping("/images/{id}")
+    public String getImages(Model modelo, @PathVariable("id") @NonNull Long id) {
+        Optional<Anuncio> anuncio = repoAnuncio.findById(id);
+        if (!anuncio.isPresent()) {
+            modelo.addAttribute("titulo", "Error al mostrar anuncio");
+            modelo.addAttribute("mensaje", "El anuncio con el id " + id + " no existe");
+            return "error";
+        } else {
+            List<Imagen> imagenes = anuncio.get().getImagenes();
+            System.out.println("Imágenes asociadas: " + imagenes); 
+            modelo.addAttribute("anuncio", anuncio.get());
+            modelo.addAttribute("imagenes", imagenes); 
+            return "usuario/anuncio-images";
+        }
+    }
 
 }

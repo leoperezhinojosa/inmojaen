@@ -9,11 +9,13 @@ class Usuario {
     - rol: String
     - username: String
     - activo: Boolean
-    - anuncios: Anuncio[]
+    - anunciosEnVenta: Anuncio[]
+    - anunciosFavoritos: Anuncio[]
     + guardarAnuncio()
     + buscarAnuncio()
     + modificarAnuncio()
     + eliminarAnuncio()
+    + desactivarAnuncio()
 }
 
 class Anuncio {
@@ -33,18 +35,18 @@ class Anuncio {
     - vendido: Boolean
     - usuario: Usuario
     - fotos: String[]
-    - mensajes: String[]
     - activo: Boolean
     + guardarAnuncio()
     + buscarAnuncio()
     + modificarAnuncio()
     + eliminarAnuncio()
+    + desactivarAnuncio()
 }
 
 enum Rol {
     ADMIN
-    VENDEDOR
-    CLIENTE
+    USUARIO
+    TEMPORAL
 }
 
 class RolUsuario {
@@ -63,6 +65,5 @@ RolUsuario "1" --> "1" Usuario : Pertenece
 
 RolUsuario "1" --> "1" Rol : Tiene
 Rol "1" --> "0..*" RolUsuario : Pertenece
-
 
 @enduml

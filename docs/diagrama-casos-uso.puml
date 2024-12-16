@@ -13,26 +13,24 @@ usecase (enviar mensajes) as Proc06
 usecase (aceptar reserva) as Proc07
 usecase (rechazar reserva) as Proc08
 usecase (finalizar reserva) as Proc09
-actor : vendedor: as Vendedor
-Vendedor --> Proc03
-Vendedor --> Proc04
-Vendedor --> Proc05
-Vendedor --> Proc06
-Vendedor --> Proc07
-Vendedor --> Proc08
-Vendedor --> Proc09
-
 usecase (gestionar su informacion) as Proc10
 usecase (buscar anuncios) as Proc11
 usecase (gestionar anuncios favoritos) as Proc12
 usecase (enviar mensajes) as Proc13
 usecase (solicitar reserva) as Proc14
-actor : comprador: as Comprador
-Comprador --> Proc10
-Comprador --> Proc11
-Comprador --> Proc12
-Comprador --> Proc13
-Comprador --> Proc14
+actor : usuario: as Usuario
+Usuario --> Proc03
+Usuario --> Proc04
+Usuario --> Proc05
+Usuario --> Proc06
+Usuario --> Proc07
+Usuario --> Proc08
+Usuario --> Proc09
+Usuario --> Proc10
+Usuario --> Proc11
+Usuario --> Proc12
+Usuario --> Proc13
+Usuario --> Proc14
 
 usecase ( registro / login ) as Proc15
 

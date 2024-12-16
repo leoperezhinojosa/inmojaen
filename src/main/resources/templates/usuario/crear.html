@@ -9,12 +9,13 @@
 <body>
     <div>
         <div th:replace="~{fragments/general.html :: navigation}"> </div>
+        <br>
         <div class="card">
             <div class="card-header">
-                <h4 class="text-center">Crear nuevo anuncio <i class="fa-solid fa-house"></i> <i class="fa-solid fa-circle-plus"></i> </h4>
+                <h3 class="text-center"> INMOJAEN - Mis anuncios - Crear anuncio para <i> [[${usuario.username}]] </i> <i class="fa-solid fa-house"></i> <i class="fa-solid fa-circle-plus"></i> </h3>
             </div>
             <div class="card-body">
-                <form class="row" th:action="@{/anuncios/add}" th:object="${anuncio}" method="post">
+                <form class="row" th:action="@{/usuario/crear}" th:object="${anuncio}" method="post">
                     
                     <div class="mb-3 col-4 text-center">
                         <label class="form-label" for="titulo"><b>Título:</b></label>
@@ -26,47 +27,41 @@
                         <input class="form-control" th:field="*{descripcion}" required
                             placeholder="Escribir una descripción detallada del inmueble" />
                     </div>
-                    <div class="mb-3 col-2 text-center">
+                    <div class="mb-3 col-3 text-center">
                         <label class="form-label" for="precio"><b>Precio de venta:</b></label>
                         <input class="form-control" type="number" th:field="*{precio}" required
                             placeholder="Precio de venta del inmueble" />
                     </div>
-                    <div class="mb-3 col-1 text-center">
+                    <div class="mb-3 col-3 text-center">
                         <label class="form-label" for="habitaciones"><b>Habitaciones:</b></label>
                         <input class="form-control" type="number" th:field="*{habitaciones}" required
                             placeholder="Habitaciones disponibles en el inmueble" />
                     </div>
-                    <div class="mb-3 col-1 text-center">
+                    <div class="mb-3 col-3 text-center">
                         <label class="form-label" for="banos"><b>Baños:</b></label>
                         <input class="form-control" type="number" th:field="*{banos}" required
                             placeholder="Baños disponibles en el inmueble" />
                     </div>
-                    <div class="mb-3 col-2 text-center">
+                    <div class="mb-3 col-3 text-center">
                         <label class="form-label" for="superficie"><b>Superficie:</b></label>
                         <input class="form-control" type="number" th:field="*{superficie}" required
-                            placeholder="Superficie total del inmueble (m2)" />
+                            placeholder="Superficie del inmueble (m2)" />
                     </div>
-                    <div class="mb-3 col-6 text-center">
+                    <div class="mb-3 col-12 text-center">
                         <label class="form-label" for="direccion"><b>Dirección:</b></label>
                         <input class="form-control" th:field="*{direccion}" required
                             placeholder="Dirección del inmueble (Indicar zona o calle, no dirección exacta)" />
                     </div>
                     
-                    <!-- Escoger usuario al que pertenece el anuncio -->
-                    <div class="mb-3 col-12 text-center">
-                        <label class="form-label" for="id_usuario" required><b>Seleccionar Usuario Propietario:</b></label>
-                        <select name="id_usuario" id="id_usuario" class="form-select">
-                            <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.username}"></option>
-                        </select>
-                    </div>
-                    
                     <div class="text-center mt-3">
-                        <button class="btn btn-lg btn-success mt-3" type="submit">Crear nuevo anuncio  <i class="fa-solid fa-house"></i> <i class="fa-solid fa-check"></i> </button>
+                        <button class="btn btn-success mt-3" type="submit">Crear anuncio  <i class="fa-solid fa-house"></i> <i class="fa-solid fa-check"></i> </button>
                         &nbsp;
-                        <button class="btn btn-lg btn-warning mt-3" type="reset">Reiniciar formulario <i class="fa-solid fa-arrow-left-long"></i> </button>
+                        <a class="btn btn-info mt-3" href="/imagenes"> Subir imágenes <i class="fa-solid fa-image"></i> </a>
+                        &nbsp;
+                        <button class="btn btn-warning mt-3" type="reset">Reiniciar formulario <i class="fa-solid fa-arrow-left-long"></i> </button>
                         &nbsp;
                         <!-- Botón de cancelar -->
-                        <a class="btn btn-lg btn-danger mt-3" href="/anuncios" type="submit">Cancelar y volver <i class="fa-solid fa-rotate-left"></i> </a>
+                        <a class="btn btn-danger mt-3" href="/usuario/publicaciones" type="submit">Cancelar y volver <i class="fa-solid fa-rotate-left"></i> </a>
                     </div>
                 </form>
             </div>
