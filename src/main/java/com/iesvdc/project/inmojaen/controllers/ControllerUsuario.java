@@ -485,9 +485,9 @@ public class ControllerUsuario {
     public String reservarAnuncio(@PathVariable Long id) {
         Anuncio anuncio = repoAnuncio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
-
+        anuncio.setFechaReserva(LocalDate.now()); // Guarda la fecha de reserva
         anuncio.setReservado(true); // Cambia el estado a reservado
-        anuncio.setVendido(false); // Asegúrate de que no esté marcado como vendido
+        anuncio.setVendido(false);
         repoAnuncio.save(anuncio);
 
         return "redirect:/usuario/publicados";
@@ -504,9 +504,9 @@ public class ControllerUsuario {
     public String venderAnuncio(@PathVariable Long id) {
         Anuncio anuncio = repoAnuncio.findById(id)
                 .orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
-
+        anuncio.setFechaVenta(LocalDate.now()); // Guarda la fecha de venta
         anuncio.setVendido(true); // Cambia el estado a vendido
-        anuncio.setReservado(false); // Asegúrate de que no esté marcado como reservado
+        anuncio.setReservado(false);
         repoAnuncio.save(anuncio);
 
         return "redirect:/usuario/publicados";

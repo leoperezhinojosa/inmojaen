@@ -15,9 +15,6 @@ import lombok.NonNull;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-// TODO: Revisar métodos faltantes.
-
 /**
  * Controlador general de la aplicación.
  * Contiene las rutas de ayuda, error y otras.
@@ -66,7 +63,6 @@ public class GeneralController {
     public String showLogin() {
         return "login";
     }
-
 
     /**
      * Endpoint: /register (GET)
