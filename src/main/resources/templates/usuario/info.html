@@ -7,9 +7,9 @@
 </head>
 
 <body>
-
     <div>
         <div th:replace="~{fragments/general.html :: navigation}"> </div>
+        <br>
         <div class="card">
             <div class="card-header">
                 <h4 class="text-center">
@@ -17,6 +17,15 @@
                 </h4>
             </div>
             <div class="card-body">
+                <!-- Avisos de reserva o venta -->
+                <div class="mt-3">
+                    <div th:if="${anuncio.reservado}" class="alert alert-warning text-center">
+                        <strong>¡Reservado!</strong> Has reservado este inmueble.
+                    </div>
+                    <div th:if="${anuncio.vendido}" class="alert alert-danger text-center">
+                        <strong>¡Vendido!</strong> Has vendido este inmueble.
+                    </div>
+                </div>
 
                 <!-- Carrusel de Imágenes -->
                 <div class="d-flex justify-content-center">
@@ -102,12 +111,26 @@
                             <p class="form-control-plaintext" th:text="${anuncio.vendedor.username}"></p>
                         </div>
                     </div>
-
                     <div class="text-center m-3">
-                        <a class="btn btn-warning mt-3" th:href="@{/usuario/editar-anuncio/{id}(id=${anuncio.id})}" type="submit">
-                            Editar anuncio <i class="fa-solid fa-pen-to-square"></i> <i
-                                class="fa-solid fa-house-chimney"></i> </a>&nbsp;
+                        <!-- Reservar anuncio -->
+                        <form th:action="@{/usuario/reservar-anuncio/{id}(id=${anuncio.id})}" method="post"
+                            style="display:inline;">
+                            <button class="btn btn-outline-warning" type="submit"> Reservar propiedad <i
+                                    class="fa-solid fa-calendar-check"></i></button>
+                        </form>
+                        &nbsp;
+                        <!-- Vender anuncio -->
+                        <form th:action="@{/usuario/vender-anuncio/{id}(id=${anuncio.id})}" method="post"
+                            style="display:inline;">
+                            <button class="btn btn-outline-success" type="submit"> VENDER PROPIEDAD <i
+                                    class="fa-solid fa-dollar-sign"></i></button>
+                        </form>
                         <hr>
+                        <a class="btn btn-warning mt-3" th:href="@{/usuario/editar-anuncio/{id}(id=${anuncio.id})}"
+                            type="submit">
+                            Editar anuncio <i class="fa-solid fa-pen-to-square"></i> <i
+                                class="fa-solid fa-house-chimney"></i> 
+                        </a>&nbsp;
                         <a class="btn btn-info mt-3" href="/activos" type="submit"> Todos los Anuncios <i
                                 class="fa-solid fa-house-chimney"></i> </a>&nbsp;
                         <a class="btn btn-primary mt-3" href="/usuario/publicados" type="submit"> Mis Anuncios

@@ -364,9 +364,7 @@ public class ControllerUsuario {
      * @return Redirección a la lista total de anuncios.
      */
     @PostMapping("/editar-anuncio")
-    public String editAdvertisement(
-            @ModelAttribute("anuncio") @NonNull Anuncio anuncio,
-            @RequestParam("id_usuario") Long idUsuario) {
+    public String editarAnuncio(@ModelAttribute Anuncio anuncio) {
 
         // Validar que el anuncio ya existe en la base de datos
         Anuncio anuncioExistente = repoAnuncio.findById(anuncio.getId())
@@ -387,12 +385,13 @@ public class ControllerUsuario {
         // Guardar el anuncio actualizado
         repoAnuncio.save(anuncioExistente);
 
-        return "redirect:/publicados";
+        return "redirect:/usuario/publicados";
     }
 
     /**
      * Endpoint: /usuario/borrar-anuncio/{id} (GET)
-     * Muestra el formulario para eliminar/desactivar un anuncio del usuario logueado.
+     * Muestra el formulario para eliminar/desactivar un anuncio del usuario
+     * logueado.
      * 
      * @param id ID del anuncio a eliminar/desactivar.
      * @return Metodo POST para eliminar el anuncio.
@@ -440,7 +439,7 @@ public class ControllerUsuario {
         if (!anuncio.isPresent()) {
             modelo.addAttribute("titulo",
                     " - Error en el borrado de anuncio - ");
-                    // " - Error en el manejo de activación de anuncio - ");
+            // " - Error en el manejo de activación de anuncio - ");
             modelo.addAttribute("mensaje",
                     " - Atención: El anuncio indicado no existe - ");
             return "error";
@@ -468,11 +467,49 @@ public class ControllerUsuario {
             return "error";
         } else {
             List<Imagen> imagenes = anuncio.get().getImagenes();
-            System.out.println("Imágenes asociadas: " + imagenes); 
+            System.out.println("Imágenes asociadas: " + imagenes);
             modelo.addAttribute("anuncio", anuncio.get());
-            modelo.addAttribute("imagenes", imagenes); 
+            modelo.addAttribute("imagenes", imagenes);
             return "usuario/anuncio-images";
         }
+    }
+
+    /**
+     * Endpoint: /usuario/reservar-anuncio/{id}
+     * Método para cambiar el estado de un anuncio a reservado por su anunciante.
+     * 
+     * @param id ID del anuncio a reservar.
+     * @return cambio de estado del anuncio a reservado.
+     */
+    @PostMapping("/reservar-anuncio/{id}")
+    public String reservarAnuncio(@PathVariable Long id) {
+        Anuncio anuncio = repoAnuncio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
+
+        anuncio.setReservado(true); // Cambia el estado a reservado
+        anuncio.setVendido(false); // Asegúrate de que no esté marcado como vendido
+        repoAnuncio.save(anuncio);
+
+        return "redirect:/usuario/publicados";
+    }
+
+    /**
+     * Endpoint: /usuario/vender-anuncio/{id}
+     * @param id ID del anuncio a vender.
+     * Método para cambiar el estado de un anuncio a vendido por su anunciante.
+     * 
+     * @return cambio de estado del anuncio a vendido.
+     */
+    @PostMapping("/vender-anuncio/{id}")
+    public String venderAnuncio(@PathVariable Long id) {
+        Anuncio anuncio = repoAnuncio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Anuncio no encontrado"));
+
+        anuncio.setVendido(true); // Cambia el estado a vendido
+        anuncio.setReservado(false); // Asegúrate de que no esté marcado como reservado
+        repoAnuncio.save(anuncio);
+
+        return "redirect:/usuario/publicados";
     }
 
 }

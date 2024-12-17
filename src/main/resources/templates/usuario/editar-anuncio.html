@@ -15,7 +15,7 @@
             <h4 class="text-center"> Editar anuncio del usuario <i> [[${usuario.username}]] </i> <i class="fa-solid fa-house-chimney"></i><i class="fa-solid fa-pen"></i> </h4>
         </div>
         <div class="card-body">
-            <form class="row" th:action="@{/anuncios/edit}" th:object="${anuncio}" method="post">
+            <form class="row" th:action="@{/usuario/editar-anuncio}" method="post" th:object="${anuncio}">
                 <input type="hidden" th:field="*{id}" />
                 <div class="mb-3 col-4 text-center">
                     <label class="form-label" for="titulo"><b>Título:</b></label>

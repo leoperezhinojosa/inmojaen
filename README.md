@@ -3,6 +3,30 @@
 Gestión Inmobiliaria: INMOJAÉN
 - 
 
+_Descripción del Proyecto_
+-
+
+Este proyecto consiste en una aplicación web de Inmobiliaria. La idea principal consiste en un portal de anuncios de inmuebles donde leer anuncios que han sido publicados por usuarios registrados, para poder realizar negocios. Cuenta con 2 tipos principales de perfil, y otro secundario, para atraer a los usuarios a registrarse en la aplicación. 
+
+
+<u>Dispone de **3 tipos de usuario:**</u>
+- **Usuario ADMIN (Administrador):** Gestionan todos los usuarios y anuncios de la aplicación. Pueden añadir nuevos usuarios de cualquier tipo, incluyendo éste, y realizar operaciones de CRUD de cualquier tipo de usuario o anuncio, excepto eliminar usuarios o anuncios con información sensible, que sólo podrán ser desactivados.
+- **Usuario USUARIO (Perfil de Usuario registrado):** Los usuarios registrados pueden ver los anuncios activos de la aplicación. Pueden guardar los anuncios que deseen como favoritos. También pueden poner anuncios de venta de inmuebles, consultarlos, editarlos y borrarlos, aunque no se eliminan de la base de datos a menos que lo haga el ADMIN. Pueden contactar con los usuarios que pongan anuncios por Email con facilidad a través de un enlace.
+- **Usuario TEMPORAL (Perfil de Usuario no registrado):** Este tipo de perfil permite ver parcialmente la aplicación, viendo el listado de anuncios publicados, y con una visión global de la aplicación que le permita hacerse una idea de todo lo que puede hacer si se registra en ella. El resto de funcionalidades de tipo _Usuario registrado_ son mencionadas para mostrar las posibilidades de la aplicación.
+
+_Estructura del Proyecto_
+-
+
+El proyecto está dividido en varios módulos:
+
+- src/main/java: Contiene el código fuente de la aplicación.
+- src/main/resources: Contiene los recursos estáticos de la aplicación.
+- src/main/test: Contiene las pruebas unitarias.
+- src/main/stacks: Contiene los archivos de configuración de la aplicación.
+  
+Tecnologías utilizadas
+-
+
 <u>Características de frontend y backend del programa:</u>
 - Codificación:
     - Lenguajes utilizados: `Java`, `JavaScript`, `SQL`, `HTML5` y `CSS`
@@ -19,28 +43,6 @@ Gestión Inmobiliaria: INMOJAÉN
 
 Documentación de la APP de Gestión Inmobiliaria INMOJAÉN
 -
-
-_Descripción del Proyecto_
--
-
-Este proyecto consiste en una aplicación web de Inmobiliaria. 
-
-<u>Dispone de **3 tipos de usuario:**</u>
-- **Usuario ADMIN (Administrador):** Gestionan todos los usuarios y anuncios de la aplicación. Pueden añadir nuevos usuarios de cualquier tipo, incluyendo éste, y realizar operaciones de CRUD de cualquier tipo de usuario o anuncio, excepto eliminar usuarios o anuncios con información sensible, que sólo podrán ser desactivados.
-- **Usuario USUARIO (Perfil de Usuario registrado):** Los usuarios registrados pueden ver los anuncios activos de la aplicación, y pueden realizar búsquedas especificas. Pueden guardar los anuncios que deseen como favoritos. También pueden poner anuncios de venta de inmuebles, consultarlos, editarlos y borrarlos, aunque no se eliminan de la base de datos a menos que lo haga el ADMIN. Pueden contactar con los usuarios que pongan anuncios por Email con facilidad a través de un enlace.
-- **Usuario TEMPORAL (Perfil de Usuario no registrado):** Este tipo de perfil permite ver parcialmente la aplicación, viendo el listado de anuncios publicados, y con una visión global de la aplicación que le permita hacerse una idea de todo lo que puede hacer si se registra en ella. El resto de funcionalidades de tipo _Usuario registrado_ son mencionadas para mostrar las posibilidades de la aplicación.
-
-_Estructura del Proyecto_
--
-
-El proyecto está dividido en varios módulos:
-
-- src/main/java: Contiene el código fuente de la aplicación.
-- src/main/resources: Contiene los recursos estáticos de la aplicación.
-- src/main/test: Contiene las pruebas unitarias.
-- src/main/stacks: Contiene los archivos de configuración de la aplicación.
-  
-_**Tecnologías utilizadas**_
 
 <u>_Backend_</u>
 
@@ -61,7 +63,7 @@ Las características utilizadas en este proyecto son:
 - **Spring Boot Devtools:** Módulo de herramientas de desarrollo Spring Boot. Incluye múltiples funciones útiles para desarrolladores, mejorando la experiencia de desarrollo: almacenamiento en caché de recursos estáticos, reinicios automáticos, recarga en vivo, configuraciones globales y ejecución remota de aplicaciones.
 - **Spring Security:** Es un marco de autenticación, centrado en proporcionar autenticación y autorización a las aplicaciones Java, proporcionando control de acceso potente y altamente personalizable . Es el estándar de facto para proteger las aplicaciones basadas en Spring.
 
-El backend de la aplicación se encarga de exponer una API REST que permite realizar las siguientes operaciones: 
+Las opciones que pueden realizarse en este proyecto son, entre otras:
 - Registro de usuarios con nombre de usuario único
 - Inicio de sesión con seguridad encriptada
 - Muestra de anuncios en general 

@@ -7,9 +7,9 @@
 </head>
 
 <body>
-
     <div>
         <div th:replace="~{fragments/general.html :: navigation}"> </div>
+        <br>
         <div class="card">
             <div class="card-header">
                 <h4 class="text-center">
@@ -17,6 +17,16 @@
                 </h4>
             </div>
             <div class="card-body">
+
+                <!-- Avisos de reserva o venta -->
+                <div class="mt-3">
+                    <div th:if="${anuncio.reservado}" class="alert alert-warning text-center">
+                        <strong>¡Reservado!</strong> Este anuncio ya está reservado y no está disponible para comprar.
+                    </div>
+                    <div th:if="${anuncio.vendido}" class="alert alert-danger text-center">
+                        <strong>¡Vendido!</strong> Este anuncio ha sido vendido. Gracias por tu interés.
+                    </div>
+                </div>
 
                 <!-- Carrusel de Imágenes -->
                 <div class="d-flex justify-content-center">
